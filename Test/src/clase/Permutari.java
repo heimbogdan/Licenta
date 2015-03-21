@@ -1,29 +1,34 @@
 package clase;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Permutari {
 
-	public static void perm(ArrayList<Integer> numere, int poz,
-			ArrayList<Integer> p) {
-		if (p == null) {
-			p = new ArrayList<Integer>();
-		}
-		for (int i = 0; i < numere.size(); i++) {
-			if (!p.contains(numere.get(i))) {
-				p.add(numere.get(i));
-				perm(numere, (poz + 1), p);
-				p.remove(p.size() - 1);
+	static Comparator<Placa> c = new Comparator<Placa>() {
+
+		@Override
+		public int compare(Placa o1, Placa o2) {
+			if (o1.getLungime() == o2.getLungime()) {
+				if (o1.getLatime() == o2.getLatime()) {
+					return 0;
+				} else if (o1.getLatime() > o2.getLatime()) {
+					return -1;
+				} else {
+					return 1;
+				}
+			} else if (o1.getLungime() > o2.getLungime()) {
+				return -1;
+			} else {
+				return 1;
 			}
 		}
-		if (p.size() == numere.size()) {
-			System.out.println(p.toString());
-		}
-	}
+	};
 
 	public static ArrayList<ArrayList<Placa>> permuta(ArrayList<Placa> placi,
 			Placa PAL) throws CloneNotSupportedException {
+		placi.sort(c);
 		ArrayList<ArrayList<Placa>> best = new ArrayList<ArrayList<Placa>>();
 		int x = placi.size() / 10 + 1;
 		for (int i = 0; i < x; i++) {

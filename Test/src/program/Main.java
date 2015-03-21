@@ -1,7 +1,6 @@
 package program;
 
 import java.util.ArrayList;
-
 import clase.Aranjamente;
 import clase.Incadrare;
 import clase.Panel;
@@ -10,8 +9,6 @@ import clase.Placa;
 
 public class Main {
 
-	
-	
 	public static void main(String[] args) throws CloneNotSupportedException {
 		// ArrayList<Integer> numere = new ArrayList<Integer>();
 		// for (int i = 1; i <= 5; i++) {
@@ -49,7 +46,7 @@ public class Main {
 		}
 		Incadrare incadrare = Aranjamente.aranjare(best, PAL);
 		System.out.println("\n" + incadrare);
-		
+
 		new Panel(incadrare);
 	}
 }
