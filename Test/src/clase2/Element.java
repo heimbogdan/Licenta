@@ -9,6 +9,7 @@ public class Element {
 	private double width;
 	private Element parent;
 	private ArrayList<Element> childrens;
+	private char position;
 	private Point2D point;
 	private boolean used;
 
@@ -60,13 +61,22 @@ public class Element {
 		this.used = used;
 	}
 
+	public char getPosition() {
+		return position;
+	}
+
+	public void setPosition(char position) {
+		this.position = position;
+	}
+
 	public Element(double length, double width) {
 		super();
 		this.length = length;
 		this.width = width;
 		this.parent = null;
-		this.childrens = null;
+		this.childrens = new ArrayList<Element>();
 		this.point = new Point2D.Double();
+		this.used = false;
 	}
 
 	@Override
@@ -85,14 +95,24 @@ public class Element {
 
 	public void addChild(Element e) {
 		double p = 0;
-		for (Element s : this.childrens) {
-			p += s.getLength();
-		}
 		Point2D point = new Point2D.Double();
-		point.setLocation(p, this.getPoint().getY());
-		e.setPoint(point);
+		if (!this.childrens.isEmpty()) {
+			if (this.position == 'V') {
+				for (Element s : this.childrens) {
+					p += s.getLength();
+				}
+				point.setLocation(p, this.getPoint().getY());
+			} else {
+				for (Element s : this.childrens) {
+					p += s.getWidth();
+				}
+				point.setLocation(this.getPoint().getX(), p);
+			}
+			e.setPoint(point);
+		} else {
+			e.setPoint(this.point);
+		}
 		e.setParent(this);
-		e.setUsed(true);
 		this.childrens.add(e);
 	}
 }

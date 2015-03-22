@@ -30,9 +30,19 @@ public class ElementList extends ArrayList<Element> {
 		}
 	};
 
-	public void addMore(Element element, int number) {
+	public void addMore(double x, double y, int number) {
 		for (int i = 0; i < number; i++) {
+			Element element = new Element(x, y);
 			this.add(element);
 		}
+	}
+
+	public boolean isAllUsed() {
+		for (Element e : this) {
+			if (!e.isUsed()) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

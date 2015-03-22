@@ -69,9 +69,14 @@ public class Permutari {
 							L += pl.getLungime();
 						}
 						if (L + placa.getLungime() <= PAL.getLungime()) {
-							cur.add(placa);
-							folosite.add(placa);
-							break;
+							if (cur.size()==0) {
+								adaugaInSet(folosite, placa, cur);
+								break;
+								
+							} else if (cur.get(0).getLatime() >= placa.getLatime()) {
+								adaugaInSet(folosite, placa, cur);
+								break;
+							}
 						}
 						if (i == incadrari.size() - 1) {
 							incadrari.add(new ArrayList<Placa>());
@@ -127,5 +132,11 @@ public class Permutari {
 			}
 		}
 		return Best;
+	}
+
+	private static void adaugaInSet(ArrayList<Placa> folosite, Placa placa,
+			ArrayList<Placa> cur) {
+		cur.add(placa);
+		folosite.add(placa);
 	}
 }
