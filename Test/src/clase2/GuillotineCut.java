@@ -7,11 +7,30 @@ public class GuillotineCut {
 	private static int level;
 
 	public static FinalElement beginCutting(ElementList elements, Element Root) {
-		CutElement = new FinalElement(Root.getLength(), Root.getWidth());
-		PAL = Root;
-		level = 0;
-		cut(elements, Root);
+		CutElement = new FinalElement(0, 0);
+		permute(elements, Root, 0);
 		return CutElement;
+	}
+
+	public static void permute(ElementList elements, Element Root, int k) {
+		for (int i = k; i < elements.size(); i++) {
+			java.util.Collections.swap(elements, i, k);
+			permute(elements, Root, k + 1);
+			java.util.Collections.swap(elements, k, i);
+		}
+		if (k == elements.size() - 1) {
+			PAL = new Element(0, 0);
+			level = 0;
+			int i = 0;
+			while (!elements.isAllUsed()) {
+				PAL.addRoot(new Element(Root.getLength(), Root.getWidth()));
+				cut(elements, PAL.getChildrens().get(i));
+				i++;
+			}
+			for (Element el : elements) {
+				el.setUsed(false);
+			}
+		}
 	}
 
 	public static Element cut(ElementList elements, Element Root) {
@@ -29,13 +48,12 @@ public class GuillotineCut {
 						if (elx < rx) {
 							verticalCut(elements, Root, elx, rx, ry);
 							break;
-							// Root.setChildrens(new ArrayList<Element>());
 						}
 						// orizintal ---
 						if (ely < ry) {
 							horizontalCut(elements, Root, ely, rx, ry);
 							break;
-							// Root.setChildrens(new ArrayList<Element>());
+
 						}
 						if (elx == rx && ely == ry) {
 							element.setUsed(true);
@@ -49,8 +67,14 @@ public class GuillotineCut {
 		}
 		if (elements.isAllUsed()) {
 			FinalElement R = FinalElement.deepCopy(PAL);
-			R.setArea(R.calculateArea());
-			CutElement = CutElement.getArea() < R.getArea() ? R : CutElement;
+			R.calculateArea();
+			R.calculateLostArea();
+			if (CutElement.getChildrens().isEmpty()) {
+				CutElement = R;
+			} else {
+				CutElement = CutElement.getLostArea() > R.getLostArea() ? R
+						: CutElement;
+			}
 		}
 		return Root;
 	}

@@ -1,14 +1,9 @@
 package program;
 
-import java.util.ArrayList;
-
-import clase.Aranjamente;
-import clase.Incadrare;
 import clase.Panel;
-import clase.Permutari;
-import clase.Placa;
 import clase2.Element;
 import clase2.ElementList;
+import clase2.FinalElement;
 import clase2.GuillotineCut;
 
 public class Main {
@@ -56,7 +51,9 @@ public class Main {
 		ElementList elms = new ElementList();
 		elms.addMore(100, 20, 2);
 		elms.addMore(50, 20, 3);
-		GuillotineCut.beginCutting(elms, new Element(200, 40));
-
+		elms.addMore(85, 150, 2);
+		FinalElement incadrare = GuillotineCut.beginCutting(elms, new Element(
+				285, 200));
+		new Panel(incadrare);
 	}
 }

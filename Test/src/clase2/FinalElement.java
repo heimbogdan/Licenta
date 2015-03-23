@@ -3,6 +3,7 @@ package clase2;
 public class FinalElement extends Element {
 
 	private double Area;
+	private double lostArea;
 
 	public double getArea() {
 		return Area;
@@ -12,23 +13,40 @@ public class FinalElement extends Element {
 		this.Area = Area;
 	}
 
+	public double getLostArea() {
+		return lostArea;
+	}
+
+	public void setLostArea(double lostArea) {
+		this.lostArea = lostArea;
+	}
+
 	public FinalElement(double length, double width) {
 		super(length, width);
 		this.Area = 0;
+		this.lostArea = 0;
 	}
 
-	public double calculateArea() {
+	public void calculateArea() {
 		double area = 0;
 		if (!this.getChildrens().isEmpty()) {
 			for (Element el : this.getChildrens()) {
 				FinalElement fel = FinalElement.deepCopy(el);
-				fel.setArea(fel.calculateArea());
+				fel.calculateArea();
 				area += fel.getArea();
 			}
 		} else if (this.isUsed()) {
 			area = this.getLength() * this.getWidth();
 		}
-		return area;
+		this.Area += area;
+	}
+
+	public void calculateLostArea() {
+		double totalArea = 0;
+		for (Element root : this.getChildrens()) {
+			totalArea += root.area();
+		}
+		this.lostArea = totalArea - this.Area;
 	}
 
 	public static FinalElement deepCopy(Element element) {

@@ -101,17 +101,24 @@ public class Element {
 				for (Element s : this.childrens) {
 					p += s.getLength();
 				}
-				point.setLocation(p, this.getPoint().getY());
+				point.setLocation(p + this.getPoint().getX(), this.getPoint()
+						.getY());
 			} else {
 				for (Element s : this.childrens) {
 					p += s.getWidth();
 				}
-				point.setLocation(this.getPoint().getX(), p);
+				point.setLocation(this.getPoint().getX(), p
+						+ this.getPoint().getY());
 			}
 			e.setPoint(point);
 		} else {
 			e.setPoint(this.point);
 		}
+		e.setParent(this);
+		this.childrens.add(e);
+	}
+
+	public void addRoot(Element e) {
 		e.setParent(this);
 		this.childrens.add(e);
 	}

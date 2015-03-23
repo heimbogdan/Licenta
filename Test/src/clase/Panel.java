@@ -3,7 +3,7 @@ package clase;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import clase2.FinalElement;
 
 public class Panel {
 
@@ -14,14 +14,14 @@ public class Panel {
 	private JLabel labPlaca;
 
 	public Panel() {
-		interfata(null,null);
+		interfata(null);
 	}
 
-	public Panel(Incadrare incadrare, Placa PAL) {
-		interfata(incadrare, PAL);
+	public Panel(FinalElement incadrare) {
+		interfata(incadrare);
 	}
 
-	private void interfata(Incadrare incadrare, Placa PAL) {
+	private void interfata(FinalElement incadrare) {
 		jFrame = new JFrame("Taie ceva :D");
 		jFrame.setSize(800, 550);
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,9 +29,7 @@ public class Panel {
 		// ------------------------------------
 		draw = new Draw();
 		draw.setIncadrare(incadrare);
-		draw.setPAL(PAL);
-		
-		
+
 		button1 = new JButton("Prev");
 		button1.setBounds(320, 430, 60, 20);
 
