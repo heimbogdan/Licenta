@@ -12,6 +12,7 @@ public class Element {
 	private char position;
 	private Point2D point;
 	private boolean used;
+	private boolean loss;
 
 	public double getLength() {
 		return length;
@@ -67,6 +68,14 @@ public class Element {
 
 	public void setPosition(char position) {
 		this.position = position;
+	}
+
+	public boolean isLoss() {
+		return loss;
+	}
+
+	public void setLoss(boolean loss) {
+		this.loss = loss;
 	}
 
 	public Element(double length, double width) {

@@ -48,23 +48,6 @@ public class Draw extends JPanel {
 			for (Element root : incadrare.getChildrens()) {
 				g2 = drawPlaca(incadrare.getChildrens().get(0), g2);
 			}
-			// for (ArrayList<ArrayList<Placa>> root : incadrare) {
-			// double x = 200;
-			// double y = 100;
-			// g2.draw(drawPlaca(x, y, this.PAL, false));
-			// for (ArrayList<Placa> set : root) {
-			// Placa pl = new Placa(this.PAL.getLungime(), set.get(0)
-			// .getLatime());
-			// g2.draw(drawPlaca(x, y, pl, false));
-			// double x1 = x;
-			// for (Placa placa : set) {
-			// g2.draw(drawPlaca(x1, y, placa, true));
-			// x1 += placa.getLungime();
-			// }
-			// y += set.get(0).getLatime();
-			// }
-			// break;
-			// }
 		}
 	}
 
@@ -85,13 +68,6 @@ public class Draw extends JPanel {
 			path.lineTo(x, y);
 			path.lineTo(x + root.getLength(), y + root.getWidth());
 		}
-		// path.lineTo(x, y + PAL.getLatime());
-		// path.lineTo(x + PAL.getLungime(), y + PAL.getLatime());
-		// path.lineTo(x + PAL.getLungime(), y);
-		// if (elem) {
-		// path.lineTo(x, y);
-		// path.lineTo(x + PAL.getLungime(), y + PAL.getLatime());
-		// }
 		path.closePath();
 		g2.draw(path);
 		return g2;

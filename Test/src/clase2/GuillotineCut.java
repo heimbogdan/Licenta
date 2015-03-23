@@ -5,9 +5,13 @@ public class GuillotineCut {
 	private static FinalElement CutElement;
 	private static Element PAL;
 	private static int level;
+	private static boolean horizontal;
 
 	public static FinalElement beginCutting(ElementList elements, Element Root) {
 		CutElement = new FinalElement(0, 0);
+		horizontal = false;
+		permute(elements, Root, 0);
+		horizontal = true;
 		permute(elements, Root, 0);
 		return CutElement;
 	}
@@ -44,20 +48,33 @@ public class GuillotineCut {
 					double ry = Root.getWidth();
 					if (elx <= rx && ely <= ry) {
 
-						// vertical ---
-						if (elx < rx) {
-							verticalCut(elements, Root, elx, rx, ry);
-							break;
-						}
-						// orizintal ---
-						if (ely < ry) {
-							horizontalCut(elements, Root, ely, rx, ry);
-							break;
-
+						if (horizontal) {
+							// orizintal ---
+							if (ely < ry) {
+								horizontalCut(elements, Root, ely, rx, ry);
+								break;
+							}
+							// vertical ---
+							if (elx < rx) {
+								verticalCut(elements, Root, elx, rx, ry);
+								break;
+							}
+						} else {
+							// vertical ---
+							if (elx < rx) {
+								verticalCut(elements, Root, elx, rx, ry);
+								break;
+							}
+							// orizintal ---
+							if (ely < ry) {
+								horizontalCut(elements, Root, ely, rx, ry);
+								break;
+							}
 						}
 						if (elx == rx && ely == ry) {
 							element.setUsed(true);
 							Root.setUsed(true);
+							Root.getParent().setLoss(true);
 							level++;
 							break;
 						}
@@ -72,8 +89,10 @@ public class GuillotineCut {
 			if (CutElement.getChildrens().isEmpty()) {
 				CutElement = R;
 			} else {
-				CutElement = CutElement.getLostArea() > R.getLostArea() ? R
-						: CutElement;
+				if (CutElement.getChildrens().size() <= R.getChildrens().size()) {
+					CutElement = CutElement.getUsebleArea() < R.getUsebleArea() ? R
+							: CutElement;
+				}
 			}
 		}
 		return Root;
