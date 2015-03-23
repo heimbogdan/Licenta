@@ -13,10 +13,10 @@ public class Main {
 		ElementList elms = new ElementList();
 		elms.addMore(100, 20, 2);
 		elms.addMore(50, 20, 3);
-		elms.addMore(100, 20, 2);
+		elms.addMore(43.5, 20, 1);
 		elms.addMore(85, 100, 2);
 		FinalElement incadrare = GuillotineCut.beginCutting(elms, new Element(
-				285, 200));
+				285, 250));
 		new Panel(incadrare);
 	}
 }

@@ -11,6 +11,7 @@ public class GuillotineCut {
 		CutElement = new FinalElement(0, 0);
 		horizontal = false;
 		permute(elements, Root, 0);
+		System.out.println("done 50%");
 		horizontal = true;
 		permute(elements, Root, 0);
 		return CutElement;
@@ -52,26 +53,38 @@ public class GuillotineCut {
 							// orizintal ---
 							if (ely < ry) {
 								horizontalCut(elements, Root, ely, rx, ry);
+								if (elx < rx) {
+									verticalCut(elements, Root, elx, rx, ry);
+								}
 								break;
 							}
 							// vertical ---
-							if (elx < rx) {
+							else if (elx < rx) {
 								verticalCut(elements, Root, elx, rx, ry);
+								if (ely < ry) {
+									horizontalCut(elements, Root, elx, rx, ry);
+								}
 								break;
 							}
 						} else {
 							// vertical ---
 							if (elx < rx) {
 								verticalCut(elements, Root, elx, rx, ry);
+								if (ely < ry) {
+									horizontalCut(elements, Root, elx, rx, ry);
+								}
 								break;
 							}
 							// orizintal ---
-							if (ely < ry) {
+							else if (ely < ry) {
 								horizontalCut(elements, Root, ely, rx, ry);
+								if (elx < rx) {
+									verticalCut(elements, Root, elx, rx, ry);
+								}
 								break;
 							}
 						}
-						if (elx == rx && ely == ry) {
+						if (elx == rx && ely == ry && !Root.isUsed()) {
 							element.setUsed(true);
 							Root.setUsed(true);
 							Root.getParent().setLoss(true);
