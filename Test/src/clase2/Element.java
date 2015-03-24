@@ -3,15 +3,56 @@ package clase2;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
+/**
+ * Clasa folosita pentru a crea o placa, indiferent de utilitatea finala
+ * 
+ * @author bogdan.heim
+ * 
+ */
 public class Element {
 
+	/**
+	 * Variabila ce retine lungimea placii
+	 */
 	private double length;
+
+	/**
+	 * Variabila ce retine latimea placii
+	 */
 	private double width;
+
+	/**
+	 * Referinta catre placa parinte, placa din care a fost taiata placa curenta
+	 */
 	private Element parent;
+
+	/**
+	 * ArrayList ce contine copii rezultati din aplicarea unei taieturi pe placa
+	 * curenta
+	 */
 	private ArrayList<Element> childrens;
+
+	/**
+	 * Variabila ce ia valoarea de 'V' (verticala) sau 'H' (orizontala) ce
+	 * exprima orientarea taieturii aplicate pe placa
+	 */
 	private char position;
+
+	/**
+	 * Point2D ce retine coordonatele varfului din stanga sus a placii
+	 */
 	private Point2D point;
+
+	/**
+	 * Variabila boleana ce declara daca placa curenta este una din placiile
+	 * necesare
+	 */
 	private boolean used;
+
+	/**
+	 * Variabila boleana ce declara daca placa curenta este perceputa ca
+	 * pierdere
+	 */
 	private boolean loss;
 
 	public double getLength() {
@@ -93,6 +134,11 @@ public class Element {
 		return this.length + " x " + this.width;
 	}
 
+	/**
+	 * Metoda ce calculeaza suprafata placii
+	 * 
+	 * @return Suprafata
+	 */
 	public double area() {
 		return this.length * this.width;
 	}
@@ -102,6 +148,13 @@ public class Element {
 		return new Element(this.length, this.width);
 	}
 
+	/**
+	 * Metoda ce adauga un copil placii initiale. Adauga referinta catre parinte
+	 * a placii copil si ii seteaza pozitia.
+	 * 
+	 * @param e
+	 *            - Placa care va fi adaugata in lista de copii a placii curente
+	 */
 	public void addChild(Element e) {
 		double p = 0;
 		Point2D point = new Point2D.Double();

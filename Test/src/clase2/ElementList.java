@@ -3,10 +3,18 @@ package clase2;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/**
+ * Lista de placi
+ * 
+ * @author bogdan.heim
+ *
+ */
 public class ElementList extends ArrayList<Element> {
 
 	private static final long serialVersionUID = 1L;
-	Comparator<Element> c = new Comparator<Element>() {
+	
+	
+	public static Comparator<Element> c = new Comparator<Element>() {
 
 		@Override
 		public int compare(Element o1, Element o2) {

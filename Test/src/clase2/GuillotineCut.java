@@ -1,5 +1,11 @@
 package clase2;
 
+/**
+ * Clasa ce contine algoritmul de taiere de tip ghilotina.
+ * 
+ * @author bogdan.heim
+ *
+ */
 public class GuillotineCut {
 
 	private static FinalElement CutElement;
@@ -7,9 +13,19 @@ public class GuillotineCut {
 	private static int level;
 	private static boolean horizontal;
 
+	/**
+	 * Functie ce porneste procesul de executie a algoritmului.
+	 * 
+	 * @param elements
+	 *            - Lista ce contine placiile dorite.
+	 * @param Root
+	 *            - Placa pe care se vor face taieturile (se va multiplica).
+	 * @return Incadrarea finala ({@link FinalElement})
+	 */
 	public static FinalElement beginCutting(ElementList elements, Element Root) {
 		CutElement = new FinalElement(0, 0);
 		horizontal = false;
+		elements.sort(ElementList.c);
 		permute(elements, Root, 0);
 		System.out.println("done 50%");
 		horizontal = true;
@@ -17,7 +33,19 @@ public class GuillotineCut {
 		return CutElement;
 	}
 
-	public static void permute(ElementList elements, Element Root, int k) {
+	/**
+	 * Functie ce face permutarile posibile asupra listei de placi dorita
+	 * (functie recursiva).
+	 * 
+	 * @param elements
+	 *            - Lista ce contine placiile dorite.
+	 * @param Root
+	 *            - Placa pe care se vor face taieturile (se va multiplica).
+	 * @param k
+	 *            - Indica pozitia din lista de la care sa inceapa permutarea
+	 *            (de regula 0).
+	 */
+	private static void permute(ElementList elements, Element Root, int k) {
 		for (int i = k; i < elements.size(); i++) {
 			java.util.Collections.swap(elements, i, k);
 			permute(elements, Root, k + 1);
@@ -38,7 +66,17 @@ public class GuillotineCut {
 		}
 	}
 
-	public static Element cut(ElementList elements, Element Root) {
+	/**
+	 * Functia care aplica algoritmul de tatiere de tip ghilotina.
+	 * 
+	 * @param elements
+	 *            - Lista ce contine placiile dorite.
+	 * @param Root
+	 *            - Placa pe care se vor face taieturile.
+	 * @return Placa initiala transmisa catre parametrul Root cu modificarile
+	 *         efectuate.
+	 */
+	private static Element cut(ElementList elements, Element Root) {
 		for (int i = 0; i < elements.size(); i++) {
 			Element element = elements.get(i);
 			if (!element.isUsed()) {
@@ -103,7 +141,7 @@ public class GuillotineCut {
 				CutElement = R;
 			} else {
 				if (CutElement.getChildrens().size() <= R.getChildrens().size()) {
-					CutElement = CutElement.getUsebleArea() < R.getUsebleArea() ? R
+					CutElement = CutElement.getLostArea() > R.getLostArea() ? R
 							: CutElement;
 				}
 			}
