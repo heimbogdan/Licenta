@@ -10,7 +10,6 @@ public class GuillotineCut {
 
 	private static FinalElement CutElement;
 	private static Element PAL;
-	private static int level;
 	private static boolean horizontal;
 
 	/**
@@ -53,7 +52,6 @@ public class GuillotineCut {
 		}
 		if (k == elements.size() - 1) {
 			PAL = new Element(0, 0);
-			level = 0;
 			int i = 0;
 			while (!elements.isAllUsed()) {
 				PAL.addRoot(new Element(Root.getLength(), Root.getWidth()));
@@ -86,39 +84,20 @@ public class GuillotineCut {
 					double rx = Root.getLength();
 					double ry = Root.getWidth();
 					if (elx <= rx && ely <= ry) {
-
-						if (horizontal) {
-							// orizintal ---
+						if (horizontal) { // first horizontal , then vertical
 							if (ely < ry) {
 								horizontalCut(elements, Root, ely, rx, ry);
-								if (elx < rx) {
-									verticalCut(elements, Root, elx, rx, ry);
-								}
 								break;
-							}
-							// vertical ---
-							else if (elx < rx) {
+							} else if (elx < rx) {
 								verticalCut(elements, Root, elx, rx, ry);
-								if (ely < ry) {
-									horizontalCut(elements, Root, elx, rx, ry);
-								}
 								break;
 							}
-						} else {
-							// vertical ---
+						} else { // first vertical , then horizontal
 							if (elx < rx) {
 								verticalCut(elements, Root, elx, rx, ry);
-								if (ely < ry) {
-									horizontalCut(elements, Root, elx, rx, ry);
-								}
 								break;
-							}
-							// orizintal ---
-							else if (ely < ry) {
+							} else if (ely < ry) {
 								horizontalCut(elements, Root, ely, rx, ry);
-								if (elx < rx) {
-									verticalCut(elements, Root, elx, rx, ry);
-								}
 								break;
 							}
 						}
@@ -126,7 +105,6 @@ public class GuillotineCut {
 							element.setUsed(true);
 							Root.setUsed(true);
 							Root.getParent().setLoss(true);
-							level++;
 							break;
 						}
 					}
