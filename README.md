@@ -1,7 +1,10 @@
 # Licenta
 Code name Licenta
 
-Am cam terminat cu algoritmul.Mai am de gandit modalitatea de a selecta cea mai buna incadrare.
-Am incaput sa fac si partea grafica pt afisare.
+25.03 - Am terminat algoritmul.(Mai am de gandit modalitatea de a selecta cea mai buna incadrare.) 
+      - Am pus ActionListener pe butoane pentru a schimba placa care este afisata.
+      
+24.03 - Am cam terminat cu algoritmul.
+      - Am incaput sa fac si partea grafica pt afisare.
 
 :D
