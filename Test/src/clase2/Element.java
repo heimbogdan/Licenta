@@ -148,6 +148,16 @@ public class Element {
 		return new Element(this.length, this.width);
 	}
 
+	public Element cloneElement() {
+		Element el = new Element(this.length, this.width);
+		el.setChildrens(this.getChildrens());
+		el.setParent(this.parent);
+		el.setPoint(this.point);
+		el.setLoss(this.loss);
+		el.setUsed(this.used);
+		return el;
+	}
+
 	/**
 	 * Metoda ce adauga un copil placii initiale. Adauga referinta catre parinte
 	 * a placii copil si ii seteaza pozitia.

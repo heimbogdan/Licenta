@@ -11,13 +11,13 @@ public class Main {
 	public static void main(String[] args) throws CloneNotSupportedException {
 
 		ElementList elms = new ElementList();
-		elms.addMore(100, 20, 2);
-		elms.addMore(50, 20, 3);
-		elms.addMore(43.5, 20, 1);
+		elms.addMore(100, 40, 2);
+		elms.addMore(80, 35, 3);
+		elms.addMore(45, 45, 1);
 		elms.addMore(85, 100, 2);
-		//elms.addMore(100, 200, 1);
+		elms.addMore(100, 200, 1);
 		FinalElement incadrare = GuillotineCut.beginCutting(elms, new Element(
-				285, 250));
+				207, 280));
 		new Panel(incadrare);
 	}
 

@@ -1,5 +1,7 @@
 package clase2;
 
+import java.util.ArrayList;
+
 /**
  * Clasa ce contine algoritmul de taiere de tip ghilotina.
  * 
@@ -25,10 +27,11 @@ public class GuillotineCut {
 		CutElement = new FinalElement(0, 0);
 		horizontal = false;
 		elements.sort(ElementList.c);
-		permute(elements, Root, 0);
+		permute(elements, Root, 1);
 		System.out.println("done 50%");
 		horizontal = true;
-		permute(elements, Root, 0);
+		elements.sort(ElementList.c);
+		permute(elements, Root, 1);
 		return CutElement;
 	}
 
@@ -54,6 +57,7 @@ public class GuillotineCut {
 			PAL = new Element(0, 0);
 			int i = 0;
 			while (!elements.isAllUsed()) {
+				Element newRoot = new Element(Root.getLength(), Root.getWidth());
 				PAL.addRoot(new Element(Root.getLength(), Root.getWidth()));
 				cut(elements, PAL.getChildrens().get(i));
 				i++;
@@ -115,12 +119,30 @@ public class GuillotineCut {
 			FinalElement R = FinalElement.deepCopy(PAL);
 			R.calculateArea();
 			R.calculateLostArea();
+			R.calculateIndividualLoss();
 			if (CutElement.getChildrens().isEmpty()) {
 				CutElement = R;
 			} else {
-				if (CutElement.getChildrens().size() <= R.getChildrens().size()) {
-					CutElement = CutElement.getLostArea() > R.getLostArea() ? R
-							: CutElement;
+				int initial = CutElement.getChildrens().size();
+				int r = R.getChildrens().size();
+				if (initial > r) {
+					CutElement = R;
+				} else if (initial == r) {
+					int better = 0;
+					ArrayList<Double> oldLoss = CutElement.getIndividualLoss();
+					ArrayList<Double> newLoss = R.getIndividualLoss();
+					for (int i = 0; i < r; i++) {
+						if (oldLoss.get(i) < newLoss.get(i)) {
+							break;
+						}
+						better++;
+					}
+					if (better == r) {
+						CutElement = R;
+					}
+					// CutElement = CutElement.getLostArea() > R.getLostArea() ?
+					// R
+					// : CutElement;
 				}
 			}
 		}

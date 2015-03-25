@@ -1,5 +1,7 @@
 package clase2;
 
+import java.util.ArrayList;
+
 /**
  * Clasa ce extinde clasa {@link Element}. Obiectul de tip FinalElement este
  * incadrarea finala.
@@ -25,6 +27,8 @@ public class FinalElement extends Element {
 	 */
 	private double lostArea;
 
+	private ArrayList<Double> individualLoss;
+
 	public double getArea() {
 		return area;
 	}
@@ -49,11 +53,20 @@ public class FinalElement extends Element {
 		this.usebleArea = usebleArea;
 	}
 
+	public ArrayList<Double> getIndividualLoss() {
+		return individualLoss;
+	}
+
+	public void setIndividualLoss(ArrayList<Double> individualLoss) {
+		this.individualLoss = individualLoss;
+	}
+
 	public FinalElement(double length, double width) {
 		super(length, width);
 		this.area = 0;
 		this.lostArea = 0;
 		this.usebleArea = 0;
+		this.individualLoss = new ArrayList<Double>();
 	}
 
 	/**
@@ -101,6 +114,15 @@ public class FinalElement extends Element {
 			totalArea += root.area();
 		}
 		this.lostArea = totalArea - this.area - this.usebleArea;
+	}
+
+	public void calculateIndividualLoss() {
+		for (Element el : this.getChildrens()) {
+			FinalElement fel = FinalElement.deepCopy(el);
+			fel.calculateArea();
+			fel.calculateLostArea();
+			this.individualLoss.add(fel.getLostArea());
+		}
 	}
 
 	public static FinalElement deepCopy(Element element) {

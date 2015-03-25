@@ -12,8 +12,7 @@ import java.util.Comparator;
 public class ElementList extends ArrayList<Element> {
 
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	public static Comparator<Element> c = new Comparator<Element>() {
 
 		@Override
@@ -24,16 +23,16 @@ public class ElementList extends ArrayList<Element> {
 				double l1 = l < 0 ? l * (-1) : l;
 				double w1 = w < 0 ? w * (-1) : w;
 				if (l1 > w1) {
-					return l < 0 ? -1 : 1;
+					return l < 0 ? 1 : -1;
 				} else if (w1 > l1) {
-					return w < 0 ? -1 : 1;
+					return w < 0 ? 1 : -1;
 				} else {
 					return 0;
 				}
 			} else if (o1.area() > o2.area()) {
-				return 1;
-			} else {
 				return -1;
+			} else {
+				return 1;
 			}
 		}
 	};
