@@ -5,6 +5,7 @@ import clase2.Element;
 import clase2.ElementList;
 import clase2.FinalElement;
 import clase2.GuillotineCut;
+import clase2.GuillotineMain;
 
 public class Main {
 
@@ -16,9 +17,11 @@ public class Main {
 		elms.addMore(45, 45, 1);
 		elms.addMore(85, 100, 2);
 		elms.addMore(100, 200, 1);
-		FinalElement incadrare = GuillotineCut.beginCutting(elms, new Element(
-				207, 280));
+		// FinalElement incadrare = GuillotineCut.beginCutting(elms, new
+		// Element(
+		// 207, 280));
+		FinalElement incadrare = GuillotineMain.start(elms, new Element(207,
+				280));
 		new Panel(incadrare);
 	}
-
 }

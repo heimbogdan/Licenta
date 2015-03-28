@@ -10,9 +10,40 @@ import java.util.ArrayList;
  */
 public class GuillotineCut {
 
-	private static FinalElement CutElement;
-	private static Element PAL;
-	private static boolean horizontal;
+	// static
+	private FinalElement CutElement;
+	private Element PAL;
+	private boolean horizontal;
+
+	// fara get/set
+	public FinalElement getCutElement() {
+		return CutElement;
+	}
+
+	public void setCutElement(FinalElement cutElement) {
+		CutElement = cutElement;
+	}
+
+	public Element getPAL() {
+		return PAL;
+	}
+
+	public void setPAL(Element pAL) {
+		PAL = pAL;
+	}
+
+	public boolean isHorizontal() {
+		return horizontal;
+	}
+
+	public void setHorizontal(boolean horizontal) {
+		this.horizontal = horizontal;
+	}
+
+	public GuillotineCut(boolean h) {
+		this.CutElement = new FinalElement(0, 0);
+		this.horizontal = h;
+	}
 
 	/**
 	 * Functie ce porneste procesul de executie a algoritmului.
@@ -23,15 +54,15 @@ public class GuillotineCut {
 	 *            - Placa pe care se vor face taieturile (se va multiplica).
 	 * @return Incadrarea finala ({@link FinalElement})
 	 */
-	public static FinalElement beginCutting(ElementList elements, Element Root) {
-		CutElement = new FinalElement(0, 0);
-		horizontal = false;
+
+	public FinalElement beginCutting(ElementList elements, Element Root) {
+		// CutElement = new FinalElement(0, 0);
+		// horizontal = false;
 		elements.sort(ElementList.c);
 		permute(elements, Root, 1);
-		System.out.println("done 50%");
-		horizontal = true;
-		elements.sort(ElementList.c);
-		permute(elements, Root, 1);
+		// horizontal = true;
+		// elements.sort(ElementList.c);
+		// permute(elements, Root, 1);
 		return CutElement;
 	}
 
@@ -47,7 +78,7 @@ public class GuillotineCut {
 	 *            - Indica pozitia din lista de la care sa inceapa permutarea
 	 *            (de regula 0).
 	 */
-	private static void permute(ElementList elements, Element Root, int k) {
+	private void permute(ElementList elements, Element Root, int k) {
 		for (int i = k; i < elements.size(); i++) {
 			java.util.Collections.swap(elements, i, k);
 			permute(elements, Root, k + 1);
@@ -57,7 +88,8 @@ public class GuillotineCut {
 			PAL = new Element(0, 0);
 			int i = 0;
 			while (!elements.isAllUsed()) {
-				Element newRoot = new Element(Root.getLength(), Root.getWidth());
+				// Element newRoot = new Element(Root.getLength(),
+				// Root.getWidth());
 				PAL.addRoot(new Element(Root.getLength(), Root.getWidth()));
 				cut(elements, PAL.getChildrens().get(i));
 				i++;
@@ -78,7 +110,7 @@ public class GuillotineCut {
 	 * @return Placa initiala transmisa catre parametrul Root cu modificarile
 	 *         efectuate.
 	 */
-	private static Element cut(ElementList elements, Element Root) {
+	private Element cut(ElementList elements, Element Root) {
 		for (int i = 0; i < elements.size(); i++) {
 			Element element = elements.get(i);
 			if (!element.isUsed()) {
@@ -149,21 +181,21 @@ public class GuillotineCut {
 		return Root;
 	}
 
-	private static void horizontalCut(ElementList elements, Element Root,
-			double ely, double rx, double ry) {
+	private void horizontalCut(ElementList elements, Element Root, double ely,
+			double rx, double ry) {
 		Element cut1 = new Element(rx, ely);
 		Element cut2 = new Element(rx, ry - ely);
 		addResultElements(elements, Root, cut1, cut2, 'H');
 	}
 
-	private static void verticalCut(ElementList elements, Element Root,
-			double elx, double rx, double ry) {
+	private void verticalCut(ElementList elements, Element Root, double elx,
+			double rx, double ry) {
 		Element cut1 = new Element(elx, ry);
 		Element cut2 = new Element(rx - elx, ry);
 		addResultElements(elements, Root, cut1, cut2, 'V');
 	}
 
-	private static void addResultElements(ElementList elements, Element Root,
+	private void addResultElements(ElementList elements, Element Root,
 			Element cut1, Element cut2, char p) {
 		Root.setPosition(p);
 		Root.addChild(cut1);

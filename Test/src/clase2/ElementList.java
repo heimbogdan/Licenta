@@ -52,4 +52,13 @@ public class ElementList extends ArrayList<Element> {
 		}
 		return true;
 	}
+
+	@Override
+	public Object clone() {
+		ElementList el = new ElementList();
+		for (Element e : this) {
+			el.add(e.cloneElement());
+		}
+		return el;
+	}
 }
