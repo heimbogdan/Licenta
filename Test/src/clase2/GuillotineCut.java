@@ -2,6 +2,8 @@ package clase2;
 
 import java.util.ArrayList;
 
+import program.Main;
+
 /**
  * Clasa ce contine algoritmul de taiere de tip ghilotina.
  * 
@@ -145,6 +147,7 @@ public class GuillotineCut {
 			R.calculateIndividualLoss();
 			if (CutElement.getChildrens().isEmpty()) {
 				CutElement = R;
+				Main.Panel.getDraw().setIncadrare(CutElement);
 			} else {
 				int initial = CutElement.getChildrens().size();
 				int r = R.getChildrens().size();
@@ -162,6 +165,7 @@ public class GuillotineCut {
 					}
 					if (better == r) {
 						CutElement = R;
+						Main.Panel.getDraw().setIncadrare(CutElement);
 					}
 				}
 			}

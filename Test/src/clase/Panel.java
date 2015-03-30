@@ -1,12 +1,18 @@
 package clase;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import clase2.FinalElement;
 
 public class Panel {
 
 	private JFrame jFrame;
 	private Draw draw;
+
+	public Draw getDraw() {
+		return draw;
+	}
 
 	public Panel() {
 		interfata(null);

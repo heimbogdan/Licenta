@@ -12,6 +12,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -32,13 +33,38 @@ public class Draw extends JPanel implements ActionListener {
 	private JButton button1;
 	private JButton button2;
 	private JLabel labPlaca;
+	private int nrIncadrare;
 
 	public FinalElement getIncadrare() {
 		return incadrare;
 	}
 
 	public void setIncadrare(FinalElement incadrare) {
-		this.incadrare = incadrare;
+		boolean makeDraw = false;
+		if (this.incadrare == null) {
+			this.incadrare = incadrare;
+			makeDraw = true;
+		} else if (incadrare.getChildrens().size() < this.incadrare
+				.getChildrens().size()) {
+			this.incadrare = incadrare;
+			makeDraw = true;
+		} else if (incadrare.getChildrens().size() == this.incadrare
+				.getChildrens().size()) {
+			ArrayList<Double> newLoss = incadrare.getIndividualLoss();
+			ArrayList<Double> oldLoss = this.incadrare.getIndividualLoss();
+			for (int i = 0; i < newLoss.size(); i++) {
+				if (newLoss.get(i) < oldLoss.get(i)) {
+					this.incadrare = incadrare;
+					makeDraw = true;
+					break;
+				}
+			}
+		}
+		if (makeDraw) {
+			this.pageNumber = 0;
+			this.nrIncadrare++;
+			this.drawing();
+		}
 	}
 
 	public void drawing() {
@@ -48,14 +74,16 @@ public class Draw extends JPanel implements ActionListener {
 	public Draw() {
 		super();
 		this.pageNumber = 0;
+		this.nrIncadrare = 0;
 		button1 = new JButton("Prev");
 		button1.setBounds(320, 430, 60, 20);
 		button1.addActionListener(this);
 		button2 = new JButton("Next");
 		button2.setBounds(420, 430, 60, 20);
 		button2.addActionListener(this);
-		labPlaca = new JLabel("Placa");
-		labPlaca.setBounds(380, 10, 100, 20);
+		labPlaca = new JLabel("Placa " + (pageNumber + 1) + "/ incadrare "
+				+ nrIncadrare);
+		labPlaca.setBounds(300, 10, 200, 20);
 		this.setLayout(null);
 		this.add(button1);
 		this.add(button2);
@@ -71,6 +99,8 @@ public class Draw extends JPanel implements ActionListener {
 			g2 = drawPlaca(this.incadrare.getChildrens().get(this.pageNumber),
 					g2);
 		}
+		this.labPlaca.setText("Placa " + (pageNumber + 1) + "/ incadrare "
+				+ nrIncadrare);
 	}
 
 	private Graphics2D drawPlaca(Element root, Graphics2D g2) {
