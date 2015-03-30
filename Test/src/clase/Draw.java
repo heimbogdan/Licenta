@@ -3,9 +3,15 @@ package clase;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -71,21 +77,25 @@ public class Draw extends JPanel implements ActionListener {
 		Path2D path = new Path2D.Double();
 		double x = root.getPoint().getX() + 200;
 		double y = root.getPoint().getY() + 100;
-		path.moveTo(x, y);
-		if (!root.getChildrens().isEmpty()) {
-			for (Element el : root.getChildrens()) {
-				g2 = drawPlaca(el, g2);
-			}
-		}
-		path.lineTo(x, y + root.getWidth());
-		path.lineTo(x + root.getLength(), y + root.getWidth());
-		path.lineTo(x + root.getLength(), y);
+		g2.setColor(Color.BLACK);
 		if (root.isUsed()) {
-			path.lineTo(x, y);
+			Rectangle2D rect = new Rectangle2D.Double();
+			rect.setRect(x, y, root.getLength(), root.getWidth());
+			g2.setColor(Color.RED);
+			g2.fill(rect);
+		} else {
+			path.moveTo(x, y);
+			if (!root.getChildrens().isEmpty()) {
+				for (Element el : root.getChildrens()) {
+					g2 = drawPlaca(el, g2);
+				}
+			}
+			path.lineTo(x, y + root.getWidth());
 			path.lineTo(x + root.getLength(), y + root.getWidth());
+			path.lineTo(x + root.getLength(), y);
+			path.closePath();
+			g2.draw(path);
 		}
-		path.closePath();
-		g2.draw(path);
 		return g2;
 	}
 

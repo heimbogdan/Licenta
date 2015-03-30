@@ -8,7 +8,6 @@ import clase2.GuillotineCut;
 import clase2.GuillotineMain;
 
 public class Main {
-
 	public static void main(String[] args) throws CloneNotSupportedException {
 
 		ElementList elms = new ElementList();

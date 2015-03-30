@@ -2,6 +2,8 @@ package clase2;
 
 import java.util.ArrayList;
 
+import program.Main;
+
 /**
  * Clasa ce contine algoritmul de taiere de tip ghilotina.
  * 
@@ -56,13 +58,8 @@ public class GuillotineCut {
 	 */
 
 	public FinalElement beginCutting(ElementList elements, Element Root) {
-		// CutElement = new FinalElement(0, 0);
-		// horizontal = false;
 		elements.sort(ElementList.c);
 		permute(elements, Root, 1);
-		// horizontal = true;
-		// elements.sort(ElementList.c);
-		// permute(elements, Root, 1);
 		return CutElement;
 	}
 
@@ -88,8 +85,6 @@ public class GuillotineCut {
 			PAL = new Element(0, 0);
 			int i = 0;
 			while (!elements.isAllUsed()) {
-				// Element newRoot = new Element(Root.getLength(),
-				// Root.getWidth());
 				PAL.addRoot(new Element(Root.getLength(), Root.getWidth()));
 				cut(elements, PAL.getChildrens().get(i));
 				i++;
@@ -172,9 +167,6 @@ public class GuillotineCut {
 					if (better == r) {
 						CutElement = R;
 					}
-					// CutElement = CutElement.getLostArea() > R.getLostArea() ?
-					// R
-					// : CutElement;
 				}
 			}
 		}
