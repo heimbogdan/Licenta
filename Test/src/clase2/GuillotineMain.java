@@ -1,6 +1,8 @@
 package clase2;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class GuillotineMain {
 
@@ -26,19 +28,12 @@ public class GuillotineMain {
 	public static FinalElement start(ElementList elementList, Element root) {
 		threads = 0;
 		results = new ArrayList<FinalElement>();
-		ElementList el1 = (ElementList) elementList.clone();
-		ElementList el2 = (ElementList) elementList.clone();
-		Element ro1 = root.cloneElement();
-		Element ro2 = root.cloneElement();
-		GuillotineThread gThread1 = new GuillotineThread(el1, ro1, false, 1);
-		GuillotineThread gThread2 = new GuillotineThread(el2, ro2, true, 2);
-		try {
-			gThread1.start();
-			gThread2.start();
-			gThread1.join();
-			gThread2.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		ExecutorService es = Executors.newFixedThreadPool(2);
+		es.submit(createThread(elementList, root, false));
+		es.submit(createThread(elementList, root, true));
+		es.shutdown();
+		while (!es.isTerminated()) {
+			// we wait for the threads to end
 		}
 		FinalElement result1 = results.get(0);
 		FinalElement result2 = results.get(1);
@@ -57,5 +52,13 @@ public class GuillotineMain {
 			}
 			return result2;
 		}
+	}
+
+	private static GuillotineThread createThread(ElementList elementList,
+			Element root, boolean h) {
+		ElementList el = (ElementList) elementList.clone();
+		Element ro = root.cloneElement();
+		GuillotineThread gThread = new GuillotineThread(el, ro, h);
+		return gThread;
 	}
 }

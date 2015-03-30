@@ -5,7 +5,6 @@ public class GuillotineThread extends Thread {
 	private ElementList elements;
 	private Element root;
 	private boolean horizaontal;
-	private int number;
 
 	public FinalElement getResult() {
 		return result;
@@ -21,11 +20,9 @@ public class GuillotineThread extends Thread {
 		GuillotineMain.endThread();
 	}
 
-	public GuillotineThread(ElementList elementList, Element root, boolean h,
-			int nr) {
+	public GuillotineThread(ElementList elementList, Element root, boolean h) {
 		this.elements = elementList;
 		this.root = root;
 		this.horizaontal = h;
-		this.number = nr;
 	}
 }

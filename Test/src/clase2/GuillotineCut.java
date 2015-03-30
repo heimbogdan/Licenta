@@ -2,8 +2,6 @@ package clase2;
 
 import java.util.ArrayList;
 
-import program.Main;
-
 /**
  * Clasa ce contine algoritmul de taiere de tip ghilotina.
  * 
@@ -12,12 +10,10 @@ import program.Main;
  */
 public class GuillotineCut {
 
-	// static
 	private FinalElement CutElement;
 	private Element PAL;
 	private boolean horizontal;
 
-	// fara get/set
 	public FinalElement getCutElement() {
 		return CutElement;
 	}
