@@ -18,11 +18,11 @@ public class Panel {
 		interfata(null);
 	}
 
-	public Panel(FinalElement incadrare) {
+	public Panel(final FinalElement incadrare) {
 		interfata(incadrare);
 	}
 
-	private void interfata(FinalElement incadrare) {
+	private void interfata(final FinalElement incadrare) {
 		jFrame = new JFrame("Taie ceva :D");
 		jFrame.setSize(800, 550);
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

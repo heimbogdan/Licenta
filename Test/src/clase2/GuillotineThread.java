@@ -13,14 +13,14 @@ public class GuillotineThread extends Thread {
 	@Override
 	public void run() {
 		GuillotineMain.addThread();
-		GuillotineCut gCut = new GuillotineCut(this.horizaontal);
+		final GuillotineCut gCut = new GuillotineCut(this.horizaontal);
 		gCut.beginCutting(this.elements, this.root);
 		result = gCut.getCutElement();
 		GuillotineMain.addResult(this.result);
 		GuillotineMain.endThread();
 	}
 
-	public GuillotineThread(ElementList elementList, Element root, boolean h) {
+	public GuillotineThread(final ElementList elementList,final Element root,final boolean h) {
 		this.elements = elementList;
 		this.root = root;
 		this.horizaontal = h;

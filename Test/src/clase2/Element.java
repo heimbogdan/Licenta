@@ -59,7 +59,7 @@ public class Element {
 		return length;
 	}
 
-	public void setLength(double length) {
+	public void setLength(final double length) {
 		this.length = length;
 	}
 
@@ -67,7 +67,7 @@ public class Element {
 		return width;
 	}
 
-	public void setWidth(double width) {
+	public void setWidth(final double width) {
 		this.width = width;
 	}
 
@@ -75,7 +75,7 @@ public class Element {
 		return parent;
 	}
 
-	public void setParent(Element parent) {
+	public void setParent(final Element parent) {
 		this.parent = parent;
 	}
 
@@ -83,7 +83,7 @@ public class Element {
 		return childrens;
 	}
 
-	public void setChildrens(ArrayList<Element> childrens) {
+	public void setChildrens(final ArrayList<Element> childrens) {
 		this.childrens = childrens;
 	}
 
@@ -91,7 +91,7 @@ public class Element {
 		return point;
 	}
 
-	public void setPoint(Point2D point) {
+	public void setPoint(final Point2D point) {
 		this.point = point;
 	}
 
@@ -99,7 +99,7 @@ public class Element {
 		return used;
 	}
 
-	public void setUsed(boolean used) {
+	public void setUsed(final boolean used) {
 		this.used = used;
 	}
 
@@ -115,15 +115,15 @@ public class Element {
 		return loss;
 	}
 
-	public void setLoss(boolean loss) {
+	public void setLoss(final boolean loss) {
 		this.loss = loss;
 	}
 
-	public Element(double length, double width) {
+	public Element(final double length, final double width) {
 		super();
 		this.length = length;
 		this.width = width;
-		this.parent = null;
+		//this.parent = null;
 		this.childrens = new ArrayList<Element>();
 		this.point = new Point2D.Double();
 		this.used = false;
@@ -149,48 +149,48 @@ public class Element {
 	}
 
 	public Element cloneElement() {
-		Element el = new Element(this.length, this.width);
-		el.setChildrens(this.getChildrens());
-		el.setParent(this.parent);
-		el.setPoint(this.point);
-		el.setLoss(this.loss);
-		el.setUsed(this.used);
-		return el;
+		final Element element = new Element(this.length, this.width);
+		element.setChildrens(this.getChildrens());
+		element.setParent(this.parent);
+		element.setPoint(this.point);
+		element.setLoss(this.loss);
+		element.setUsed(this.used);
+		return element;
 	}
 
 	/**
 	 * Metoda ce adauga un copil placii initiale. Adauga referinta catre parinte
 	 * a placii copil si ii seteaza pozitia.
 	 * 
-	 * @param e
+	 * @param element
 	 *            - Placa care va fi adaugata in lista de copii a placii curente
 	 */
-	public void addChild(Element e) {
+	public void addChild(final Element element) {
 		double p = 0;
-		Point2D point = new Point2D.Double();
+		final Point2D point = new Point2D.Double();
 		if (!this.childrens.isEmpty()) {
 			if (this.position == 'V') {
-				for (Element s : this.childrens) {
+				for (final Element s : this.childrens) {
 					p += s.getLength();
 				}
 				point.setLocation(p + this.getPoint().getX(), this.getPoint()
 						.getY());
 			} else {
-				for (Element s : this.childrens) {
+				for (final Element s : this.childrens) {
 					p += s.getWidth();
 				}
 				point.setLocation(this.getPoint().getX(), p
 						+ this.getPoint().getY());
 			}
-			e.setPoint(point);
+			element.setPoint(point);
 		} else {
-			e.setPoint(this.point);
+			element.setPoint(this.point);
 		}
-		e.setParent(this);
-		this.childrens.add(e);
+		element.setParent(this);
+		this.childrens.add(element);
 	}
 
-	public void addRoot(Element e) {
+	public void addRoot(final Element e) {
 		e.setParent(this);
 		this.childrens.add(e);
 	}

@@ -33,7 +33,7 @@ public class FinalElement extends Element {
 		return area;
 	}
 
-	public void setArea(double area) {
+	public void setArea(final double area) {
 		this.area = area;
 	}
 
@@ -41,7 +41,7 @@ public class FinalElement extends Element {
 		return lostArea;
 	}
 
-	public void setLostArea(double lostArea) {
+	public void setLostArea(final double lostArea) {
 		this.lostArea = lostArea;
 	}
 
@@ -49,7 +49,7 @@ public class FinalElement extends Element {
 		return usebleArea;
 	}
 
-	public void setUsebleArea(double usebleArea) {
+	public void setUsebleArea(final double usebleArea) {
 		this.usebleArea = usebleArea;
 	}
 
@@ -57,11 +57,11 @@ public class FinalElement extends Element {
 		return individualLoss;
 	}
 
-	public void setIndividualLoss(ArrayList<Double> individualLoss) {
+	public void setIndividualLoss(final ArrayList<Double> individualLoss) {
 		this.individualLoss = individualLoss;
 	}
 
-	public FinalElement(double length, double width) {
+	public FinalElement(final double length, final double width) {
 		super(length, width);
 		this.area = 0;
 		this.lostArea = 0;
@@ -75,10 +75,11 @@ public class FinalElement extends Element {
 	public void calculateArea() {
 		double area = 0;
 		if (!this.getChildrens().isEmpty()) {
-			for (Element el : this.getChildrens()) {
-				FinalElement fel = FinalElement.deepCopy(el);
-				fel.calculateArea();
-				area += fel.getArea();
+			for (final Element elementl : this.getChildrens()) {
+				final FinalElement finalElementl = FinalElement
+						.deepCopy(elementl);
+				finalElementl.calculateArea();
+				area += finalElementl.getArea();
 			}
 		} else if (this.isUsed()) {
 			area = this.getLength() * this.getWidth();
@@ -90,10 +91,10 @@ public class FinalElement extends Element {
 	 * Functie ce calculeaza suprafata totala a placiilor de pal initiala care
 	 * poate fi refolosita.
 	 */
-	public void calculateUsebleArea(Element root) {
+	public void calculateUsebleArea(final Element root) {
 		if (!root.getChildrens().isEmpty()) {
-			for (Element el : root.getChildrens()) {
-				calculateUsebleArea(el);
+			for (final Element elementl : root.getChildrens()) {
+				calculateUsebleArea(elementl);
 			}
 		} else {
 			if (!root.isUsed() && !root.getParent().isLoss()) {
@@ -109,7 +110,7 @@ public class FinalElement extends Element {
 	 */
 	public void calculateLostArea() {
 		double totalArea = 0;
-		for (Element root : this.getChildrens()) {
+		for (final Element root : this.getChildrens()) {
 			calculateUsebleArea(root);
 			totalArea += root.area();
 		}
@@ -117,22 +118,22 @@ public class FinalElement extends Element {
 	}
 
 	public void calculateIndividualLoss() {
-		for (Element el : this.getChildrens()) {
-			FinalElement fel = FinalElement.deepCopy(el);
+		for (final Element elementl : this.getChildrens()) {
+			final FinalElement fel = FinalElement.deepCopy(elementl);
 			fel.calculateArea();
 			fel.calculateLostArea();
 			this.individualLoss.add(fel.getLostArea());
 		}
 	}
 
-	public static FinalElement deepCopy(Element element) {
-		FinalElement fel = new FinalElement(element.getLength(),
-				element.getWidth());
-		fel.setChildrens(element.getChildrens());
-		fel.setPosition(element.getPosition());
-		fel.setParent(element.getParent());
-		fel.setPoint(element.getPoint());
-		fel.setUsed(element.isUsed());
-		return fel;
+	public static FinalElement deepCopy(final Element element) {
+		final FinalElement finalElementl = new FinalElement(
+				element.getLength(), element.getWidth());
+		finalElementl.setChildrens(element.getChildrens());
+		finalElementl.setPosition(element.getPosition());
+		finalElementl.setParent(element.getParent());
+		finalElementl.setPoint(element.getPoint());
+		finalElementl.setUsed(element.isUsed());
+		return finalElementl;
 	}
 }

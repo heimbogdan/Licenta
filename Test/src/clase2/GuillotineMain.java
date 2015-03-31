@@ -28,37 +28,36 @@ public class GuillotineMain {
 	public static void start(ElementList elementList, Element root) {
 		threads = 0;
 		results = new ArrayList<FinalElement>();
-		ExecutorService es = Executors.newFixedThreadPool(2);
-		es.submit(createThread(elementList, root, false));
-		es.submit(createThread(elementList, root, true));
-		es.shutdown();
-		while (!es.isTerminated()) {
+		final ExecutorService executorService = Executors.newFixedThreadPool(2);
+		executorService.submit(createThread(elementList, root, false));
+		executorService.submit(createThread(elementList, root, true));
+		executorService.shutdown();
+		while (!executorService.isTerminated()) {
 			// we wait for the threads to end
 		}
-//		FinalElement result1 = results.get(0);
-//		FinalElement result2 = results.get(1);
-//		if (result1.getChildrens().size() < result2.getChildrens().size()) {
-//			return result1;
-//		} else if (result1.getChildrens().size() > result2.getChildrens()
-//				.size()) {
-//			return result2;
-//		} else {
-//			ArrayList<Double> r1 = result1.getIndividualLoss();
-//			ArrayList<Double> r2 = result2.getIndividualLoss();
-//			for (int i = 0; i < r1.size(); i++) {
-//				if (r1.get(i) < r2.get(i)) {
-//					return result1;
-//				}
-//			}
-//			return result2;
-//		}
+		// FinalElement result1 = results.get(0);
+		// FinalElement result2 = results.get(1);
+		// if (result1.getChildrens().size() < result2.getChildrens().size()) {
+		// return result1;
+		// } else if (result1.getChildrens().size() > result2.getChildrens()
+		// .size()) {
+		// return result2;
+		// } else {
+		// ArrayList<Double> r1 = result1.getIndividualLoss();
+		// ArrayList<Double> r2 = result2.getIndividualLoss();
+		// for (int i = 0; i < r1.size(); i++) {
+		// if (r1.get(i) < r2.get(i)) {
+		// return result1;
+		// }
+		// }
+		// return result2;
+		// }
 	}
 
-	private static GuillotineThread createThread(ElementList elementList,
+	private static GuillotineThread createThread(final ElementList elementList,
 			Element root, boolean h) {
-		ElementList el = (ElementList) elementList.clone();
-		Element ro = root.cloneElement();
-		GuillotineThread gThread = new GuillotineThread(el, ro, h);
-		return gThread;
+		ElementList eList = (ElementList) elementList.clone();
+		Element element = root.cloneElement();
+		return new GuillotineThread(eList, element, h);
 	}
 }

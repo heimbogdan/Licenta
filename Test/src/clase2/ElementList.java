@@ -13,52 +13,55 @@ public class ElementList extends ArrayList<Element> {
 
 	private static final long serialVersionUID = 1L;
 
-	public static Comparator<Element> c = new Comparator<Element>() {
+	public static Comparator<Element> comparator = new Comparator<Element>() {
 
 		@Override
 		public int compare(Element o1, Element o2) {
+			int val;
 			if (o1.area() == o2.area()) {
-				double l = o1.getLength() - o2.getLength();
-				double w = o1.getWidth() - o2.getWidth();
-				double l1 = l < 0 ? l * (-1) : l;
-				double w1 = w < 0 ? w * (-1) : w;
-				if (l1 > w1) {
-					return l < 0 ? 1 : -1;
-				} else if (w1 > l1) {
-					return w < 0 ? 1 : -1;
+				final double length = o1.getLength() - o2.getLength();
+				final double width = o1.getWidth() - o2.getWidth();
+				final double length1 = length < 0 ? length * (-1) : length;
+				final double width1 = width < 0 ? width * (-1) : width;
+				if (length1 > width1) {
+					val = length < 0 ? 1 : -1;
+				} else if (width1 > length1) {
+					val = width < 0 ? 1 : -1;
 				} else {
-					return 0;
+					val = 0;
 				}
 			} else if (o1.area() > o2.area()) {
-				return -1;
+				val = -1;
 			} else {
-				return 1;
+				val = 1;
 			}
+			return val;
 		}
 	};
 
-	public void addMore(double x, double y, int number) {
+	public void addMore(final double xVal, final double yVal, final int number) {
 		for (int i = 0; i < number; i++) {
-			Element element = new Element(x, y);
+			final Element element = new Element(xVal, yVal);
 			this.add(element);
 		}
 	}
 
 	public boolean isAllUsed() {
-		for (Element e : this) {
+		boolean use = true;
+		for (final Element e : this) {
 			if (!e.isUsed()) {
-				return false;
+				use = false;
 			}
 		}
-		return true;
+		return use;
 	}
 
 	@Override
 	public Object clone() {
-		ElementList el = new ElementList();
-		for (Element e : this) {
-			el.add(e.cloneElement());
+		final ElementList elementList = new ElementList();
+		for (final Element element : this) {
+			elementList.add(element.cloneElement());
 		}
-		return el;
+		return elementList;
 	}
 }

@@ -30,16 +30,16 @@ public class Draw extends JPanel implements ActionListener {
 
 	private FinalElement incadrare;
 	private int pageNumber;
-	private JButton button1;
-	private JButton button2;
-	private JLabel labPlaca;
+	private final JButton button1;
+	private final JButton button2;
+	private final JLabel labPlaca;
 	private int nrIncadrare;
 
 	public FinalElement getIncadrare() {
 		return incadrare;
 	}
 
-	public void setIncadrare(FinalElement incadrare) {
+	public void setIncadrare(final FinalElement incadrare) {
 		boolean makeDraw = false;
 		if (this.incadrare == null) {
 			this.incadrare = incadrare;
@@ -50,8 +50,9 @@ public class Draw extends JPanel implements ActionListener {
 			makeDraw = true;
 		} else if (incadrare.getChildrens().size() == this.incadrare
 				.getChildrens().size()) {
-			ArrayList<Double> newLoss = incadrare.getIndividualLoss();
-			ArrayList<Double> oldLoss = this.incadrare.getIndividualLoss();
+			final ArrayList<Double> newLoss = incadrare.getIndividualLoss();
+			final ArrayList<Double> oldLoss = this.incadrare
+					.getIndividualLoss();
 			for (int i = 0; i < newLoss.size(); i++) {
 				if (newLoss.get(i) < oldLoss.get(i)) {
 					this.incadrare = incadrare;
@@ -91,7 +92,7 @@ public class Draw extends JPanel implements ActionListener {
 	}
 
 	@Override
-	protected void paintComponent(Graphics g) {
+	protected void paintComponent(final Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		if (incadrare != null) {
@@ -103,20 +104,20 @@ public class Draw extends JPanel implements ActionListener {
 				+ nrIncadrare);
 	}
 
-	private Graphics2D drawPlaca(Element root, Graphics2D g2) {
+	private Graphics2D drawPlaca(final Element root, Graphics2D g2) {
 		Path2D path = new Path2D.Double();
-		double x = root.getPoint().getX() + 200;
-		double y = root.getPoint().getY() + 100;
+		final double x = root.getPoint().getX() + 200;
+		final double y = root.getPoint().getY() + 100;
 		g2.setColor(Color.BLACK);
 		if (root.isUsed()) {
-			Rectangle2D rect = new Rectangle2D.Double();
+			final Rectangle2D rect = new Rectangle2D.Double();
 			rect.setRect(x, y, root.getLength(), root.getWidth());
 			g2.setColor(Color.RED);
 			g2.fill(rect);
 		} else {
 			path.moveTo(x, y);
 			if (!root.getChildrens().isEmpty()) {
-				for (Element el : root.getChildrens()) {
+				for (final Element el : root.getChildrens()) {
 					g2 = drawPlaca(el, g2);
 				}
 			}
@@ -130,7 +131,7 @@ public class Draw extends JPanel implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		if (e.getSource() == this.button2) {
 			this.pageNumber += this.pageNumber == this.incadrare.getChildrens()
 					.size() - 1 ? 0 : 1;

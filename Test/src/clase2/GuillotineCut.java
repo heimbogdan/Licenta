@@ -12,36 +12,36 @@ import program.Main;
  */
 public class GuillotineCut {
 
-	private FinalElement CutElement;
-	private Element PAL;
+	private FinalElement cutElement;
+	private Element pal;
 	private boolean horizontal;
 
 	public FinalElement getCutElement() {
-		return CutElement;
+		return cutElement;
 	}
 
-	public void setCutElement(FinalElement cutElement) {
-		CutElement = cutElement;
+	public void setCutElement(final FinalElement cutElement) {
+		this.cutElement = cutElement;
 	}
 
 	public Element getPAL() {
-		return PAL;
+		return pal;
 	}
 
-	public void setPAL(Element pAL) {
-		PAL = pAL;
+	public void setPAL(final Element pAL) {
+		pal = pAL;
 	}
 
 	public boolean isHorizontal() {
 		return horizontal;
 	}
 
-	public void setHorizontal(boolean horizontal) {
+	public void setHorizontal(final boolean horizontal) {
 		this.horizontal = horizontal;
 	}
 
-	public GuillotineCut(boolean h) {
-		this.CutElement = new FinalElement(0, 0);
+	public GuillotineCut(final boolean h) {
+		this.cutElement = new FinalElement(0, 0);
 		this.horizontal = h;
 	}
 
@@ -50,15 +50,16 @@ public class GuillotineCut {
 	 * 
 	 * @param elements
 	 *            - Lista ce contine placiile dorite.
-	 * @param Root
+	 * @param root
 	 *            - Placa pe care se vor face taieturile (se va multiplica).
 	 * @return Incadrarea finala ({@link FinalElement})
 	 */
 
-	public FinalElement beginCutting(ElementList elements, Element Root) {
-		elements.sort(ElementList.c);
-		permute(elements, Root, 1);
-		return CutElement;
+	public FinalElement beginCutting(final ElementList elements,
+			final Element root) {
+		elements.sort(ElementList.comparator);
+		permute(elements, root, 1);
+		return cutElement;
 	}
 
 	/**
@@ -67,27 +68,28 @@ public class GuillotineCut {
 	 * 
 	 * @param elements
 	 *            - Lista ce contine placiile dorite.
-	 * @param Root
+	 * @param root
 	 *            - Placa pe care se vor face taieturile (se va multiplica).
 	 * @param k
 	 *            - Indica pozitia din lista de la care sa inceapa permutarea
 	 *            (de regula 0).
 	 */
-	private void permute(ElementList elements, Element Root, int k) {
+	private void permute(final ElementList elements, final Element root,
+			final int k) {
 		for (int i = k; i < elements.size(); i++) {
 			java.util.Collections.swap(elements, i, k);
-			permute(elements, Root, k + 1);
+			permute(elements, root, k + 1);
 			java.util.Collections.swap(elements, k, i);
 		}
 		if (k == elements.size() - 1) {
-			PAL = new Element(0, 0);
-			int i = 0;
+			pal = new Element(0, 0);
+			int index = 0;
 			while (!elements.isAllUsed()) {
-				PAL.addRoot(new Element(Root.getLength(), Root.getWidth()));
-				cut(elements, PAL.getChildrens().get(i));
-				i++;
+				pal.addRoot(new Element(root.getLength(), root.getWidth()));
+				cut(elements, pal.getChildrens().get(index));
+				index++;
 			}
-			for (Element el : elements) {
+			for (final Element el : elements) {
 				el.setUsed(false);
 			}
 		}
@@ -98,42 +100,42 @@ public class GuillotineCut {
 	 * 
 	 * @param elements
 	 *            - Lista ce contine placiile dorite.
-	 * @param Root
+	 * @param root
 	 *            - Placa pe care se vor face taieturile.
 	 * @return Placa initiala transmisa catre parametrul Root cu modificarile
 	 *         efectuate.
 	 */
-	private Element cut(ElementList elements, Element Root) {
+	private Element cut(final ElementList elements, final Element root) {
 		for (int i = 0; i < elements.size(); i++) {
 			Element element = elements.get(i);
 			if (!element.isUsed()) {
-				if (!Root.isUsed()) {
-					double elx = element.getLength();
-					double ely = element.getWidth();
-					double rx = Root.getLength();
-					double ry = Root.getWidth();
+				if (!root.isUsed()) {
+					final double elx = element.getLength();
+					final double ely = element.getWidth();
+					final double rx = root.getLength();
+					final double ry = root.getWidth();
 					if (elx <= rx && ely <= ry) {
 						if (horizontal) { // first horizontal , then vertical
 							if (ely < ry) {
-								horizontalCut(elements, Root, ely, rx, ry);
+								horizontalCut(elements, root, ely, rx, ry);
 								break;
 							} else if (elx < rx) {
-								verticalCut(elements, Root, elx, rx, ry);
+								verticalCut(elements, root, elx, rx, ry);
 								break;
 							}
 						} else { // first vertical , then horizontal
 							if (elx < rx) {
-								verticalCut(elements, Root, elx, rx, ry);
+								verticalCut(elements, root, elx, rx, ry);
 								break;
 							} else if (ely < ry) {
-								horizontalCut(elements, Root, ely, rx, ry);
+								horizontalCut(elements, root, ely, rx, ry);
 								break;
 							}
 						}
-						if (elx == rx && ely == ry && !Root.isUsed()) {
+						if (elx == rx && ely == ry && !root.isUsed()) {
 							element.setUsed(true);
-							Root.setUsed(true);
-							Root.getParent().setLoss(true);
+							root.setUsed(true);
+							root.getParent().setLoss(true);
 							break;
 						}
 					}
@@ -141,57 +143,59 @@ public class GuillotineCut {
 			}
 		}
 		if (elements.isAllUsed()) {
-			FinalElement R = FinalElement.deepCopy(PAL);
-			R.calculateArea();
-			R.calculateLostArea();
-			R.calculateIndividualLoss();
-			if (CutElement.getChildrens().isEmpty()) {
-				CutElement = R;
-				Main.Panel.getDraw().setIncadrare(CutElement);
+			FinalElement newFinal = FinalElement.deepCopy(pal);
+			newFinal.calculateArea();
+			newFinal.calculateLostArea();
+			newFinal.calculateIndividualLoss();
+			if (cutElement.getChildrens().isEmpty()) {
+				cutElement = newFinal;
+				Main.Panel.getDraw().setIncadrare(cutElement);
 			} else {
-				int initial = CutElement.getChildrens().size();
-				int r = R.getChildrens().size();
-				if (initial > r) {
-					CutElement = R;
-				} else if (initial == r) {
+				final int initial = cutElement.getChildrens().size();
+				final int newFinalChildrens = newFinal.getChildrens().size();
+				if (initial > newFinalChildrens) {
+					cutElement = newFinal;
+				} else if (initial == newFinalChildrens) {
 					int better = 0;
-					ArrayList<Double> oldLoss = CutElement.getIndividualLoss();
-					ArrayList<Double> newLoss = R.getIndividualLoss();
-					for (int i = 0; i < r; i++) {
+					final ArrayList<Double> oldLoss = cutElement
+							.getIndividualLoss();
+					final ArrayList<Double> newLoss = newFinal
+							.getIndividualLoss();
+					for (int i = 0; i < newFinalChildrens; i++) {
 						if (oldLoss.get(i) < newLoss.get(i)) {
 							break;
 						}
 						better++;
 					}
-					if (better == r) {
-						CutElement = R;
-						Main.Panel.getDraw().setIncadrare(CutElement);
+					if (better == newFinalChildrens) {
+						cutElement = newFinal;
+						Main.Panel.getDraw().setIncadrare(cutElement);
 					}
 				}
 			}
 		}
-		return Root;
+		return root;
 	}
 
-	private void horizontalCut(ElementList elements, Element Root, double ely,
-			double rx, double ry) {
-		Element cut1 = new Element(rx, ely);
-		Element cut2 = new Element(rx, ry - ely);
-		addResultElements(elements, Root, cut1, cut2, 'H');
+	private void horizontalCut(final ElementList elements, final Element root,
+			final double ely, final double rx, final double ry) {
+		final Element cut1 = new Element(rx, ely);
+		final Element cut2 = new Element(rx, ry - ely);
+		addResultElements(elements, root, cut1, cut2, 'H');
 	}
 
-	private void verticalCut(ElementList elements, Element Root, double elx,
-			double rx, double ry) {
-		Element cut1 = new Element(elx, ry);
-		Element cut2 = new Element(rx - elx, ry);
+	private void verticalCut(final ElementList elements, final Element Root,
+			final double elx, final double rx, final double ry) {
+		final Element cut1 = new Element(elx, ry);
+		final Element cut2 = new Element(rx - elx, ry);
 		addResultElements(elements, Root, cut1, cut2, 'V');
 	}
 
-	private void addResultElements(ElementList elements, Element Root,
-			Element cut1, Element cut2, char p) {
-		Root.setPosition(p);
-		Root.addChild(cut1);
-		Root.addChild(cut2);
+	private void addResultElements(final ElementList elements, final Element root,
+			Element cut1, Element cut2, final char p) {
+		root.setPosition(p);
+		root.addChild(cut1);
+		root.addChild(cut2);
 		cut1 = cut(elements, cut1);
 		cut2 = cut(elements, cut2);
 	}
