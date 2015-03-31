@@ -1,6 +1,10 @@
 # Licenta
 Code name Licenta
 
+30.03 - Am mai curatat din cod.
+      - Am mai umblat la GUI. Acum imi afiseaza GUI, porneste algoritmul, si imi redeseneaza de fiecare data cand gaseste o           incadrare mai buna.
+      - Am impartit pe thread-uri partea de algoritm (prioritate taietura verticala / orizontala).
+      
 25.03 update - Am mai optimizat algoritmul, da rezultate mai bune.
 
 25.03 - Am terminat algoritmul.(Mai am de gandit modalitatea de a selecta cea mai buna incadrare.) 
