@@ -1,6 +1,8 @@
 # Licenta
 Code name Licenta
 
+31.03 - Am curatat codul folosind PDM.
+
 30.03 - Am mai curatat din cod.
       - Am mai umblat la GUI. Acum imi afiseaza GUI, porneste algoritmul, si imi redeseneaza de fiecare data cand gaseste o           incadrare mai buna.
       - Am impartit pe thread-uri partea de algoritm (prioritate taietura verticala / orizontala).
