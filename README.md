@@ -1,6 +1,8 @@
 # Licenta
 Code name Licenta
 
+16.04 - Am inceput dezvoltarea bazei de date.
+
 31.03 - Am curatat codul folosind PDM.
 
 30.03 - Am mai curatat din cod.
