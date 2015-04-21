@@ -2,8 +2,8 @@ package program;
 
 import bh.w2optimize.entity.Element;
 import bh.w2optimize.entity.ElementList;
+import bh.w2optimize.gui.Panel;
 import bh.w2optimize.guillotine.GuillotineMain;
-import clase.Panel;
 
 public class Main {
 

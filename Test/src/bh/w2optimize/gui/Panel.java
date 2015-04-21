@@ -1,8 +1,6 @@
-package clase;
+package bh.w2optimize.gui;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-
 import bh.w2optimize.entity.FinalElement;
 
 public class Panel {
