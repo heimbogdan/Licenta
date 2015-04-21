@@ -1,4 +1,4 @@
-package clase2;
+package bh.w2optimize.entity;
 
 import java.util.ArrayList;
 import java.util.Comparator;

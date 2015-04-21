@@ -1,4 +1,9 @@
-package clase2;
+package bh.w2optimize.guillotine;
+
+import bh.w2optimize.entity.Element;
+import bh.w2optimize.entity.ElementList;
+import bh.w2optimize.entity.FinalElement;
+import bh.w2optimize.guillotine.algorithm.GuillotineCut;
 
 public class GuillotineThread extends Thread {
 	private FinalElement result;

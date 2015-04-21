@@ -1,7 +1,10 @@
-package clase2;
+package bh.w2optimize.guillotine.algorithm;
 
 import java.util.ArrayList;
 
+import bh.w2optimize.entity.Element;
+import bh.w2optimize.entity.ElementList;
+import bh.w2optimize.entity.FinalElement;
 import program.Main;
 
 /**

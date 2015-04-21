@@ -1,8 +1,12 @@
-package clase2;
+package bh.w2optimize.guillotine;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import bh.w2optimize.entity.Element;
+import bh.w2optimize.entity.ElementList;
+import bh.w2optimize.entity.FinalElement;
 
 public class GuillotineMain {
 

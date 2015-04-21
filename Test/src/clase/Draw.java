@@ -18,8 +18,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import clase2.Element;
-import clase2.FinalElement;
+import bh.w2optimize.entity.Element;
+import bh.w2optimize.entity.FinalElement;
 
 public class Draw extends JPanel implements ActionListener {
 

@@ -1,11 +1,9 @@
 package program;
 
+import bh.w2optimize.entity.Element;
+import bh.w2optimize.entity.ElementList;
+import bh.w2optimize.guillotine.GuillotineMain;
 import clase.Panel;
-import clase2.Element;
-import clase2.ElementList;
-import clase2.FinalElement;
-import clase2.GuillotineCut;
-import clase2.GuillotineMain;
 
 public class Main {
 

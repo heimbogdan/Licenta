@@ -3,7 +3,7 @@ package clase;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import clase2.FinalElement;
+import bh.w2optimize.entity.FinalElement;
 
 public class Panel {
 
