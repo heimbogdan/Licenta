@@ -1,6 +1,8 @@
 # Licenta
 Code name Licenta
 
+22.04 - Am creat clasa care se ocupa de conectarea la baza de date. Urmeaza integrarea cu Hibernate
+
 16.04 - Am inceput dezvoltarea bazei de date.
 
 31.03 - Am curatat codul folosind PDM.
