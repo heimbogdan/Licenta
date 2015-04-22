@@ -22,8 +22,7 @@ public class SQLiteConnection {
 	private SQLiteConnection() {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			this.connection = DriverManager
-					.getConnection("jdbc:sqlite:w2o_data.db");
+			this.connection = DriverManager.getConnection("jdbc:sqlite:w2o_data.db");
 			checkDataBase();
 		} catch (Exception e) {
 			e.printStackTrace();

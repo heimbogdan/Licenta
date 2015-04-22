@@ -1,5 +1,10 @@
 package bh.w2optimize.entity;
 
+import javax.annotation.Generated;
+import javax.persistence.*;
+
+import org.hibernate.annotations.GenericGenerator;
+
 /**
  * Used to group multiple elements ({@link Element}) that together make a
  * furniture component
@@ -8,10 +13,27 @@ package bh.w2optimize.entity;
  * @version 1.0
  * @since 22.04.2015
  */
+
+@Entity
+@Table(name="component")
 public class Component {
 
+	@Id
+	@GeneratedValue(strategy= GenerationType.AUTO)
+	@Column(name="ID")
+	private int id;
+	@Column(name="NAME")
 	private String name;
+	@Column(name="CODE")
 	private String code;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	/**
 	 * Used to get the name of the component
@@ -62,4 +84,14 @@ public class Component {
 		this.code = code;
 	}
 
+	public Component(){
+		super();
+	}
+
+	@Override
+	public String toString() {
+		return "Component [id=" + id + ", name=" + name + ", code=" + code
+				+ "]";
+	}
+	
 }

@@ -12,6 +12,8 @@ import java.util.ArrayList;
  */
 public class Element {
 
+	private int id;
+	private int componentId;
 	/**
 	 * Variable that holds the element's length
 	 */
@@ -53,6 +55,22 @@ public class Element {
 	 * Boolean that says if the current element is perceived as a loss
 	 */
 	private boolean loss;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getComponentId() {
+		return componentId;
+	}
+
+	public void setComponentId(int componentId) {
+		this.componentId = componentId;
+	}
 
 	public double getLength() {
 		return length;
@@ -158,10 +176,12 @@ public class Element {
 	}
 
 	/**
-	 * The method to add a child element. Add reference to the parent and child element and sets its position.
+	 * The method to add a child element. Add reference to the parent and child
+	 * element and sets its position.
 	 * 
 	 * @param element
-	 *            - The element will be added to the list of children of the current element
+	 *            - The element will be added to the list of children of the
+	 *            current element
 	 */
 	public void addChild(final Element element) {
 		double p = 0;

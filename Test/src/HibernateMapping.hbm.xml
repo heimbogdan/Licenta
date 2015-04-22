@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>  
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="bh.w2optimize.entity.Component" table="component">
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name"></property>
+		<property name="code"></property>
+	</class>
+	<class name="bh.w2optimize.entity.Element" table="element">
+		<id name="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="componentId"></property>
+		<property name="length"></property>
+		<property name="width"></property>
+	</class>
+</hibernate-mapping>

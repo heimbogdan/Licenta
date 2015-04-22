@@ -1,10 +1,21 @@
 package program;
 
+import java.util.List;
+
 import bh.w2optimize.db.connection.SQLiteConnection;
+import bh.w2optimize.entity.Component;
 import bh.w2optimize.entity.Element;
 import bh.w2optimize.entity.ElementList;
 import bh.w2optimize.gui.Panel;
 import bh.w2optimize.guillotine.GuillotineMain;
+
+
+
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;  
+import org.hibernate.SessionFactory;  
+import org.hibernate.Transaction;  
+import org.hibernate.cfg.Configuration;
 
 public class Main {
 
@@ -31,7 +42,30 @@ public class Main {
 		//GuillotineMain.start(elms, new Element(207, 280));
 		// new Panel(incadrare);
 		
-		SQLiteConnection conn = SQLiteConnection.getInstance();
-		
+		//SQLiteConnection conn = SQLiteConnection.getInstance();
+		Configuration cfg=new Configuration();  
+	    cfg.configure("hibernate.cfg.xml");//populates the data of the configuration file  
+	      
+	    //creating seession factory object  
+	    SessionFactory factory=cfg.buildSessionFactory();  
+	      
+	    //creating session object  
+	    Session session=factory.openSession();  
+	      
+	    //creating transaction object  
+	    Transaction t=session.beginTransaction();  
+	    
+	    session.persist(new Component("aaa", "SW2"));//persisting the object  
+	    session.persist(new Component("bbb", "XB2"));
+	    
+	    t.commit();//transaction is committed 
+	    SQLQuery q =  session.createSQLQuery("select * from component");
+	    q.addEntity(Component.class);
+	    List<Component> list = q.list();
+	    session.close();
+	    
+	    for (Component c : list){
+	    	System.out.println(c.toString());
+	    }
 	}
 }
