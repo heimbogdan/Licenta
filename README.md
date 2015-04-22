@@ -1,4 +1,8 @@
 # Licenta
+
+Utile:
+Integrare Hibernate - http://www.javatpoint.com/example-to-create-hibernate-application-in-eclipse-ide
+
 Code name Licenta
 
 22.04 update - Am tradus din JavaDoc in Engleza.
