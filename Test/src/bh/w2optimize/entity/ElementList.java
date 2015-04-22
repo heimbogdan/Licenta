@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
- * Lista de placi
+ * List of Elements
  * 
  * @author bogdan.heim
- *
+ * @version 1.0
+ * @since 22.04.2015
  */
 public class ElementList extends ArrayList<Element> {
 
@@ -39,6 +40,16 @@ public class ElementList extends ArrayList<Element> {
 		}
 	};
 
+	/**
+	 * Method that adds more elements of the same length and width
+	 * 
+	 * @param xVal
+	 *            - Element's length
+	 * @param yVal
+	 *            - Element's width
+	 * @param number
+	 *            - The number of elements to be added
+	 */
 	public void addMore(final double xVal, final double yVal, final int number) {
 		for (int i = 0; i < number; i++) {
 			final Element element = new Element(xVal, yVal);

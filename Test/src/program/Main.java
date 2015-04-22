@@ -1,5 +1,6 @@
 package program;
 
+import bh.w2optimize.db.connection.SQLiteConnection;
 import bh.w2optimize.entity.Element;
 import bh.w2optimize.entity.ElementList;
 import bh.w2optimize.gui.Panel;
@@ -25,9 +26,12 @@ public class Main {
 		// FinalElement incadrare = GuillotineCut.beginCutting(elms, new
 		// Element(
 		// 207, 280));
-		Panel = new Panel(null);
+		//Panel = new Panel(null);
 		// FinalElement incadrare =
-		GuillotineMain.start(elms, new Element(207, 280));
+		//GuillotineMain.start(elms, new Element(207, 280));
 		// new Panel(incadrare);
+		
+		SQLiteConnection conn = SQLiteConnection.getInstance();
+		
 	}
 }

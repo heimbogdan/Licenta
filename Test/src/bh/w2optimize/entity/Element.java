@@ -4,54 +4,53 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 /**
- * Clasa folosita pentru a crea o placa, indiferent de utilitatea finala
+ * Class used to create an element, regardless of final utility
  * 
  * @author bogdan.heim
- * 
+ * @version 1.0
+ * @since 22.04.2015
  */
 public class Element {
 
 	/**
-	 * Variabila ce retine lungimea placii
+	 * Variable that holds the element's length
 	 */
 	private double length;
 
 	/**
-	 * Variabila ce retine latimea placii
+	 * Variable that holds the element's width
 	 */
 	private double width;
 
 	/**
-	 * Referinta catre placa parinte, placa din care a fost taiata placa curenta
+	 * Reference to parent element, which the current board was cut from
 	 */
 	private Element parent;
 
 	/**
-	 * ArrayList ce contine copii rezultati din aplicarea unei taieturi pe placa
-	 * curenta
+	 * ArrayList containing the children resulting from the cut applied to the
+	 * current element
 	 */
 	private ArrayList<Element> childrens;
 
 	/**
-	 * Variabila ce ia valoarea de 'V' (verticala) sau 'H' (orizontala) ce
-	 * exprima orientarea taieturii aplicate pe placa
+	 * The variable takes the value of 'V' (vertical) or 'H' (horizontal), that
+	 * expresses the cut orientation applied to the element
 	 */
 	private char position;
 
 	/**
-	 * Point2D ce retine coordonatele varfului din stanga sus a placii
+	 * Point2D coordinates that holds the top left tip of the element
 	 */
 	private Point2D point;
 
 	/**
-	 * Variabila boleana ce declara daca placa curenta este una din placiile
-	 * necesare
+	 * Boolean that says if the current element is one of the necessary
 	 */
 	private boolean used;
 
 	/**
-	 * Variabila boleana ce declara daca placa curenta este perceputa ca
-	 * pierdere
+	 * Boolean that says if the current element is perceived as a loss
 	 */
 	private boolean loss;
 
@@ -123,7 +122,7 @@ public class Element {
 		super();
 		this.length = length;
 		this.width = width;
-		//this.parent = null;
+		// this.parent = null;
 		this.childrens = new ArrayList<Element>();
 		this.point = new Point2D.Double();
 		this.used = false;
@@ -135,9 +134,9 @@ public class Element {
 	}
 
 	/**
-	 * Metoda ce calculeaza suprafata placii
+	 * The method to calculate the element's surface
 	 * 
-	 * @return Suprafata
+	 * @return Surface
 	 */
 	public double area() {
 		return this.length * this.width;
@@ -159,11 +158,10 @@ public class Element {
 	}
 
 	/**
-	 * Metoda ce adauga un copil placii initiale. Adauga referinta catre parinte
-	 * a placii copil si ii seteaza pozitia.
+	 * The method to add a child element. Add reference to the parent and child element and sets its position.
 	 * 
 	 * @param element
-	 *            - Placa care va fi adaugata in lista de copii a placii curente
+	 *            - The element will be added to the list of children of the current element
 	 */
 	public void addChild(final Element element) {
 		double p = 0;

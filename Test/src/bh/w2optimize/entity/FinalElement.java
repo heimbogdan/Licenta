@@ -3,27 +3,28 @@ package bh.w2optimize.entity;
 import java.util.ArrayList;
 
 /**
- * Clasa ce extinde clasa {@link Element}. Obiectul de tip FinalElement este
- * incadrarea finala.
+ * Class that extends the class {@link Element}. Final Element object is the
+ * final arrangement.
+ * 
  * 
  * @author bogdan.heim
- *
+ * @version 1.0
+ * @since 22.04.2015
  */
 public class FinalElement extends Element {
 
 	/**
-	 * Suprafata totala a placilor initiale asupra carora se vor efectua
-	 * taierile.
+	 * Total surface of initial elements over which cuts will be made.
 	 */
 	private double area;
 
 	/**
-	 * Suprafata rezultata din taieri care pot fi reutilizate.
+	 * Surface offcuts that can be reused.
 	 */
 	private double usebleArea;
 
 	/**
-	 * Suprafata rezultata din taieri care este incadrata ca pierdere.
+	 * Surface offcuts which is seen as a loss.
 	 */
 	private double lostArea;
 
@@ -70,7 +71,7 @@ public class FinalElement extends Element {
 	}
 
 	/**
-	 * Functie ce calculeaza suprafata totala a placiilor de pal initiala.
+	 * Function that calculates the total area of the page pale tiles.
 	 */
 	public void calculateArea() {
 		double area = 0;
@@ -88,8 +89,8 @@ public class FinalElement extends Element {
 	}
 
 	/**
-	 * Functie ce calculeaza suprafata totala a placiilor de pal initiala care
-	 * poate fi refolosita.
+	 * Function that calculates the total area of the page pale tiles that can
+	 * be reused.
 	 */
 	public void calculateUsebleArea(final Element root) {
 		if (!root.getChildrens().isEmpty()) {
@@ -105,8 +106,8 @@ public class FinalElement extends Element {
 	}
 
 	/**
-	 * Functie ce calculeaza suprafata totala a placiilor de pal initiala
-	 * incadrata ca pierdere.
+	 * Function that calculates the total area of the page pale tiles framed as
+	 * a loss.
 	 */
 	public void calculateLostArea() {
 		double totalArea = 0;
