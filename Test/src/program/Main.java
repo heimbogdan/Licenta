@@ -57,7 +57,7 @@ public class Main {
 	    
 	    session.persist(new Component("aaa", "SW2"));//persisting the object  
 	    session.persist(new Component("bbb", "XB2"));
-	    
+	    session.persist(new Element(100, 20));
 	    t.commit();//transaction is committed 
 	    SQLQuery q =  session.createSQLQuery("select * from component");
 	    q.addEntity(Component.class);
