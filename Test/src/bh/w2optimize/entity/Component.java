@@ -1,8 +1,6 @@
 package bh.w2optimize.entity;
 
 import javax.annotation.Generated;
-import javax.persistence.*;
-
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -13,25 +11,17 @@ import org.hibernate.annotations.GenericGenerator;
  * @version 1.0
  * @since 22.04.2015
  */
-
-@Entity
-@Table(name="component")
 public class Component {
 
-	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
-	@Column(name="ID")
 	private int id;
-	@Column(name="NAME")
 	private String name;
-	@Column(name="CODE")
 	private String code;
 
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(final int id) {
 		this.id = id;
 	}
 
@@ -50,7 +40,7 @@ public class Component {
 	 * @param name
 	 *            - The new name of the component
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -69,7 +59,7 @@ public class Component {
 	 * @param name
 	 *            - The new code of the component
 	 */
-	public void setCode(String code) {
+	public void setCode(final String code) {
 		this.code = code;
 	}
 
@@ -78,7 +68,7 @@ public class Component {
 	 * @param name - The name of the component
 	 * @param code - The code of the component
 	 */
-	public Component(String name, String code) {
+	public Component(final String name,final String code) {
 		super();
 		this.name = name;
 		this.code = code;

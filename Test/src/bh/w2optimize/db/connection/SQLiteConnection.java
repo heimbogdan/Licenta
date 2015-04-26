@@ -13,7 +13,7 @@ import java.sql.Statement;
  * @since 22.04.2015
  *
  */
-public class SQLiteConnection {
+public final class SQLiteConnection {
 
 	private static SQLiteConnection instance;
 
@@ -42,7 +42,7 @@ public class SQLiteConnection {
 
 	private void checkDataBase() {
 		try {
-			Statement statement = this.connection.createStatement();
+			final Statement statement = this.connection.createStatement();
 			statement
 					.executeUpdate("create table if not exists elements (id integer primary key autoincrement, component_id integer, length double, width double)");
 			statement
