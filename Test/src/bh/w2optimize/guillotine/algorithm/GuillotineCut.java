@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import bh.w2optimize.entity.Element;
 import bh.w2optimize.entity.ElementList;
 import bh.w2optimize.entity.FinalElement;
+import bh.w2optimize.gui.CutPanel;
+import bh.w2optimize.gui.Draw;
 import program.Main;
 
 /**
@@ -79,16 +81,30 @@ public class GuillotineCut {
 	 */
 	private void permute(final ElementList elements, final Element root,
 			final int k) {
+		
 		for (int i = k; i < elements.size(); i++) {
 			java.util.Collections.swap(elements, i, k);
 			permute(elements, root, k + 1);
 			java.util.Collections.swap(elements, k, i);
+			if(elements.get(i).isRotate()){
+				Element el = elements.get(i);
+				double elength = el.getLength();
+				double ewidth = el.getWidth();
+				el.setLength(ewidth);
+				el.setWidth(elength);
+				java.util.Collections.swap(elements, i, k);
+				permute(elements, root, k + 1);
+				java.util.Collections.swap(elements, k, i);
+				el.setLength(elength);
+				el.setWidth(ewidth);
+			}
 		}
+		
 		if (k == elements.size() - 1) {
-			pal = new Element(0, 0);
+			pal = new Element(0, 0, false);
 			int index = 0;
 			while (!elements.isAllUsed()) {
-				pal.addRoot(new Element(root.getLength(), root.getWidth()));
+				pal.addRoot(new Element(root.getLength(), root.getWidth(), root.isRotate()));
 				cut(elements, pal.getChildrens().get(index));
 				index++;
 			}
@@ -150,20 +166,24 @@ public class GuillotineCut {
 			newFinal.calculateArea();
 			newFinal.calculateLostArea();
 			newFinal.calculateIndividualLoss();
+			CutPanel draw = Main.Panel.getDraw();
 			if (cutElement.getChildrens().isEmpty()) {
-				cutElement = newFinal;
-				Main.Panel.getDraw().setIncadrare(cutElement);
+				synchronized (draw) {
+					cutElement = newFinal;
+					draw.setIncadrare(cutElement);
+				}
 			} else {
 				final int initial = cutElement.getChildrens().size();
 				final int newFinalChildrens = newFinal.getChildrens().size();
 				if (initial > newFinalChildrens) {
-					cutElement = newFinal;
+					synchronized (draw) {
+						cutElement = newFinal;
+						draw.setIncadrare(cutElement);
+					}
 				} else if (initial == newFinalChildrens) {
 					int better = 0;
-					final ArrayList<Double> oldLoss = cutElement
-							.getIndividualLoss();
-					final ArrayList<Double> newLoss = newFinal
-							.getIndividualLoss();
+					final ArrayList<Double> oldLoss = cutElement.getIndividualLoss();
+					final ArrayList<Double> newLoss = newFinal.getIndividualLoss();
 					for (int i = 0; i < newFinalChildrens; i++) {
 						if (oldLoss.get(i) < newLoss.get(i)) {
 							break;
@@ -171,8 +191,10 @@ public class GuillotineCut {
 						better++;
 					}
 					if (better == newFinalChildrens) {
-						cutElement = newFinal;
-						Main.Panel.getDraw().setIncadrare(cutElement);
+						synchronized (draw) {
+							cutElement = newFinal;
+							draw.setIncadrare(cutElement);
+						}
 					}
 				}
 			}
@@ -182,15 +204,15 @@ public class GuillotineCut {
 
 	private void horizontalCut(final ElementList elements, final Element root,
 			final double ely, final double rx, final double ry) {
-		final Element cut1 = new Element(rx, ely);
-		final Element cut2 = new Element(rx, ry - ely);
+		final Element cut1 = new Element(rx, ely, false);
+		final Element cut2 = new Element(rx, ry - ely, false);
 		addResultElements(elements, root, cut1, cut2, 'H');
 	}
 
 	private void verticalCut(final ElementList elements, final Element Root,
 			final double elx, final double rx, final double ry) {
-		final Element cut1 = new Element(elx, ry);
-		final Element cut2 = new Element(rx - elx, ry);
+		final Element cut1 = new Element(elx, ry, false);
+		final Element cut2 = new Element(rx - elx, ry, false);
 		addResultElements(elements, Root, cut1, cut2, 'V');
 	}
 

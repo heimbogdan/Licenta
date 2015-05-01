@@ -55,7 +55,13 @@ public class Element {
 	 * Boolean that says if the current element is perceived as a loss
 	 */
 	private boolean loss;
-
+	
+	/**
+	 * Boolean that says if the current element can be rotated or not
+	 */
+	private boolean rotate;
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -136,14 +142,22 @@ public class Element {
 		this.loss = loss;
 	}
 
-	public Element(final double length, final double width) {
+	public boolean isRotate() {
+		return rotate;
+	}
+
+	public void setRotate(boolean canRotate) {
+		this.rotate = canRotate;
+	}
+
+	public Element(final double length, final double width, final boolean rotate) {
 		super();
 		this.length = length;
 		this.width = width;
-		// this.parent = null;
 		this.childrens = new ArrayList<Element>();
 		this.point = new Point2D.Double();
 		this.used = false;
+		this.rotate = rotate;
 	}
 
 	@Override
@@ -162,11 +176,11 @@ public class Element {
 
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
-		return new Element(this.length, this.width);
+		return new Element(this.length, this.width, this.rotate);
 	}
 
 	public Element cloneElement() {
-		final Element element = new Element(this.length, this.width);
+		final Element element = new Element(this.length, this.width, this.rotate);
 		element.setChildrens(this.getChildrens());
 		element.setParent(this.parent);
 		element.setPoint(this.point);

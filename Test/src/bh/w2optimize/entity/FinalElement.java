@@ -63,7 +63,7 @@ public class FinalElement extends Element {
 	}
 
 	public FinalElement(final double length, final double width) {
-		super(length, width);
+		super(length, width, false);
 		this.area = 0;
 		this.lostArea = 0;
 		this.usebleArea = 0;

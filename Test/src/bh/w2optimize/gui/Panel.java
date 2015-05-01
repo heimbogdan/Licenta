@@ -6,9 +6,9 @@ import bh.w2optimize.entity.FinalElement;
 public class Panel {
 
 	private JFrame jFrame;
-	private Draw draw;
+	private CutPanel draw;
 
-	public Draw getDraw() {
+	public CutPanel getDraw() {
 		return draw;
 	}
 
@@ -24,7 +24,7 @@ public class Panel {
 		jFrame = new JFrame("Taie ceva :D");
 		jFrame.setSize(800, 550);
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		draw = new Draw();
+		draw = new CutPanel();
 		draw.setIncadrare(incadrare);
 		jFrame.add(draw);
 		jFrame.setVisible(true);

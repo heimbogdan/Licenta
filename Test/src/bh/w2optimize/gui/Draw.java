@@ -15,8 +15,13 @@ import javax.swing.JPanel;
 
 import bh.w2optimize.entity.Element;
 import bh.w2optimize.entity.FinalElement;
+import javax.swing.SwingConstants;
+import java.awt.Component;
+import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
-public class Draw extends JPanel implements ActionListener {
+public class Draw extends JPanel {
 
 	/**
 	 * 
@@ -25,29 +30,34 @@ public class Draw extends JPanel implements ActionListener {
 
 	private FinalElement incadrare;
 	private int pageNumber;
-	private final JButton button1;
-	private final JButton button2;
-	private final JLabel labPlaca;
+	private JLabel labPlaca;
 	private int nrIncadrare;
 
 	public FinalElement getIncadrare() {
 		return incadrare;
 	}
 
+	public int getPageNumber() {
+		return pageNumber;
+	}
+
+	public void setPageNumber(int pageNumber) {
+		this.pageNumber = pageNumber;
+	}
+	
 	public void setIncadrare(final FinalElement incadrare) {
+		
 		boolean makeDraw = false;
-		if (this.incadrare == null) {
+		
+		if (this.incadrare == null || incadrare.getChildrens().size() < this.incadrare.getChildrens().size()) {
+			
 			this.incadrare = incadrare;
 			makeDraw = true;
-		} else if (incadrare.getChildrens().size() < this.incadrare
-				.getChildrens().size()) {
-			this.incadrare = incadrare;
-			makeDraw = true;
-		} else if (incadrare.getChildrens().size() == this.incadrare
-				.getChildrens().size()) {
+			
+		}  else if (incadrare.getChildrens().size() == this.incadrare.getChildrens().size()) {
+			
 			final ArrayList<Double> newLoss = incadrare.getIndividualLoss();
-			final ArrayList<Double> oldLoss = this.incadrare
-					.getIndividualLoss();
+			final ArrayList<Double> oldLoss = this.incadrare.getIndividualLoss();
 			for (int i = 0; i < newLoss.size(); i++) {
 				if (newLoss.get(i) < oldLoss.get(i)) {
 					this.incadrare = incadrare;
@@ -69,21 +79,33 @@ public class Draw extends JPanel implements ActionListener {
 
 	public Draw() {
 		super();
+		createContents();
+	}
+	private void createContents() {
 		this.pageNumber = 0;
 		this.nrIncadrare = 0;
-		button1 = new JButton("Prev");
-		button1.setBounds(320, 430, 60, 20);
-		button1.addActionListener(this);
-		button2 = new JButton("Next");
-		button2.setBounds(420, 430, 60, 20);
-		button2.addActionListener(this);
-		labPlaca = new JLabel("Placa " + (pageNumber + 1) + "/ incadrare "
-				+ nrIncadrare);
-		labPlaca.setBounds(300, 10, 200, 20);
-		this.setLayout(null);
-		this.add(button1);
-		this.add(button2);
-		this.add(labPlaca);
+		
+		labPlaca = new JLabel(new StringBuilder().append("Placa ")
+		.append(pageNumber + 1).append("/ incadrare ")
+		.append(nrIncadrare).toString());
+		this.labPlaca.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.labPlaca.setHorizontalAlignment(SwingConstants.CENTER);
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(170)
+					.addComponent(this.labPlaca, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGap(185))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(this.labPlaca)
+					.addContainerGap(275, Short.MAX_VALUE))
+		);
+		setLayout(groupLayout);
 	}
 
 	@Override
@@ -125,15 +147,4 @@ public class Draw extends JPanel implements ActionListener {
 		return g2;
 	}
 
-	@Override
-	public void actionPerformed(final ActionEvent e) {
-		if (e.getSource() == this.button2) {
-			this.pageNumber += this.pageNumber == this.incadrare.getChildrens()
-					.size() - 1 ? 0 : 1;
-			this.drawing();
-		} else {
-			this.pageNumber -= this.pageNumber == 0 ? 0 : 1;
-			this.drawing();
-		}
-	}
 }

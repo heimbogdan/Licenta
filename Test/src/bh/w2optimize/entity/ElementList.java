@@ -50,9 +50,9 @@ public class ElementList extends ArrayList<Element> {
 	 * @param number
 	 *            - The number of elements to be added
 	 */
-	public void addMore(final double xVal, final double yVal, final int number) {
+	public void addMore(final double xVal, final double yVal, final boolean rotate, final int number) {
 		for (int i = 0; i < number; i++) {
-			final Element element = new Element(xVal, yVal);
+			final Element element = new Element(xVal, yVal, rotate);
 			this.add(element);
 		}
 	}
