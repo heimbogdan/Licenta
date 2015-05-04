@@ -9,12 +9,16 @@ import bh.w2optimize.entity.ElementList;
 public class GuillotineMain {
 
 
-	public static void start(ElementList elementList, Element root) {
+	public static int start(ElementList elementList, Element root) {
 
 		final ExecutorService executorService = Executors.newFixedThreadPool(2);
 		executorService.submit(createThread(elementList, root, false));
 		executorService.submit(createThread(elementList, root, true));
 		executorService.shutdown();
+		while(!executorService.isTerminated()){
+			
+		}
+		return 1;
 	}
 
 	private static GuillotineThread createThread(final ElementList elementList,
