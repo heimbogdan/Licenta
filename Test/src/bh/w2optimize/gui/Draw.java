@@ -32,6 +32,15 @@ public class Draw extends JPanel {
 	private int pageNumber;
 	private JLabel labPlaca;
 	private int nrIncadrare;
+	private int nrPlaci = 2;
+
+	public void setNrPlaci(int nr) {
+		this.nrPlaci = nr;
+	}
+
+	public int getNrPlaci() {
+		return this.nrPlaci;
+	}
 
 	public FinalElement getIncadrare() {
 		return incadrare;
@@ -44,20 +53,24 @@ public class Draw extends JPanel {
 	public void setPageNumber(int pageNumber) {
 		this.pageNumber = pageNumber;
 	}
-	
+
 	public void setIncadrare(final FinalElement incadrare) {
-		
+
 		boolean makeDraw = false;
-		
-		if (this.incadrare == null || incadrare.getChildrens().size() < this.incadrare.getChildrens().size()) {
-			
+
+		if (this.incadrare == null
+				|| incadrare.getChildrens().size() < this.incadrare
+						.getChildrens().size()) {
+
 			this.incadrare = incadrare;
 			makeDraw = true;
-			
-		}  else if (incadrare.getChildrens().size() == this.incadrare.getChildrens().size()) {
-			
+
+		} else if (incadrare.getChildrens().size() == this.incadrare
+				.getChildrens().size()) {
+
 			final ArrayList<Double> newLoss = incadrare.getIndividualLoss();
-			final ArrayList<Double> oldLoss = this.incadrare.getIndividualLoss();
+			final ArrayList<Double> oldLoss = this.incadrare
+					.getIndividualLoss();
 			for (int i = 0; i < newLoss.size(); i++) {
 				if (newLoss.get(i) < oldLoss.get(i)) {
 					this.incadrare = incadrare;
@@ -81,30 +94,30 @@ public class Draw extends JPanel {
 		super();
 		createContents();
 	}
+
 	private void createContents() {
 		this.pageNumber = 0;
 		this.nrIncadrare = 0;
-		
+
 		labPlaca = new JLabel(new StringBuilder().append("Placa ")
-		.append(pageNumber + 1).append("/ incadrare ")
-		.append(nrIncadrare).toString());
+				.append(pageNumber + 1).append("/ incadrare ")
+				.append(nrIncadrare).toString());
 		this.labPlaca.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.labPlaca.setHorizontalAlignment(SwingConstants.CENTER);
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(170)
-					.addComponent(this.labPlaca, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGap(185))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(this.labPlaca)
-					.addContainerGap(275, Short.MAX_VALUE))
-		);
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(
+				Alignment.LEADING).addGroup(
+				groupLayout
+						.createSequentialGroup()
+						.addGap(170)
+						.addComponent(this.labPlaca, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGap(185)));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(
+				Alignment.LEADING).addGroup(
+				groupLayout.createSequentialGroup().addContainerGap()
+						.addComponent(this.labPlaca)
+						.addContainerGap(275, Short.MAX_VALUE)));
 		setLayout(groupLayout);
 	}
 
@@ -114,17 +127,39 @@ public class Draw extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		if (incadrare != null) {
 			g.setColor(Color.BLACK);
-			g2 = drawPlaca(this.incadrare.getChildrens().get(this.pageNumber),
-					g2);
+			if (this.nrPlaci == 1) {
+				g2 = drawPlaca(
+						this.incadrare.getChildrens().get(this.pageNumber), g2,
+						200, 100);
+				this.labPlaca.setText("Placa " + (pageNumber + 1)
+						+ "/ incadrare " + nrIncadrare);
+			} else if (this.nrPlaci == 2) {
+				int num = this.pageNumber * 2;
+				if (this.incadrare.getChildrens().size()-1 > num) {
+					if (this.incadrare.getChildrens().size() >= num + 2) {
+						Element root1 = this.incadrare.getChildrens().get(num);
+						Element root2 = this.incadrare.getChildrens().get(
+								num + 1);
+						g2 = drawPlaci(new Element[] { root1, root2 }, g2, 20,
+								100);
+						this.labPlaca.setText("Placa " + (num + 1) + "-"
+								+ (num + 2) + "/ incadrare " + nrIncadrare);
+					} else {
+						g2 = drawPlaca(this.incadrare.getChildrens().get(num),
+								g2, 200, 100);
+						this.labPlaca.setText("Placa " + (num + 1)
+								+ "/ incadrare " + nrIncadrare);
+					}
+				}
+			}
 		}
-		this.labPlaca.setText("Placa " + (pageNumber + 1) + "/ incadrare "
-				+ nrIncadrare);
 	}
 
-	private Graphics2D drawPlaca(final Element root, Graphics2D g2) {
+	private Graphics2D drawPlaca(final Element root, Graphics2D g2,
+			double xVal, double yVal) {
 		Path2D path = new Path2D.Double();
-		final double x = root.getPoint().getX() + 200;
-		final double y = root.getPoint().getY() + 100;
+		final double x = root.getPoint().getX() + xVal;
+		final double y = root.getPoint().getY() + yVal;
 		g2.setColor(Color.BLACK);
 		if (root.isUsed()) {
 			final Rectangle2D rect = new Rectangle2D.Double();
@@ -135,7 +170,7 @@ public class Draw extends JPanel {
 			path.moveTo(x, y);
 			if (!root.getChildrens().isEmpty()) {
 				for (final Element el : root.getChildrens()) {
-					g2 = drawPlaca(el, g2);
+					g2 = drawPlaca(el, g2, xVal, yVal);
 				}
 			}
 			path.lineTo(x, y + root.getWidth());
@@ -147,4 +182,34 @@ public class Draw extends JPanel {
 		return g2;
 	}
 
+	private Graphics2D drawPlaci(final Element[] roots, Graphics2D g2,
+			double xVal, double yVal) {
+
+		for (Element root : roots) {
+			Path2D path = new Path2D.Double();
+			final double x = root.getPoint().getX() + xVal;
+			final double y = root.getPoint().getY() + 100;
+			g2.setColor(Color.BLACK);
+			if (root.isUsed()) {
+				final Rectangle2D rect = new Rectangle2D.Double();
+				rect.setRect(x, y, root.getLength(), root.getWidth());
+				g2.setColor(Color.RED);
+				g2.fill(rect);
+			} else {
+				path.moveTo(x, y);
+				if (!root.getChildrens().isEmpty()) {
+					for (final Element el : root.getChildrens()) {
+						g2 = drawPlaca(el, g2, xVal, yVal);
+					}
+				}
+				path.lineTo(x, y + root.getWidth());
+				path.lineTo(x + root.getLength(), y + root.getWidth());
+				path.lineTo(x + root.getLength(), y);
+				path.closePath();
+				g2.draw(path);
+			}
+			xVal += root.getWidth() - 50;
+		}
+		return g2;
+	}
 }

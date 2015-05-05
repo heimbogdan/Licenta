@@ -40,6 +40,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.Button;
 import java.util.Vector;
+import java.awt.Choice;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
 
 public class FrontInterfaceGUI extends JFrame {
 
@@ -49,13 +52,13 @@ public class FrontInterfaceGUI extends JFrame {
 	private static final long serialVersionUID = 1562082775449087719L;
 	
 	private JPanel contentPane;
-	private CutPanel panel;
+	public static CutPanel panel;
 	private static JTable table;
 	private static DefaultTableModel tableData;
+	private JTextField textField;
+	private JTextField textField_1;
 	
-	public CutPanel getDraw(){
-		return this.panel;
-	}
+	
 	
 	/**
 	 * Launch the application.
@@ -66,6 +69,9 @@ public class FrontInterfaceGUI extends JFrame {
 				try {
 					FrontInterfaceGUI frame = new FrontInterfaceGUI();
 					frame.setVisible(true);
+					while(frame.isActive()){
+						Thread.sleep(1);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -146,7 +152,7 @@ public class FrontInterfaceGUI extends JFrame {
 					elms.addMore(Double.valueOf((String)row.get(1)), Double.valueOf((String)row.get(2)), false, Integer.parseInt((String)row.get(3)));
 				}
 				
-				int fin = GuillotineMain.start(elms, new Element(207, 280, false));
+				 GuillotineMain.start(elms, new Element(207, 280, false));
 				e.getComponent().setEnabled(true);
 			}
 		});
@@ -154,18 +160,33 @@ public class FrontInterfaceGUI extends JFrame {
 		JButton btnNewComponent = new JButton("New Component");
 		
 		JButton btnAddComponent = new JButton("Add Component");
+		
+		this.textField = new JTextField();
+		this.textField.setToolTipText("Length");
+		this.textField.setColumns(10);
+		
+		this.textField_1 = new JTextField();
+		this.textField_1.setToolTipText("Width");
+		this.textField_1.setColumns(10);
+		
+		JLabel lblSizeOfPlanc = new JLabel("Size of board");
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
 						.addComponent(btnStart, Alignment.TRAILING)
 						.addGroup(gl_panel_1.createSequentialGroup()
 							.addComponent(btnNewComponent)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnAddComponent)))
+							.addComponent(btnAddComponent))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addComponent(this.textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(this.textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblSizeOfPlanc))
 					.addContainerGap())
 		);
 		gl_panel_1.setVerticalGroup(
@@ -173,7 +194,13 @@ public class FrontInterfaceGUI extends JFrame {
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(btnStart)
-					.addGap(165)
+					.addGap(24)
+					.addComponent(lblSizeOfPlanc)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(this.textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(this.textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(96)
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNewComponent)
 						.addComponent(btnAddComponent))

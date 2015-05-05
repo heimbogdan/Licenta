@@ -27,19 +27,19 @@ public class Main {
 
 		ElementList elms = new ElementList();
 		elms.addMore(40, 100, true, 2);
-//		elms.addMore(80, 35, true, 3);
-//		elms.addMore(45, 45, false, 1);
-//		elms.addMore(85, 100, false, 2);
-//		elms.addMore(100, 200, false, 1);
-//		elms.addMore(100, 200, false, 1);
-//		elms.addMore(25, 50, true, 2);
-//		elms.addMore(45, 25, false, 3);
-//		elms.addMore(60, 40, false, 3);
-//		elms.addMore(50, 27, true, 2);
+		elms.addMore(80, 35, true, 3);
+		elms.addMore(45, 45, false, 1);
+		elms.addMore(85, 100, false, 2);
+		elms.addMore(100, 200, false, 1);
+		elms.addMore(100, 200, false, 1);
+		elms.addMore(25, 50, true, 2);
+		elms.addMore(45, 25, false, 3);
+		elms.addMore(60, 40, false, 3);
+		elms.addMore(50, 27, true, 2);
 		
 		Panel = new FrontInterfaceGUI();
 		Panel.setVisible(true);
-//		GuillotineMain.start(elms, new Element(207, 280, false));
+		GuillotineMain.start(elms, new Element(207, 280, false));
 		
 //		//SQLiteConnection conn = SQLiteConnection.getInstance();
 //		Configuration cfg=new Configuration();  

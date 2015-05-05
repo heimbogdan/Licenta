@@ -7,6 +7,7 @@ import bh.w2optimize.entity.ElementList;
 import bh.w2optimize.entity.FinalElement;
 import bh.w2optimize.gui.CutPanel;
 import bh.w2optimize.gui.Draw;
+import bh.w2optimize.gui.FrontInterfaceGUI;
 import program.Main;
 
 /**
@@ -166,7 +167,7 @@ public class GuillotineCut {
 			newFinal.calculateArea();
 			newFinal.calculateLostArea();
 			newFinal.calculateIndividualLoss();
-			CutPanel draw = Main.Panel.getDraw();
+			CutPanel draw = FrontInterfaceGUI.panel;
 			if (cutElement.getChildrens().isEmpty()) {
 				synchronized (draw) {
 					cutElement = newFinal;
