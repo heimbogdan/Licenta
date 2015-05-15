@@ -14,6 +14,7 @@ public class Element {
 
 	private int id;
 	private int componentId;
+	private String name;
 	/**
 	 * Variable that holds the element's length
 	 */
@@ -76,6 +77,14 @@ public class Element {
 
 	public void setComponentId(int componentId) {
 		this.componentId = componentId;
+	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public void setName(String name){
+		this.name = name;
 	}
 
 	public double getLength() {

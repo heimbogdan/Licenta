@@ -32,8 +32,8 @@ public class Draw extends JPanel {
 	private int pageNumber;
 	private JLabel labPlaca;
 	private int nrIncadrare;
-	private int nrPlaci = 2;
-
+	private int nrPlaci;
+	private boolean stopCutting;
 	public void setNrPlaci(int nr) {
 		this.nrPlaci = nr;
 	}
@@ -127,6 +127,7 @@ public class Draw extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		if (incadrare != null) {
 			g.setColor(Color.BLACK);
+			this.nrPlaci = this.incadrare.getChildrens().size() > 1 ? 2 : 1;
 			if (this.nrPlaci == 1) {
 				g2 = drawPlaca(
 						this.incadrare.getChildrens().get(this.pageNumber), g2,
@@ -135,7 +136,7 @@ public class Draw extends JPanel {
 						+ "/ incadrare " + nrIncadrare);
 			} else if (this.nrPlaci == 2) {
 				int num = this.pageNumber * 2;
-				if (this.incadrare.getChildrens().size()-1 > num) {
+				if (this.incadrare.getChildrens().size() - 1 > num) {
 					if (this.incadrare.getChildrens().size() >= num + 2) {
 						Element root1 = this.incadrare.getChildrens().get(num);
 						Element root2 = this.incadrare.getChildrens().get(

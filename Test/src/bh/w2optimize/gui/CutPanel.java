@@ -82,23 +82,13 @@ public class CutPanel extends JPanel implements ActionListener {
 		panel = new Draw();
 		panel.setBackground(SystemColor.activeCaption);
 		panel.setPreferredSize(new Dimension(200, 200));
-		
-		JRadioButton radioButton = new JRadioButton("1");
-		this.buttonGroup.add(radioButton);
-		
-		JRadioButton radioButton_1 = new JRadioButton("2");
-		this.buttonGroup.add(radioButton_1);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(21)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(radioButton)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(radioButton_1)
-							.addPreferredGap(ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 							.addComponent(splitPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(157))
 						.addGroup(groupLayout.createSequentialGroup()
@@ -111,11 +101,7 @@ public class CutPanel extends JPanel implements ActionListener {
 					.addGap(48)
 					.addComponent(this.panel, GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(splitPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-							.addComponent(radioButton)
-							.addComponent(radioButton_1)))
+					.addComponent(splitPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		button2 = new JButton("Next");
