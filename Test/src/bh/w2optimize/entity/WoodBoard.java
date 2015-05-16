@@ -66,10 +66,9 @@ public class WoodBoard {
 		this.price = price;
 	}
 
-	public WoodBoard(int id, String code, String name, String material,
+	public WoodBoard(String code, String name, String material,
 			double length, double width, double price) {
 		super();
-		this.id = id;
 		this.code = code;
 		this.name = name;
 		this.material = material;
@@ -78,4 +77,17 @@ public class WoodBoard {
 		this.price = price;
 	}
 
+	
+	public WoodBoard() {
+		super();
+	}
+
+	@Override
+	public String toString() {
+		return "WoodBoard [id=" + id + ", code=" + code + ", name=" + name
+				+ ", material=" + material + ", length=" + length + ", width="
+				+ width + ", price=" + price + "]";
+	}
+
+	
 }

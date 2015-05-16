@@ -39,12 +39,18 @@ public class Accessory {
 		this.price = price;
 	}
 
-	public Accessory(int id, String code, String name, double price) {
+	public Accessory(String code, String name, double price) {
 		super();
-		this.id = id;
 		this.code = code;
 		this.name = name;
 		this.price = price;
 	}
 
+	@Override
+	public String toString() {
+		return "Accessory [id=" + id + ", code=" + code + ", name=" + name
+				+ ", price=" + price + "]";
+	}
+
+	
 }

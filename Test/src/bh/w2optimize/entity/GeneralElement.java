@@ -48,8 +48,25 @@ public class GeneralElement extends Element {
 		this.percent2 = percent2;
 	}
 	
-	public Element toElement(){
-		return new Element(getLength(), getWidth(), isRotate());
+	
+	
+	public GeneralElement() {
+		super();
 	}
 
+	public Element toElement(){
+		Element el = new Element(getLength(), getWidth(), isRotate());
+		el.setComponentCode(getComponentCode());
+		el.setName(getName());
+		return el;
+	}
+
+	@Override
+	public String toString() {
+		return "GeneralElement [ " + super.toString() + " lengthCode=" + lengthCode + ", widthCode="
+				+ widthCode + ", percent1=" + percent1 + ", percent2="
+				+ percent2 + "]";
+	}
+
+	
 }

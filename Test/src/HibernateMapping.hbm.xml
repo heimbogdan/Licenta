@@ -5,17 +5,17 @@
 		<id name="id" column="id">
 			<generator class="native"></generator>
 		</id>
-		<property name="name"></property>
-		<property name="code"></property>
+		<property name="name" column="name"></property>
+		<property name="code" column="code"></property>
 	</class>
 	<class name="bh.w2optimize.entity.Element" table="element">
-		<id name="id">
+		<id name="id" column="id">
 			<generator class="native"></generator>
 		</id>
-		<property name="componentCode"></property>
-		<property name="name"></property>
-		<property name="length"></property>
-		<property name="width"></property>
+		<property name="componentCode" column="componentCode"></property>
+		<property name="name" column="name"></property>
+		<property name="length" column="length"></property>
+		<property name="width" column="width"></property>
 	</class>
 	<class name="bh.w2optimize.entity.GeneralComponent" table="generalcomponent">
 		<id name="id" column="id">

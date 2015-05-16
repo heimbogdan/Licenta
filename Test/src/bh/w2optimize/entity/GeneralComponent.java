@@ -38,5 +38,15 @@ public class GeneralComponent extends Component {
 		this.height = height;
 	}
 
+	public GeneralComponent() {
+		super();
+	}
+
+	@Override
+	public String toString() {
+		return "GeneralComponent [ " + super.toString() + " length=" + length + ", width=" + width
+				+ ", height=" + height + "]";
+	}
+ 
 	
 }

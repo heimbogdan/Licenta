@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Element {
 
 	private int id;
-	private int componentCode;
+	private String componentCode;
 	private String name;
 	/**
 	 * Variable that holds the element's length
@@ -56,13 +56,12 @@ public class Element {
 	 * Boolean that says if the current element is perceived as a loss
 	 */
 	private boolean loss;
-	
+
 	/**
 	 * Boolean that says if the current element can be rotated or not
 	 */
 	private boolean rotate;
-	
-	
+
 	public int getId() {
 		return id;
 	}
@@ -71,19 +70,19 @@ public class Element {
 		this.id = id;
 	}
 
-	public int getComponentCode() {
+	public String getComponentCode() {
 		return componentCode;
 	}
 
-	public void setComponentCode(int componentCode) {
+	public void setComponentCode(String componentCode) {
 		this.componentCode = componentCode;
 	}
-	
-	public String getName(){
+
+	public String getName() {
 		return name;
 	}
-	
-	public void setName(String name){
+
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -169,9 +168,15 @@ public class Element {
 		this.rotate = rotate;
 	}
 
+	public Element() {
+		super();
+	}
+
 	@Override
 	public String toString() {
-		return this.length + " x " + this.width;
+		return "Element [id=" + id + ", componentCode=" + componentCode
+				+ ", name=" + name + ", length=" + length + ", width=" + width
+				+ ", rotate=" + rotate + "]";
 	}
 
 	/**
@@ -189,7 +194,8 @@ public class Element {
 	}
 
 	public Element cloneElement() {
-		final Element element = new Element(this.length, this.width, this.rotate);
+		final Element element = new Element(this.length, this.width,
+				this.rotate);
 		element.setChildrens(this.getChildrens());
 		element.setParent(this.parent);
 		element.setPoint(this.point);
