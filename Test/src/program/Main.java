@@ -85,6 +85,13 @@ public class Main {
 //	    Element elfrgel = gel.toElement();
 //	    session.persist(elfrgel);
 //	    t.commit();//transaction is committed 
+//	    
+//	    //-- testare Update / delete
+////	    t.begin();
+////	    elfrgel.setName("AAAAAAA");
+////	    session.update(elfrgel);
+////	    session.delete(elem);
+////	    t.commit();
 //	    SQLQuery q =  session.createSQLQuery("select * from component");
 //	    q.addEntity(Component.class);
 //	    List<Component> list = q.list();

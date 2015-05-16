@@ -43,6 +43,11 @@ import java.util.Vector;
 import java.awt.Choice;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 
 public class FrontInterfaceGUI extends JFrame {
 
@@ -113,6 +118,12 @@ public class FrontInterfaceGUI extends JFrame {
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
 		
+		JMenuItem mntmEditComponents = new JMenuItem("Edit Components");
+		mnEdit.add(mntmEditComponents);
+		
+		JMenuItem mntmEditWoodBoards = new JMenuItem("Edit Wood Boards");
+		mnEdit.add(mntmEditWoodBoards);
+		
 		JMenu mnSettings = new JMenu("Settings");
 		menuBar.add(mnSettings);
 		
@@ -159,17 +170,12 @@ public class FrontInterfaceGUI extends JFrame {
 		
 		JButton btnNewComponent = new JButton("New Component");
 		
-		JButton btnAddComponent = new JButton("Add Component");
+		JButton btnAddComponent = new JButton("Choose Component");
 		
-		this.textField = new JTextField();
-		this.textField.setToolTipText("Length");
-		this.textField.setColumns(10);
+		JLayeredPane layeredPane = new JLayeredPane();
+		layeredPane.setBorder(new LineBorder(new Color(0, 0, 0)));
 		
-		this.textField_1 = new JTextField();
-		this.textField_1.setToolTipText("Width");
-		this.textField_1.setColumns(10);
-		
-		JLabel lblSizeOfPlanc = new JLabel("Size of board");
+		JButton btnStop = new JButton("Stop");
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -177,37 +183,61 @@ public class FrontInterfaceGUI extends JFrame {
 					.addContainerGap()
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
 						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
-						.addComponent(btnStart, Alignment.TRAILING)
 						.addGroup(gl_panel_1.createSequentialGroup()
 							.addComponent(btnNewComponent)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnAddComponent))
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addComponent(this.textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+							.addComponent(btnStop)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(this.textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblSizeOfPlanc))
+							.addComponent(btnStart))
+						.addComponent(layeredPane, GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(btnStart)
-					.addGap(24)
-					.addComponent(lblSizeOfPlanc)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-						.addComponent(this.textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(this.textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(96)
+					.addComponent(layeredPane, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+					.addGap(99)
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNewComponent)
 						.addComponent(btnAddComponent))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-					.addContainerGap())
+					.addGap(22)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnStart)
+						.addComponent(btnStop)))
 		);
+		
+		JLabel lblSizeOfPlanc = new JLabel("Size of board");
+		lblSizeOfPlanc.setBounds(7, 0, 63, 14);
+		layeredPane.add(lblSizeOfPlanc);
+		
+		this.textField = new JTextField();
+		this.textField.setBounds(7, 25, 46, 20);
+		layeredPane.add(this.textField);
+		this.textField.setToolTipText("Length");
+		this.textField.setColumns(10);
+		
+		JLabel lblX = new JLabel("X");
+		lblX.setBounds(64, 28, 6, 14);
+		layeredPane.add(lblX);
+		
+		this.textField_1 = new JTextField();
+		this.textField_1.setBounds(80, 25, 46, 20);
+		layeredPane.add(this.textField_1);
+		this.textField_1.setToolTipText("Width");
+		this.textField_1.setColumns(10);
+		
+		JButton btnNew = new JButton("New");
+		btnNew.setBounds(144, 24, 53, 23);
+		layeredPane.add(btnNew);
+		
+		JButton btnAdd = new JButton("Add");
+		btnAdd.setBounds(207, 24, 53, 23);
+		layeredPane.add(btnAdd);
 		
 		table = new JTable();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
