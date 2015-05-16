@@ -1,8 +1,5 @@
 package bh.w2optimize.entity;
 
-import javax.annotation.Generated;
-import org.hibernate.annotations.GenericGenerator;
-
 /**
  * Used to group multiple elements ({@link Element}) that together make a
  * furniture component

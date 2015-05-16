@@ -12,12 +12,12 @@
 		<id name="id">
 			<generator class="native"></generator>
 		</id>
-		<property name="componentId"></property>
+		<property name="componentCode"></property>
 		<property name="name"></property>
 		<property name="length"></property>
 		<property name="width"></property>
 	</class>
-	<class name="bh.w2optimize.entity.GeneralComponent">
+	<class name="bh.w2optimize.entity.GeneralComponent" table="generalcomponent">
 		<id name="id" column="id">
 			<generator class="native"></generator>
 		</id>
@@ -26,5 +26,33 @@
 		<property name="length"></property>
 		<property name="width"></property>
 		<property name="height"></property>
+	</class>
+	<class name="bh.w2optimize.entity.GeneralElement" table="generalelement">
+		<id name="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="componentCode"></property>
+		<property name="name"></property>
+		<property name="length"></property>
+		<property name="width"></property>
+	</class>
+	<class name="bh.w2optimize.entity.Accessory" table="accessory">
+		<id name="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="code"></property>
+		<property name="name"></property>
+		<property name="price"></property>
+	</class>
+	<class name="bh.w2optimize.entity.WoodBoard" table="woodboard">
+		<id name="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="code"></property>
+		<property name="name"></property>
+		<property name="material"></property>
+		<property name="length"></property>
+		<property name="width"></property>
+		<property name="price"></property>
 	</class>
 </hibernate-mapping>

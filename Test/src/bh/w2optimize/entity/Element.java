@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Element {
 
 	private int id;
-	private int componentId;
+	private int componentCode;
 	private String name;
 	/**
 	 * Variable that holds the element's length
@@ -71,12 +71,12 @@ public class Element {
 		this.id = id;
 	}
 
-	public int getComponentId() {
-		return componentId;
+	public int getComponentCode() {
+		return componentCode;
 	}
 
-	public void setComponentId(int componentId) {
-		this.componentId = componentId;
+	public void setComponentCode(int componentCode) {
+		this.componentCode = componentCode;
 	}
 	
 	public String getName(){
