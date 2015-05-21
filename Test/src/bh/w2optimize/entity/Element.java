@@ -1,6 +1,7 @@
 package bh.w2optimize.entity;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,8 +11,12 @@ import java.util.ArrayList;
  * @version 1.0
  * @since 22.04.2015
  */
-public class Element {
+public class Element implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9209757999479173396L;
 	private int id;
 	private String componentCode;
 	private String name;

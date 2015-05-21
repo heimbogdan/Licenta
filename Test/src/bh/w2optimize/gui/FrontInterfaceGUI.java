@@ -155,7 +155,7 @@ public class FrontInterfaceGUI extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				e.getComponent().setEnabled(false);
-				panel.setIncadrare(null);
+				panel.resetIncadrare();
 				ElementList elms = new ElementList();
 				Vector data = tableData.getDataVector();
 				for(Object element : data){

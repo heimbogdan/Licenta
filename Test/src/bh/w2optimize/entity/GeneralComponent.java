@@ -30,9 +30,9 @@ public class GeneralComponent extends Component {
 		this.height = height;
 	}
 
-	public GeneralComponent(String name, String code, double length,
-			double width, double height) {
-		super(name, code);
+	public GeneralComponent(final String name, final String code, final double length,
+			final double width, final double height, final ElementList elements) {
+		super(name, code, elements);
 		this.length = length;
 		this.width = width;
 		this.height = height;

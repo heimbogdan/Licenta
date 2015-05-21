@@ -7,27 +7,20 @@
 		</id>
 		<property name="name" column="name"></property>
 		<property name="code" column="code"></property>
-	</class>
-	<class name="bh.w2optimize.entity.Element" table="element">
-		<id name="id" column="id">
-			<generator class="native"></generator>
-		</id>
-		<property name="componentCode" column="componentCode"></property>
-		<property name="name" column="name"></property>
-		<property name="length" column="length"></property>
-		<property name="width" column="width"></property>
+		<property name="elements" column="elements"></property>
 	</class>
 	<class name="bh.w2optimize.entity.GeneralComponent" table="generalcomponent">
 		<id name="id" column="id">
 			<generator class="native"></generator>
 		</id>
-		<property name="name"></property>
-		<property name="code"></property>
-		<property name="length"></property>
-		<property name="width"></property>
-		<property name="height"></property>
+		<property name="name" column="name"></property>
+		<property name="code" column="code"></property>
+		<property name="length" column="length"></property>
+		<property name="width" column="width"></property>
+		<property name="height" column="height"></property>
+		<property name="elements" column="elements"></property>
 	</class>
-	<class name="bh.w2optimize.entity.GeneralElement" table="generalelement">
+	<!-- <class name="bh.w2optimize.entity.GeneralElement" table="generalelement">
 		<id name="id">
 			<generator class="native"></generator>
 		</id>
@@ -35,7 +28,11 @@
 		<property name="name"></property>
 		<property name="length"></property>
 		<property name="width"></property>
-	</class>
+		<property name="lengthCode"></property>
+		<property name="widthCode"></property>
+		<property name="percent1"></property>
+		<property name="percent2"></property>
+	</class> -->
 	<class name="bh.w2optimize.entity.Accessory" table="accessory">
 		<id name="id">
 			<generator class="native"></generator>

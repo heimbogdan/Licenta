@@ -87,18 +87,18 @@ public class GuillotineCut {
 			java.util.Collections.swap(elements, i, k);
 			permute(elements, root, k + 1);
 			java.util.Collections.swap(elements, k, i);
-			if(elements.get(i).isRotate()){
-				Element el = elements.get(i);
-				double elength = el.getLength();
-				double ewidth = el.getWidth();
-				el.setLength(ewidth);
-				el.setWidth(elength);
-				java.util.Collections.swap(elements, i, k);
-				permute(elements, root, k + 1);
-				java.util.Collections.swap(elements, k, i);
-				el.setLength(elength);
-				el.setWidth(ewidth);
-			}
+//			if(elements.get(i).isRotate()){
+//				Element el = elements.get(i);
+//				double elength = el.getLength();
+//				double ewidth = el.getWidth();
+//				el.setLength(ewidth);
+//				el.setWidth(elength);
+//				java.util.Collections.swap(elements, i, k);
+//				permute(elements, root, k + 1);
+//				java.util.Collections.swap(elements, k, i);
+//				el.setLength(elength);
+//				el.setWidth(ewidth);
+//			}
 		}
 		
 		if (k == elements.size() - 1) {

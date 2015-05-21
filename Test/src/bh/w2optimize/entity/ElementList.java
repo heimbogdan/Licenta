@@ -1,5 +1,6 @@
 package bh.w2optimize.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -10,10 +11,14 @@ import java.util.Comparator;
  * @version 1.0
  * @since 22.04.2015
  */
-public class ElementList extends ArrayList<Element> {
+public class ElementList extends ArrayList<Element> implements Serializable{
 
-	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7790721176004952007L;
+	
 	public static Comparator<Element> comparator = new Comparator<Element>() {
 
 		@Override

@@ -1,7 +1,14 @@
 package bh.w2optimize.entity;
 
-public class GeneralElement extends Element {
+import java.io.Serializable;
 
+public class GeneralElement extends Element implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5585714780386931738L;
+	
 	private int lengthCode;
 	private int widthCode;
 	private int percent1;

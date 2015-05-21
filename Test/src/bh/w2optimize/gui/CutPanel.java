@@ -61,6 +61,10 @@ public class CutPanel extends JPanel implements ActionListener {
 		this.panel.setIncadrare(incadrare);
 	}
 
+	public void resetIncadrare(){
+		this.panel.resetIncadrare();
+	}
+	
 	public void drawing() {
 		repaint();
 	}

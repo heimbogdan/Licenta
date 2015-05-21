@@ -13,7 +13,8 @@ public class Component {
 	private int id;
 	private String name;
 	private String code;
-
+	private ElementList elements;
+	
 	public int getId() {
 		return id;
 	}
@@ -60,15 +61,25 @@ public class Component {
 		this.code = code;
 	}
 
+	
+	public ElementList getElements() {
+		return elements;
+	}
+
+	public void setElements(ElementList elements) {
+		this.elements = elements;
+	}
+
 	/**
 	 * Makes a new component
 	 * @param name - The name of the component
 	 * @param code - The code of the component
 	 */
-	public Component(final String name,final String code) {
+	public Component(final String name,final String code, final ElementList elements) {
 		super();
 		this.name = name;
 		this.code = code;
+		this.elements = elements;
 	}
 
 	public Component(){

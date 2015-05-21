@@ -57,7 +57,7 @@ public class Draw extends JPanel {
 	public void setIncadrare(final FinalElement incadrare) {
 
 		boolean makeDraw = false;
-
+		
 		if (this.incadrare == null
 				|| incadrare.getChildrens().size() < this.incadrare
 						.getChildrens().size()) {
@@ -86,6 +86,11 @@ public class Draw extends JPanel {
 		}
 	}
 
+	public void resetIncadrare(){
+		this.incadrare = null;
+		this.pageNumber = 0;
+		this.nrIncadrare =0;
+	}
 	public void drawing() {
 		repaint();
 	}
@@ -167,6 +172,8 @@ public class Draw extends JPanel {
 			rect.setRect(x, y, root.getLength(), root.getWidth());
 			g2.setColor(Color.RED);
 			g2.fill(rect);
+			g2.setColor(Color.BLACK);
+			g2.draw(rect);
 		} else {
 			path.moveTo(x, y);
 			if (!root.getChildrens().isEmpty()) {

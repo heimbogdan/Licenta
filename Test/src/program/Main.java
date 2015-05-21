@@ -50,12 +50,17 @@ public class Main {
 		elms.addMore(60, 40, false, 3);
 		elms.addMore(50, 27, true, 2);
 		
+//		elms.add(new GeneralElement(40, 100, true, 1, 2, 100, 100));
+//		elms.add(new GeneralElement(45, 100, true, 1, 2, 100, 100));
+//		elms.add(new GeneralElement(40, 105, true, 1, 2, 100, 100));
+//		elms.add(new GeneralElement(40, 100, true, 1, 2, 100, 100));
+//		elms.add(new GeneralElement(40, 100, true, 1, 2, 100, 100));
 //		Panel = new FrontInterfaceGUI();
 //		Panel.setVisible(true);
 //		GuillotineMain.start(elms, new Element(207, 280, false));
 //		
 		
-//		//TestBaza_DATE
+		//TestBaza_DATE
 //		BasicConfigurator.configure();
 //		Configuration cfg=new Configuration();  
 //	    cfg.configure("hibernate.cfg.xml");//populates the data of the configuration file  
@@ -68,8 +73,8 @@ public class Main {
 //	      
 //	    //creating transaction object  
 //	    Transaction t=session.beginTransaction();  
-//	    
-//	    session.persist(new Component("aaa", "SW2"));//persisting the object  
+	    
+//	    session.persist(new Component("aaa", "SW2", elms));//persisting the object  
 //	    session.persist(new Component("bbb", "XB2"));
 //	    Element elem = new Element(100, 20,false);
 //	    elem.setComponentCode("XB2");
@@ -77,7 +82,7 @@ public class Main {
 //	    session.persist(elem);
 //	    session.persist(new Accessory("EUR_S", "Euro Surub", 0.09));
 //	    session.persist(new WoodBoard("NUCP", "NUC", "PAL", 285, 207, 270));
-//	    session.persist(new GeneralComponent("Birou 2 usi", "G_B2U", 120, 75, 85));
+//	    session.persist(new GeneralComponent("Birou 2 usi", "G_B2U", 120, 75, 85,elms));
 //	    GeneralElement gel = new GeneralElement(120, 75 , false, 1, 2, 100, 100);
 //	    gel.setComponentCode("G_B2U");
 //	    gel.setName("Blat Birou");
