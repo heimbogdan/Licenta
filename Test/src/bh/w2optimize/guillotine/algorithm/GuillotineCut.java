@@ -88,6 +88,7 @@ public class GuillotineCut {
 			permute(elements, root, k + 1);
 			java.util.Collections.swap(elements, k, i);
 			if(elements.get(i).isRotate()){
+				// metoda rotire
 				Element el = elements.get(i);
 				double elength = el.getLength();
 				double ewidth = el.getWidth();
