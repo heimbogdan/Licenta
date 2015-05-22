@@ -67,15 +67,24 @@ public class Draw extends JPanel {
 
 		} else if (incadrare.getChildrens().size() == this.incadrare
 				.getChildrens().size()) {
-
-			final ArrayList<Double> newLoss = incadrare.getIndividualLoss();
-			final ArrayList<Double> oldLoss = this.incadrare
-					.getIndividualLoss();
-			for (int i = 0; i < newLoss.size(); i++) {
-				if (newLoss.get(i) < oldLoss.get(i)) {
-					this.incadrare = incadrare;
-					makeDraw = true;
-					break;
+			if (this.incadrare.getUseableArea() <= incadrare.getUseableArea()) {
+				if(this.incadrare.getUseableArea() == incadrare.getUseableArea()){
+					if(this.incadrare.getUseablePices() > incadrare.getUseablePices()){
+						this.incadrare = incadrare;
+						makeDraw = true;
+					}
+				} else {
+					final ArrayList<Double> newLoss = incadrare
+							.getIndividualLoss();
+					final ArrayList<Double> oldLoss = this.incadrare
+							.getIndividualLoss();
+					for (int i = 0; i < newLoss.size(); i++) {
+						if (newLoss.get(i) < oldLoss.get(i)) {
+							this.incadrare = incadrare;
+							makeDraw = true;
+							break;
+						}
+					}
 				}
 			}
 		}

@@ -125,6 +125,13 @@ public class FrontInterfaceGUI extends JFrame {
 		mnEdit.add(mntmEditWoodBoards);
 		
 		JMenuItem mntmEditStocks = new JMenuItem("Edit Stocks");
+		mntmEditStocks.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				EditStocks stocks = new EditStocks();
+				stocks.setVisible(true);
+			}
+		});
 		mnEdit.add(mntmEditStocks);
 
 		JMenu mnSettings = new JMenu("Settings");
@@ -166,7 +173,7 @@ public class FrontInterfaceGUI extends JFrame {
 				for (Object element : data) {
 					Vector row = (Vector) element;
 					elms.addMore(Double.valueOf((String) row.get(1)),
-							Double.valueOf((String) row.get(2)), false,
+							Double.valueOf((String) row.get(2)), true,
 							Integer.parseInt((String) row.get(3)));
 				}
 

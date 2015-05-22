@@ -21,8 +21,9 @@ public class FinalElement extends Element {
 	/**
 	 * Surface offcuts that can be reused.
 	 */
-	private double usebleArea;
+	private double useableArea;
 
+	private int useablePices;
 	/**
 	 * Surface offcuts which is seen as a loss.
 	 */
@@ -47,11 +48,11 @@ public class FinalElement extends Element {
 	}
 
 	public double getUsebleArea() {
-		return usebleArea;
+		return useableArea;
 	}
 
 	public void setUsebleArea(final double usebleArea) {
-		this.usebleArea = usebleArea;
+		this.useableArea = usebleArea;
 	}
 
 	public ArrayList<Double> getIndividualLoss() {
@@ -62,11 +63,21 @@ public class FinalElement extends Element {
 		this.individualLoss = individualLoss;
 	}
 
+	
+	public double getUseableArea() {
+		return useableArea;
+	}
+
+	public int getUseablePices() {
+		return useablePices;
+	}
+
 	public FinalElement(final double length, final double width) {
 		super(length, width, false);
 		this.area = 0;
 		this.lostArea = 0;
-		this.usebleArea = 0;
+		this.useableArea = 0;
+		this.useablePices = 0;
 		this.individualLoss = new ArrayList<Double>();
 	}
 
@@ -98,8 +109,9 @@ public class FinalElement extends Element {
 				calculateUsebleArea(elementl);
 			}
 		} else {
-			if (!root.isUsed() && !root.getParent().isLoss()) {
-				this.usebleArea += root.area();
+			if (!root.isUsed() && root.getLength() > 30 && root.getWidth() > 30) {
+				this.useableArea += root.area();
+				this.useablePices++;
 			}
 		}
 
@@ -115,7 +127,7 @@ public class FinalElement extends Element {
 			calculateUsebleArea(root);
 			totalArea += root.area();
 		}
-		this.lostArea = totalArea - this.area - this.usebleArea;
+		this.lostArea = totalArea - this.area - this.useableArea;
 	}
 
 	public void calculateIndividualLoss() {

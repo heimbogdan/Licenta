@@ -64,7 +64,7 @@ public class GuillotineCut {
 	public FinalElement beginCutting(final ElementList elements,
 			final Element root) {
 		elements.sort(ElementList.comparator);
-		permute(elements, root, 1);
+		permute(elements, root, 0);
 		return cutElement;
 	}
 
@@ -87,25 +87,27 @@ public class GuillotineCut {
 			java.util.Collections.swap(elements, i, k);
 			permute(elements, root, k + 1);
 			java.util.Collections.swap(elements, k, i);
-//			if(elements.get(i).isRotate()){
-//				Element el = elements.get(i);
-//				double elength = el.getLength();
-//				double ewidth = el.getWidth();
-//				el.setLength(ewidth);
-//				el.setWidth(elength);
-//				java.util.Collections.swap(elements, i, k);
-//				permute(elements, root, k + 1);
-//				java.util.Collections.swap(elements, k, i);
-//				el.setLength(elength);
-//				el.setWidth(ewidth);
-//			}
+			if(elements.get(i).isRotate()){
+				Element el = elements.get(i);
+				double elength = el.getLength();
+				double ewidth = el.getWidth();
+				el.setLength(ewidth);
+				el.setWidth(elength);
+				java.util.Collections.swap(elements, i, k);
+				permute(elements, root, k + 1);
+				java.util.Collections.swap(elements, k, i);
+				el.setLength(elength);
+				el.setWidth(ewidth);
+			}
 		}
 		
-		if (k == elements.size() - 1) {
+		if (k == elements.size()) {
 			pal = new Element(0, 0, false);
 			int index = 0;
 			while (!elements.isAllUsed()) {
-				pal.addRoot(new Element(root.getLength(), root.getWidth(), root.isRotate()));
+				Element newRoot = new Element(root.getLength(), root.getWidth(), root.isRotate());
+				newRoot.setLoss(false);
+				pal.addRoot(newRoot);
 				cut(elements, pal.getChildrens().get(index));
 				index++;
 			}
@@ -191,10 +193,22 @@ public class GuillotineCut {
 						}
 						better++;
 					}
-					if (better == newFinalChildrens) {
-						synchronized (draw) {
-							cutElement = newFinal;
-							draw.setIncadrare(cutElement);
+					if (better == newFinalChildrens && newFinal.getUseableArea() >= 
+							cutElement.getUseableArea()) {
+						if (newFinal.getUseableArea() == cutElement
+								.getUseableArea()) {
+							if (newFinal.getUseablePices() <= cutElement
+									.getUseablePices()) {
+								synchronized (draw) {
+									cutElement = newFinal;
+									draw.setIncadrare(cutElement);
+								}
+							}
+						} else  {
+							synchronized (draw) {
+								cutElement = newFinal;
+								draw.setIncadrare(cutElement);
+							}
 						}
 					}
 				}

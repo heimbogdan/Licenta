@@ -3,9 +3,11 @@ package bh.w2optimize.gui;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.TrayIcon.MessageType;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTable;
@@ -26,10 +28,10 @@ import java.awt.event.MouseEvent;
 public class WoodBoardBrowser extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JTable table;
+	private static JTable table;
 	private JScrollPane n;
 	private static FrontInterfaceGUI front;
-	
+	private WoodBoardBrowser _self = this;
 	/**
 	 * Launch the application.
 	 */
@@ -114,6 +116,16 @@ public class WoodBoardBrowser extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						if(table.getSelectedRow() != -1){
+							
+						}else {
+							JOptionPane.showMessageDialog(_self, "Please select a row!", "Warning!", JOptionPane.WARNING_MESSAGE);
+						}
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
