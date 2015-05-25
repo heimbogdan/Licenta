@@ -9,7 +9,6 @@ public class WoodBoard {
 	private double length;
 	private double width;
 	private double price;
-	private int number;
 	
 	public int getId() {
 		return id;
@@ -67,14 +66,6 @@ public class WoodBoard {
 		this.price = price;
 	}
 
-	
-	public int getNumber() {
-		return number;
-	}
-
-	public void setNumber(int number) {
-		this.number = number;
-	}
 
 	public WoodBoard(String code, String name, String material,
 			double length, double width, double price) {
@@ -96,7 +87,7 @@ public class WoodBoard {
 	public String toString() {
 		return "WoodBoard [id=" + id + ", code=" + code + ", name=" + name
 				+ ", material=" + material + ", length=" + length + ", width="
-				+ width + ", price=" + price + ", number=" + number + "]";
+				+ width + ", price=" + price + "]";
 	}
 
 	

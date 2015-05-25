@@ -8,7 +8,6 @@ import org.hibernate.Transaction;
 
 import bh.w2optimize.db.connection.SQLiteConnection;
 import bh.w2optimize.entity.GeneralComponent;
-import bh.w2optimize.entity.WoodBoard;
 
 public class GeneralComponentDAO {
 

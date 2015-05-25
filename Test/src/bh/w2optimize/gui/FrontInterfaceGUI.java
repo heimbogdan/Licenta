@@ -28,6 +28,7 @@ import javax.swing.JButton;
 import javax.swing.ListSelectionModel;
 import javax.swing.JPopupMenu;
 
+import bh.w2optimize.db.connection.SQLiteConnection;
 import bh.w2optimize.entity.Element;
 import bh.w2optimize.entity.ElementList;
 import bh.w2optimize.entity.WoodBoard;
@@ -57,11 +58,13 @@ public class FrontInterfaceGUI extends JFrame {
 	public static CutPanel panel;
 	private static JTable table;
 	private static DefaultTableModel tableData;
-	private JTextField textField;
-	private ArrayList<WoodBoard> WoodBoards = new ArrayList<WoodBoard>();
-
-	public void setWoodBoards(ArrayList<WoodBoard> woodBoards) {
-		WoodBoards = woodBoards;
+	private JTextField woodBoardNameTB;
+	private WoodBoard usedBoard;
+	
+	
+	public void setUsedBoard(WoodBoard board) {
+		this.usedBoard = board;
+		this.woodBoardNameTB.setText(board.getName());
 	}
 
 	/**
@@ -91,6 +94,7 @@ public class FrontInterfaceGUI extends JFrame {
 	}
 
 	private void createContents() {
+		SQLiteConnection.getInstance();
 		setResizable(false);
 		setTitle("W2Optimize");
 		setPreferredSize(new Dimension(840, 600));
@@ -265,12 +269,12 @@ public class FrontInterfaceGUI extends JFrame {
 		lblWoodBoard.setBounds(10, 11, 125, 14);
 		layeredPane.add(lblWoodBoard);
 
-		this.textField = new JTextField();
-		this.textField.setEditable(false);
-		this.textField.setToolTipText("Name of the used board");
-		this.textField.setBounds(10, 36, 161, 20);
-		layeredPane.add(this.textField);
-		this.textField.setColumns(10);
+		this.woodBoardNameTB = new JTextField();
+		this.woodBoardNameTB.setEditable(false);
+		this.woodBoardNameTB.setToolTipText("Name of the used board");
+		this.woodBoardNameTB.setBounds(10, 36, 161, 20);
+		layeredPane.add(this.woodBoardNameTB);
+		this.woodBoardNameTB.setColumns(10);
 
 		JButton btnWoodBoardBrowse = new JButton("Browse");
 		btnWoodBoardBrowse.addMouseListener(new MouseAdapter() {

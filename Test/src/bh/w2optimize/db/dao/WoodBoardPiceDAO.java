@@ -8,11 +8,11 @@ import org.hibernate.Transaction;
 
 import bh.w2optimize.db.connection.SQLiteConnection;
 import bh.w2optimize.entity.WoodBoard;
-import bh.w2optimize.entity.WoodBoardPiece;
+import bh.w2optimize.entity.WoodBoardPice;
 
 public class WoodBoardPiceDAO {
 
-	public static void insert(WoodBoardPiece boardPice){
+	public static void insert(WoodBoardPice boardPice){
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		Transaction transaction = session.beginTransaction();
@@ -27,7 +27,7 @@ public class WoodBoardPiceDAO {
 		}
 	}
 	
-	public static void update(WoodBoardPiece boardPice){
+	public static void update(WoodBoardPice boardPice){
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		Transaction transaction = session.beginTransaction();
@@ -42,7 +42,7 @@ public class WoodBoardPiceDAO {
 		}
 	}
 	
-	public static void delete(WoodBoardPiece boardPice){
+	public static void delete(WoodBoardPice boardPice){
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		Transaction transaction = session.beginTransaction();
@@ -58,13 +58,13 @@ public class WoodBoardPiceDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<WoodBoardPiece> getAll(){
-		List<WoodBoardPiece> list = null;
+	public static List<WoodBoardPice> getAll(){
+		List<WoodBoardPice> list = null;
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from woodboard");
-			q4.addEntity(WoodBoardPiece.class);
+			q4.addEntity(WoodBoardPice.class);
 			list = q4.list();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,13 +75,13 @@ public class WoodBoardPiceDAO {
 	
 	@SuppressWarnings("unchecked")
 	public static WoodBoard getById(int id){
-		WoodBoardPiece board = null;
+		WoodBoardPice board = null;
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from woodboard where id=" + id);
-			q4.addEntity(WoodBoardPiece.class);
-			List<WoodBoardPiece> list = q4.list();
+			q4.addEntity(WoodBoardPice.class);
+			List<WoodBoardPice> list = q4.list();
 			if(list != null && !list.isEmpty()){
 				board = list.get(0);
 			}
@@ -93,13 +93,13 @@ public class WoodBoardPiceDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<WoodBoardPiece> getByCode(String code){
-		List<WoodBoardPiece> list = null;
+	public static List<WoodBoardPice> getByCode(String code){
+		List<WoodBoardPice> list = null;
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from woodboard where code='" + code + "'");
-			q4.addEntity(WoodBoardPiece.class);
+			q4.addEntity(WoodBoardPice.class);
 			list = q4.list();
 		} catch (Exception e) {
 			e.printStackTrace();

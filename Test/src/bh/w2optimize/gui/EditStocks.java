@@ -29,11 +29,19 @@ import javax.swing.JPopupMenu;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JMenuItem;
 
+import bh.w2optimize.db.dao.WoodBoardDAO;
+import bh.w2optimize.db.dao.WoodBoardPiceDAO;
 import bh.w2optimize.entity.WoodBoard;
+import bh.w2optimize.entity.WoodBoardPice;
+
+import javax.swing.JComboBox;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 public class EditStocks extends JDialog {
 
@@ -43,16 +51,17 @@ public class EditStocks extends JDialog {
 	private static final long serialVersionUID = -776644945767968269L;
 	private final JPanel contentPanel = new JPanel();
 	private JTable stockTable;
-	private JTextField codeTB;
 	private JTextField nameTB;
 	private JTextField materialTB;
 	private JTextField lengthTB;
 	private JTextField widthTB;
 	private JTextField priceTB;
 	private DefaultTableModel stockData;
-	private ArrayList<WoodBoard> insertList;
 	private int editIndex;
-
+	private List<WoodBoardPice> list;
+	private List<WoodBoard> listWood;
+	private JComboBox<String> codeCB;
+	private JTextField numberTB;
 	/**
 	 * Launch the application.
 	 */
@@ -131,33 +140,48 @@ public class EditStocks extends JDialog {
 		lblPrice.setBounds(38, 218, 46, 14);
 		layeredPane.add(lblPrice);
 		
-		this.codeTB = new JTextField();
-		this.codeTB.setBounds(94, 60, 86, 20);
-		layeredPane.add(this.codeTB);
-		this.codeTB.setColumns(10);
-		
 		this.nameTB = new JTextField();
-		this.nameTB.setBounds(94, 91, 86, 20);
+		this.nameTB.setEditable(false);
+		this.nameTB.setBounds(94, 91, 112, 20);
 		layeredPane.add(this.nameTB);
 		this.nameTB.setColumns(10);
 		
 		this.materialTB = new JTextField();
-		this.materialTB.setBounds(94, 122, 86, 20);
+		this.materialTB.setEditable(false);
+		this.materialTB.setBounds(94, 122, 112, 20);
 		layeredPane.add(this.materialTB);
 		this.materialTB.setColumns(10);
 		
 		this.lengthTB = new JTextField();
-		this.lengthTB.setBounds(94, 153, 86, 20);
+		this.lengthTB.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				if(evt.getPropertyName().equals("text")){
+					calculatePrice();
+				}
+			}
+		});
+		this.lengthTB.setText("0");
+		this.lengthTB.setBounds(94, 153, 112, 20);
 		layeredPane.add(this.lengthTB);
 		this.lengthTB.setColumns(10);
 		
 		this.widthTB = new JTextField();
-		this.widthTB.setBounds(94, 184, 86, 20);
+		this.widthTB.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				if(evt.getPropertyName().equals("text")){
+					calculatePrice();
+				}
+			}
+		});
+		this.widthTB.setText("0");
+		this.widthTB.setBounds(94, 184, 112, 20);
 		layeredPane.add(this.widthTB);
 		this.widthTB.setColumns(10);
 		
 		this.priceTB = new JTextField();
-		this.priceTB.setBounds(94, 215, 86, 20);
+		this.priceTB.setText("0");
+		this.priceTB.setEditable(false);
+		this.priceTB.setBounds(94, 215, 112, 20);
 		layeredPane.add(this.priceTB);
 		this.priceTB.setColumns(10);
 		
@@ -165,7 +189,7 @@ public class EditStocks extends JDialog {
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				Object[] newWood = new Object[] { codeTB.getText(),
+				Object[] newWood = new Object[] { codeCB.getSelectedItem().toString(),
 						nameTB.getText(), materialTB.getText(),
 						Double.valueOf(lengthTB.getText()),
 						Double.valueOf(widthTB.getText()),
@@ -174,13 +198,10 @@ public class EditStocks extends JDialog {
 				switch (((JButton)arg0.getComponent()).getText()){
 				case "Add":
 					stockData.addRow(newWood);
-					if (insertList == null) {
-						insertList = new ArrayList<WoodBoard>();
-					}
-					insertList.add(new WoodBoard((String) newWood[0],
+					WoodBoardPiceDAO.insert(new WoodBoardPice((String) newWood[0],
 							(String) newWood[1], (String) newWood[2],
 							(Double) newWood[3], (Double) newWood[4],
-							(Double) newWood[5]));
+							(Double) newWood[5], (Integer) newWood[6]));
 					break;
 				case "Save":
 					// salvare
@@ -200,20 +221,51 @@ public class EditStocks extends JDialog {
 		btnAdd.setBounds(117, 296, 89, 23);
 		layeredPane.add(btnAdd);
 		
+		codeCB = new JComboBox<String>();
+		this.codeCB.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent arg0) {
+				if(arg0.getPropertyName().equals("selectedIndex")){
+					int index = (int) arg0.getNewValue();
+					nameTB.setText(listWood.get(index).getName());
+					materialTB.setText(listWood.get(index).getMaterial());
+				}
+			}
+		});
+		codeCB.setBounds(94, 60, 112, 20);
+		listWood = WoodBoardDAO.getAll();
+		for (WoodBoard board : listWood) {
+			codeCB.addItem(board.getCode());
+		}
+		layeredPane.add(codeCB);
+		
+		this.numberTB = new JTextField();
+		this.numberTB.setText("0");
+		this.numberTB.setBounds(94, 246, 112, 20);
+		layeredPane.add(this.numberTB);
+		this.numberTB.setColumns(10);
+		
+		JLabel lblNumber = new JLabel("Number");
+		lblNumber.setBounds(38, 249, 46, 14);
+		layeredPane.add(lblNumber);
+		
 		this.stockTable = new JTable();
 		this.stockTable.setFillsViewportHeight(true);
 		this.stockTable.setModel(new DefaultTableModel(
 			new Object[][] {
+				{null, null, null, null, null, null, null},
 			},
 			new String[] {
-				"Code", "Name", "Material", "Length", "Width", "Price"
+				"Code", "Name", "Material", "Length", "Width", "Price", "Number"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, Double.class, Double.class, Double.class
+				String.class, String.class, String.class, Double.class, Double.class, Double.class, Integer.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
+			}
+			public boolean isCellEditable(int rowIndex, int columnIndex) {
+				return false;
 			}
 		});
 		this.stockTable.getColumnModel().getColumn(0).setResizable(false);
@@ -227,6 +279,7 @@ public class EditStocks extends JDialog {
 		this.stockTable.getColumnModel().getColumn(4).setResizable(false);
 		this.stockTable.getColumnModel().getColumn(4).setPreferredWidth(60);
 		this.stockTable.getColumnModel().getColumn(5).setResizable(false);
+		this.stockTable.getColumnModel().getColumn(6).setResizable(false);
 		this.stockData = (DefaultTableModel) this.stockTable.getModel();
 		scrollPane.setViewportView(this.stockTable);
 		
@@ -242,7 +295,7 @@ public class EditStocks extends JDialog {
 					editIndex = index;
 					resetTB();
 					Vector row = (Vector) stockData.getDataVector().get(index);
-					codeTB.setText((String) row.get(0));
+					codeCB.setSelectedItem((String) row.get(0));
 					nameTB.setText((String) row.get(1));
 					materialTB.setText((String) row.get(2));
 					lengthTB.setText(row.get(3).toString());
@@ -300,11 +353,36 @@ public class EditStocks extends JDialog {
 	
 	private void resetTB(){
 		String empty = "";
-		this.codeTB.setText(empty);
+		this.codeCB.setSelectedIndex(-1);
 		this.nameTB.setText(empty);
 		this.materialTB.setText(empty);
-		this.lengthTB.setText(empty);
-		this.widthTB.setText(empty);
-		this.priceTB.setText(empty);
+		this.lengthTB.setText("0");
+		this.widthTB.setText("0");
+		this.priceTB.setText("0");
+		this.numberTB.setText("0");
+	}
+	
+	private void loadData(){
+		list = WoodBoardPiceDAO.getAll();
+		if(list != null && !list.isEmpty()){
+			
+			while(stockData.getRowCount() != 0){
+				stockData.removeRow(0);
+			}
+			for(WoodBoardPice board : list){
+				stockData.addRow(new Object[] {board.getCode(),board.getName(),board.getMaterial(),board.getLength(),board.getWidth()});
+			}
+		}
+	}
+	
+	private void calculatePrice(){
+		int i = codeCB.getSelectedIndex();
+		if(i != -1){
+			WoodBoard board = listWood.get(i);
+			double basePrice = board.getPrice();
+			double squareCM = basePrice / (board.getLength()* board.getWidth());
+			Double price = Double.valueOf(lengthTB.getText().trim()) * Double.valueOf(widthTB.getText().trim()) * squareCM;
+			priceTB.setText(price.toString());
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package bh.w2optimize.db.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.SQLQuery;
@@ -109,4 +110,6 @@ public class WoodBoardDAO {
 		session.close();
 		return board;
 	}
+	
+	
 }

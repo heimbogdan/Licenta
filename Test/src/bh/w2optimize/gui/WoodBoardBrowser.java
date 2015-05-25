@@ -21,9 +21,14 @@ import java.awt.Dimension;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 
+import bh.w2optimize.db.dao.WoodBoardDAO;
+import bh.w2optimize.entity.WoodBoard;
+
 import java.awt.Dialog.ModalityType;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.Vector;
 
 public class WoodBoardBrowser extends JDialog {
 
@@ -58,7 +63,7 @@ public class WoodBoardBrowser extends JDialog {
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle("Wood Board Browser");
 		setResizable(false);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 451, 300);
 		getContentPane().setLayout(new BorderLayout());
 		this.contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(this.contentPanel, BorderLayout.CENTER);
@@ -108,6 +113,7 @@ public class WoodBoardBrowser extends JDialog {
 			this.table.getColumnModel().getColumn(2).setPreferredWidth(80);
 			this.table.getColumnModel().getColumn(3).setResizable(false);
 			this.table.getColumnModel().getColumn(3).setPreferredWidth(80);
+			loadData();
 		}
 		this.contentPanel.setLayout(gl_contentPanel);
 		{
@@ -115,17 +121,31 @@ public class WoodBoardBrowser extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				JButton okButton = new JButton("Select");
 				okButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						if(table.getSelectedRow() != -1){
-							
-						}else {
+						if (table.getSelectedRow() != -1) {
+							Vector obj = (Vector) ((DefaultTableModel) table
+									.getModel()).getDataVector().get(
+									table.getSelectedRow());
+							front.setUsedBoard(WoodBoardDAO.getByCode(obj.get(0).toString()));
+							dispose();
+						} else {
 							JOptionPane.showMessageDialog(_self, "Please select a row!", "Warning!", JOptionPane.WARNING_MESSAGE);
 						}
 					}
 				});
+				{
+					JButton btnAdd = new JButton("Add");
+					btnAdd.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							new WoodBoardAdder(_self).setVisible(true);
+						}
+					});
+					buttonPane.add(btnAdd);
+				}
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -140,6 +160,19 @@ public class WoodBoardBrowser extends JDialog {
 				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
+			}
+		}
+	}
+	
+	public void loadData(){
+		List<WoodBoard> list = WoodBoardDAO.getAll();
+		if(list != null && !list.isEmpty()){
+			DefaultTableModel model = (DefaultTableModel) table.getModel();
+			while(model.getRowCount() != 0){
+				model.removeRow(0);
+			}
+			for(WoodBoard board : list){
+				model.addRow(new Object[] {board.getCode(),board.getName(),board.getMaterial(),board.getLength(),board.getWidth()});
 			}
 		}
 	}
