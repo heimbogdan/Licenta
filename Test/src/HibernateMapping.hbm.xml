@@ -29,26 +29,26 @@
 		<property name="price"></property>
 	</class>
 	<class name="bh.w2optimize.entity.WoodBoard" table="woodboard">
-		<id name="id">
+		<id name="id" column="id">
 			<generator class="native"></generator>
 		</id>
-		<property name="code"></property>
-		<property name="name"></property>
-		<property name="material"></property>
-		<property name="length"></property>
-		<property name="width"></property>
-		<property name="price"></property>
+		<property name="code" column="code"></property>
+		<property name="name" column="name"></property>
+		<property name="material" column="material"></property>
+		<property name="length" column="length"></property>
+		<property name="width" column="width"></property>
+		<property name="price" column="price"></property>
 	</class>
 	<class name="bh.w2optimize.entity.WoodBoardPice" table="woodboardpice">
-		<id name="id">
+		<id name="id" column="id">
 			<generator class="native"></generator>
 		</id>
-		<property name="code"></property>
-		<property name="name"></property>
-		<property name="material"></property>
-		<property name="length"></property>
-		<property name="width"></property>
-		<property name="price"></property>
-		<property name="number"></property>
+		<property name="code" column="code"></property>
+		<property name="name" column="name"></property>
+		<property name="material" column="material"></property>
+		<property name="length" column="length"></property>
+		<property name="width" column="width"></property>
+		<property name="price" column="price"></property>
+		<property name="number" column="number"></property>
 	</class>
 </hibernate-mapping>

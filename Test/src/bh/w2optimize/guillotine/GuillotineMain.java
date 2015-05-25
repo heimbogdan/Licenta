@@ -9,10 +9,17 @@ import bh.w2optimize.entity.ElementList;
 public class GuillotineMain {
 
 	private static GuillotineMain instance;
-	private ExecutorService executorService;
+	//private ExecutorService executorService;
+	private GuillotineThread thread1,thread2;
+	private boolean stop;
 	
+	
+	public boolean isStop() {
+		return stop;
+	}
+
 	private GuillotineMain(){
-		executorService = Executors.newFixedThreadPool(2);
+		
 	}
 	
 	public static GuillotineMain getInstance(){
@@ -23,19 +30,31 @@ public class GuillotineMain {
 	}
 	
 	public void start(ElementList elementList, Element root) {
-		if(executorService.isShutdown()){
-			executorService = Executors.newFixedThreadPool(2);
+		if(thread1 != null && thread1.isAlive() && thread2 != null && thread2.isAlive()){
+			stopCurrentThreads();
 		}
-		executorService.submit(createThread(elementList, root, false));
-		executorService.submit(createThread(elementList, root, true));
-		executorService.shutdown();
+		try {
+			Thread.sleep(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		synchronized(this){
+			stop = false;
+		}
+		thread1 = new GuillotineThread(false);
+		thread2 = new GuillotineThread(true);
+		thread1.setElements(elementList);
+		thread2.setElements(elementList);
+		thread1.setRoot(root);
+		thread2.setRoot(root);
+		thread1.start();
+		thread2.start();
 	}
 
-	private static GuillotineThread createThread(final ElementList elementList,
-			Element root, boolean h) {
-		
-		ElementList eList = (ElementList) elementList.clone();
-		Element element = root.cloneElement();
-		return new GuillotineThread(eList, element, h);
+	
+	public void stopCurrentThreads(){
+		synchronized(this){
+			stop = true;
+		}
 	}
 }

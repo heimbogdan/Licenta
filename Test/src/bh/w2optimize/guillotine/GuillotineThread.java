@@ -16,6 +16,19 @@ public class GuillotineThread extends Thread {
 		return fin;
 	}
 
+	
+	public void setElements(ElementList elements) {
+		this.elements = (ElementList) elements.clone();
+	}
+
+
+	public void setRoot(Element root) {
+		this.root = root.cloneElement();
+	}
+
+	
+
+	
 	@Override
 	public void run() {
 		final GuillotineCut gCut = new GuillotineCut(this.horizontal);
@@ -23,10 +36,7 @@ public class GuillotineThread extends Thread {
 		fin = gCut.getCutElement();
 	}
 
-	public GuillotineThread(final ElementList elementList,final Element root,final boolean h) {
-		
-		this.elements = elementList;
-		this.root = root;
+	public GuillotineThread(final boolean h) {
 		this.horizontal = h;
 	}
 }

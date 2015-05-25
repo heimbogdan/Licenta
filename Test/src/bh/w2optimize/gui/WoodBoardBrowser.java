@@ -172,7 +172,7 @@ public class WoodBoardBrowser extends JDialog {
 				model.removeRow(0);
 			}
 			for(WoodBoard board : list){
-				model.addRow(new Object[] {board.getCode(),board.getName(),board.getMaterial(),board.getLength(),board.getWidth()});
+				model.addRow(new Object[] {board.getCode(),board.getName(),board.getMaterial(),board.getLength() + " x "+ board.getWidth()});
 			}
 		}
 	}

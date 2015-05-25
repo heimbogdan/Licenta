@@ -62,7 +62,7 @@ public class CompomentDAO {
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		try {
-			SQLQuery q4 = session.createSQLQuery("select * from woodboard");
+			SQLQuery q4 = session.createSQLQuery("select * from component");
 			q4.addEntity(Component.class);
 			list = q4.list();
 		} catch (Exception e) {
@@ -78,7 +78,7 @@ public class CompomentDAO {
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		try {
-			SQLQuery q4 = session.createSQLQuery("select * from woodboard where id=" + id);
+			SQLQuery q4 = session.createSQLQuery("select * from component where id=" + id);
 			q4.addEntity(Component.class);
 			List<Component> list = q4.list();
 			if(list != null && !list.isEmpty()){
@@ -97,7 +97,7 @@ public class CompomentDAO {
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		try {
-			SQLQuery q4 = session.createSQLQuery("select * from woodboard where code='" + code + "'");
+			SQLQuery q4 = session.createSQLQuery("select * from component where code='" + code + "'");
 			q4.addEntity(Component.class);
 			List<Component> list = q4.list();
 			if(list != null && !list.isEmpty()){

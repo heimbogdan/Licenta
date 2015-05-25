@@ -63,7 +63,7 @@ public class WoodBoardPiceDAO {
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		try {
-			SQLQuery q4 = session.createSQLQuery("select * from woodboard");
+			SQLQuery q4 = session.createSQLQuery("select * from woodboardpice");
 			q4.addEntity(WoodBoardPice.class);
 			list = q4.list();
 		} catch (Exception e) {
@@ -79,7 +79,7 @@ public class WoodBoardPiceDAO {
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		try {
-			SQLQuery q4 = session.createSQLQuery("select * from woodboard where id=" + id);
+			SQLQuery q4 = session.createSQLQuery("select * from woodboardpice where id=" + id);
 			q4.addEntity(WoodBoardPice.class);
 			List<WoodBoardPice> list = q4.list();
 			if(list != null && !list.isEmpty()){
@@ -98,7 +98,7 @@ public class WoodBoardPiceDAO {
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		try {
-			SQLQuery q4 = session.createSQLQuery("select * from woodboard where code='" + code + "'");
+			SQLQuery q4 = session.createSQLQuery("select * from woodboardpice where code='" + code + "'");
 			q4.addEntity(WoodBoardPice.class);
 			list = q4.list();
 		} catch (Exception e) {

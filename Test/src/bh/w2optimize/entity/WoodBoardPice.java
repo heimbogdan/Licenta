@@ -12,6 +12,10 @@ public class WoodBoardPice extends WoodBoard{
 		this.number = number;
 	}
 
+	public WoodBoardPice(){
+		super();
+	}
+	
 	public WoodBoardPice(String code, String name, String material,
 			double length, double width, double price, int number) {
 		super(code, name, material, length, width, price);

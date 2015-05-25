@@ -90,7 +90,9 @@ public class WoodBoard {
 				+ width + ", price=" + price + "]";
 	}
 
-	
+	public Element toElement(){
+		return new Element(this.length, this.width, false);
+	}
 
 	
 }

@@ -1,9 +1,6 @@
 package bh.w2optimize.gui;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -18,20 +15,11 @@ import java.awt.Dimension;
 import javax.swing.JSplitPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import com.sun.corba.se.impl.orbutil.ObjectWriter;
-
 import java.awt.SystemColor;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class CutPanel extends JPanel implements ActionListener {
+public class CutPanel extends JPanel{
 
 	/**
 	 * 
@@ -97,35 +85,36 @@ public class CutPanel extends JPanel implements ActionListener {
 					.addContainerGap())
 		);
 		button2 = new JButton("Next");
+		button2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (panel.getNrPlaci() == 2) {
+					panel.getNrPlaci();
+					if (panel.getIncadrare().getChildrens().size()  >= ((pageNumber+1) * 2)+2) {
+						pageNumber += pageNumber == panel.getIncadrare()
+								.getChildrens().size() - 1 ? 0 : 1;
+						panel.setPageNumber(pageNumber);
+						panel.drawing();
+					}
+				} else if (panel.getNrPlaci() == 1) {
+					pageNumber += pageNumber == panel.getIncadrare()
+							.getChildrens().size() - 1 ? 0 : 1;
+					panel.setPageNumber(pageNumber);
+					panel.drawing();
+				}
+			}
+		});
 		splitPane.setRightComponent(button2);
 		button1 = new JButton("Prev");
-		splitPane.setLeftComponent(button1);
-		button1.addActionListener(this);
-		button2.addActionListener(this);
-		setLayout(groupLayout);
-	}
-
-	@Override
-	public void actionPerformed(final ActionEvent e) {
-		if (e.getSource() == this.button2) {
-			if (this.panel.getNrPlaci() == 2) {
-				this.panel.getNrPlaci();
-				if (this.panel.getIncadrare().getChildrens().size()  >= ((this.pageNumber+1) * 2)+2) {
-					this.pageNumber += this.pageNumber == this.panel.getIncadrare()
-							.getChildrens().size() - 1 ? 0 : 1;
-					this.panel.setPageNumber(pageNumber);
-					this.panel.drawing();
-				}
-			} else if (this.panel.getNrPlaci() == 1) {
-				this.pageNumber += this.pageNumber == this.panel.getIncadrare()
-						.getChildrens().size() - 1 ? 0 : 1;
-				this.panel.setPageNumber(pageNumber);
-				this.panel.drawing();
+		button1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pageNumber -= pageNumber == 0 ? 0 : 1;
+				panel.setPageNumber(pageNumber);
+				panel.drawing();
 			}
-		} else {
-			this.pageNumber -= this.pageNumber == 0 ? 0 : 1;
-			this.panel.setPageNumber(pageNumber);
-			this.panel.drawing();
-		}
+		});
+		splitPane.setLeftComponent(button1);
+		setLayout(groupLayout);
 	}
 }

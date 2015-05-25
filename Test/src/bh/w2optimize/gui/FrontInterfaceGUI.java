@@ -21,6 +21,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JCheckBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -60,7 +61,7 @@ public class FrontInterfaceGUI extends JFrame {
 	private static DefaultTableModel tableData;
 	private JTextField woodBoardNameTB;
 	private WoodBoard usedBoard;
-	
+	private FrontInterfaceGUI _self;
 	
 	public void setUsedBoard(WoodBoard board) {
 		this.usedBoard = board;
@@ -94,6 +95,7 @@ public class FrontInterfaceGUI extends JFrame {
 	}
 
 	private void createContents() {
+		_self = this;
 		SQLiteConnection.getInstance();
 		setResizable(false);
 		setTitle("W2Optimize");
@@ -171,17 +173,33 @@ public class FrontInterfaceGUI extends JFrame {
 		btnStart.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				panel.resetIncadrare();
-				ElementList elms = new ElementList();
-				Vector data = tableData.getDataVector();
-				for (Object element : data) {
-					Vector row = (Vector) element;
-					elms.addMore((Double) row.get(0),
-							(Double) row.get(1), (Boolean)row.get(3) == null? false : (Boolean)row.get(3),
-							(Integer) row.get(2));
+				if (usedBoard == null) {
+					JOptionPane.showMessageDialog(_self,
+							"Please select wood board!", "Warning!",
+							JOptionPane.WARNING_MESSAGE);
+				} else {
+					panel.resetIncadrare();
+					ElementList elms = new ElementList();
+					Vector data = tableData.getDataVector();
+					if (data.isEmpty()) {
+						JOptionPane.showMessageDialog(_self,
+								"Please add some elements to begin cutting!", "Warning!",
+								JOptionPane.WARNING_MESSAGE);
+					} else {
+						for (Object element : data) {
+							Vector row = (Vector) element;
+							elms.addMore((Double) row.get(0), (Double) row
+									.get(1),
+									(Boolean) row.get(3) == null ? false
+											: (Boolean) row.get(3),
+									(Integer) row.get(2));
+						}
+						GuillotineMain guillotineMain = GuillotineMain
+								.getInstance();
+						panel.setIncadrare(null);
+						guillotineMain.start(elms, usedBoard.toElement());
+					}
 				}
-				GuillotineMain guillotineMain = GuillotineMain.getInstance();
-				guillotineMain.start(elms, new Element(207, 280, false));
 			}
 		});
 
@@ -190,6 +208,12 @@ public class FrontInterfaceGUI extends JFrame {
 		JButton btnAddComponent = new JButton("Choose Component");
 
 		JButton btnStop = new JButton("Stop");
+		btnStop.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				GuillotineMain.getInstance().stopCurrentThreads();
+			}
+		});
 
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -331,7 +355,9 @@ public class FrontInterfaceGUI extends JFrame {
 		mntmDeleteRow.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				tableData.removeRow(table.getSelectedRow());
+				if(table.getSelectedRow() != -1){
+					tableData.removeRow(table.getSelectedRow());
+				}
 			}
 		});
 		popupMenu.add(mntmDeleteRow);

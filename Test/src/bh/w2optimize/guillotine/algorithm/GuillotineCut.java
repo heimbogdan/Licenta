@@ -7,6 +7,7 @@ import bh.w2optimize.entity.ElementList;
 import bh.w2optimize.entity.FinalElement;
 import bh.w2optimize.gui.CutPanel;
 import bh.w2optimize.gui.FrontInterfaceGUI;
+import bh.w2optimize.guillotine.GuillotineMain;
 
 /**
  * Clasa ce contine algoritmul de taiere de tip ghilotina.
@@ -19,7 +20,8 @@ public class GuillotineCut {
 	private FinalElement cutElement;
 	private Element pal;
 	private boolean horizontal;
-
+	private boolean keepGoing;
+	
 	public FinalElement getCutElement() {
 		return cutElement;
 	}
@@ -47,6 +49,7 @@ public class GuillotineCut {
 	public GuillotineCut(final boolean h) {
 		this.cutElement = new FinalElement(0, 0);
 		this.horizontal = h;
+		keepGoing = true;
 	}
 
 	/**
@@ -80,33 +83,45 @@ public class GuillotineCut {
 	 */
 	private void permute(final ElementList elements, final Element root,
 			final int k) {
-		
-		for (int i = k; i < elements.size(); i++) {
-			java.util.Collections.swap(elements, i, k);
-			permute(elements, root, k + 1);
-			java.util.Collections.swap(elements, k, i);
-			if(elements.get(i).isRotate()){
-				// metoda rotire
-				rotate(elements.get(i));
-				java.util.Collections.swap(elements, i, k);
-				permute(elements, root, k + 1);
-				java.util.Collections.swap(elements, k, i);
-				rotate(elements.get(i));
+		if (keepGoing) {
+			GuillotineMain main = GuillotineMain.getInstance();
+			synchronized (main) {
+				keepGoing = !main.isStop();
 			}
 		}
-		
-		if (k == elements.size()) {
-			pal = new Element(0, 0, false);
-			int index = 0;
-			while (!elements.isAllUsed()) {
-				Element newRoot = new Element(root.getLength(), root.getWidth(), root.isRotate());
-				newRoot.setLoss(false);
-				pal.addRoot(newRoot);
-				cut(elements, pal.getChildrens().get(index));
-				index++;
+		if (keepGoing) {
+			for (int i = k; i < elements.size(); i++) {
+				if (keepGoing) {
+					java.util.Collections.swap(elements, i, k);
+					permute(elements, root, k + 1);
+					java.util.Collections.swap(elements, k, i);
+					if (elements.get(i).isRotate()) {
+						// metoda rotire
+						rotate(elements.get(i));
+						java.util.Collections.swap(elements, i, k);
+						permute(elements, root, k + 1);
+						java.util.Collections.swap(elements, k, i);
+						rotate(elements.get(i));
+					}
+				}
 			}
-			for (final Element el : elements) {
-				el.setUsed(false);
+
+			if (keepGoing) {
+				if (k == elements.size()) {
+					pal = new Element(0, 0, false);
+					int index = 0;
+					while (!elements.isAllUsed()) {
+						Element newRoot = new Element(root.getLength(),
+								root.getWidth(), root.isRotate());
+						newRoot.setLoss(false);
+						pal.addRoot(newRoot);
+						cut(elements, pal.getChildrens().get(index));
+						index++;
+					}
+					for (final Element el : elements) {
+						el.setUsed(false);
+					}
+				}
 			}
 		}
 	}

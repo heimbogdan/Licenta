@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JFormattedTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLayeredPane;
@@ -27,6 +28,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JPopupMenu;
 
 import java.awt.Component;
+import java.text.Format;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,8 +43,13 @@ import bh.w2optimize.entity.WoodBoard;
 import bh.w2optimize.entity.WoodBoardPice;
 
 import javax.swing.JComboBox;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class EditStocks extends JDialog {
 
@@ -152,28 +160,12 @@ public class EditStocks extends JDialog {
 		layeredPane.add(this.materialTB);
 		this.materialTB.setColumns(10);
 		
-		this.lengthTB = new JTextField();
-		this.lengthTB.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if(evt.getPropertyName().equals("text")){
-					calculatePrice();
-				}
-			}
-		});
-		this.lengthTB.setText("0");
+		this.lengthTB = new JFormattedTextField(NumberFormat.getNumberInstance());
 		this.lengthTB.setBounds(94, 153, 112, 20);
 		layeredPane.add(this.lengthTB);
 		this.lengthTB.setColumns(10);
 		
-		this.widthTB = new JTextField();
-		this.widthTB.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if(evt.getPropertyName().equals("text")){
-					calculatePrice();
-				}
-			}
-		});
-		this.widthTB.setText("0");
+		this.widthTB = new JFormattedTextField(NumberFormat.getNumberInstance());
 		this.widthTB.setBounds(94, 184, 112, 20);
 		layeredPane.add(this.widthTB);
 		this.widthTB.setColumns(10);
@@ -193,7 +185,7 @@ public class EditStocks extends JDialog {
 						nameTB.getText(), materialTB.getText(),
 						Double.valueOf(lengthTB.getText()),
 						Double.valueOf(widthTB.getText()),
-						Double.valueOf(priceTB.getText()) };
+						Double.valueOf(priceTB.getText()), Integer.parseInt(numberTB.getText()) };
 				resetTB();
 				switch (((JButton)arg0.getComponent()).getText()){
 				case "Add":
@@ -202,9 +194,9 @@ public class EditStocks extends JDialog {
 							(String) newWood[1], (String) newWood[2],
 							(Double) newWood[3], (Double) newWood[4],
 							(Double) newWood[5], (Integer) newWood[6]));
+					loadData();
 					break;
 				case "Save":
-					// salvare
 					stockData.setValueAt(newWood[0], editIndex, 0);
 					stockData.setValueAt(newWood[1], editIndex, 1);
 					stockData.setValueAt(newWood[2], editIndex, 2);
@@ -212,22 +204,30 @@ public class EditStocks extends JDialog {
 					stockData.setValueAt(newWood[4], editIndex, 4);
 					stockData.setValueAt(newWood[5], editIndex, 5);
 					btnAdd.setText("Add");
+					WoodBoardPice board = list.get(editIndex);
+					board.setLength((Double) newWood[3]);
+					board.setWidth((Double) newWood[4]);
+					board.setPrice((Double) newWood[5]);
+					board.setNumber((Integer) newWood[6]);
+					WoodBoardPiceDAO.update(board);
+					loadData();
+					break;
 				default: 
 					break;
-						
 				}
 			}
 		});
-		btnAdd.setBounds(117, 296, 89, 23);
+		btnAdd.setBounds(18, 297, 89, 23);
 		layeredPane.add(btnAdd);
 		
 		codeCB = new JComboBox<String>();
-		this.codeCB.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent arg0) {
-				if(arg0.getPropertyName().equals("selectedIndex")){
-					int index = (int) arg0.getNewValue();
-					nameTB.setText(listWood.get(index).getName());
-					materialTB.setText(listWood.get(index).getMaterial());
+		this.codeCB.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				if (arg0.getStateChange() == ItemEvent.SELECTED) {
+			          Object item = arg0.getItem();
+			          int index = codeCB.getSelectedIndex();
+			          nameTB.setText(listWood.get(index).getName());
+			          materialTB.setText(listWood.get(index).getMaterial());
 				}
 			}
 		});
@@ -236,10 +236,10 @@ public class EditStocks extends JDialog {
 		for (WoodBoard board : listWood) {
 			codeCB.addItem(board.getCode());
 		}
+		
 		layeredPane.add(codeCB);
 		
-		this.numberTB = new JTextField();
-		this.numberTB.setText("0");
+		this.numberTB = new JFormattedTextField(NumberFormat.getNumberInstance());
 		this.numberTB.setBounds(94, 246, 112, 20);
 		layeredPane.add(this.numberTB);
 		this.numberTB.setColumns(10);
@@ -248,11 +248,20 @@ public class EditStocks extends JDialog {
 		lblNumber.setBounds(38, 249, 46, 14);
 		layeredPane.add(lblNumber);
 		
+		JButton btnGetPrice = new JButton("Get Price");
+		btnGetPrice.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				calculatePrice();
+			}
+		});
+		btnGetPrice.setBounds(117, 297, 89, 23);
+		layeredPane.add(btnGetPrice);
+		
 		this.stockTable = new JTable();
 		this.stockTable.setFillsViewportHeight(true);
 		this.stockTable.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null, null, null},
 			},
 			new String[] {
 				"Code", "Name", "Material", "Length", "Width", "Price", "Number"
@@ -263,9 +272,6 @@ public class EditStocks extends JDialog {
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
-			}
-			public boolean isCellEditable(int rowIndex, int columnIndex) {
-				return false;
 			}
 		});
 		this.stockTable.getColumnModel().getColumn(0).setResizable(false);
@@ -281,6 +287,7 @@ public class EditStocks extends JDialog {
 		this.stockTable.getColumnModel().getColumn(5).setResizable(false);
 		this.stockTable.getColumnModel().getColumn(6).setResizable(false);
 		this.stockData = (DefaultTableModel) this.stockTable.getModel();
+		loadData();
 		scrollPane.setViewportView(this.stockTable);
 		
 		JPopupMenu popupMenu = new JPopupMenu();
@@ -301,6 +308,7 @@ public class EditStocks extends JDialog {
 					lengthTB.setText(row.get(3).toString());
 					widthTB.setText(row.get(4).toString());
 					priceTB.setText(row.get(5).toString());
+					numberTB.setText(row.get(6).toString());
 					btnAdd.setText("Save");
 				}
 			}
@@ -308,6 +316,18 @@ public class EditStocks extends JDialog {
 		popupMenu.add(mntmEdit);
 		
 		JMenuItem mntmDelete = new JMenuItem("Delete");
+		mntmDelete.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int index = stockTable.getSelectedRow();
+				if(index != -1){
+					WoodBoardPice board = list.get(index);
+					list.remove(board);
+					WoodBoardPiceDAO.delete(board);
+					loadData();
+				}
+			}
+		});
 		popupMenu.add(mntmDelete);
 		this.contentPanel.setLayout(gl_contentPanel);
 		{
@@ -315,7 +335,13 @@ public class EditStocks extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("Save");
+				JButton okButton = new JButton("OK");
+				okButton.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						dispose();
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -356,21 +382,20 @@ public class EditStocks extends JDialog {
 		this.codeCB.setSelectedIndex(-1);
 		this.nameTB.setText(empty);
 		this.materialTB.setText(empty);
-		this.lengthTB.setText("0");
-		this.widthTB.setText("0");
+		this.lengthTB.setText(empty);
+		this.widthTB.setText(empty);
 		this.priceTB.setText("0");
-		this.numberTB.setText("0");
+		this.numberTB.setText(empty);
 	}
 	
 	private void loadData(){
 		list = WoodBoardPiceDAO.getAll();
-		if(list != null && !list.isEmpty()){
-			
+		if(list != null){
 			while(stockData.getRowCount() != 0){
 				stockData.removeRow(0);
 			}
 			for(WoodBoardPice board : list){
-				stockData.addRow(new Object[] {board.getCode(),board.getName(),board.getMaterial(),board.getLength(),board.getWidth()});
+				stockData.addRow(new Object[] {board.getCode(),board.getName(),board.getMaterial(),board.getLength(),board.getWidth(),board.getPrice(),board.getNumber()});
 			}
 		}
 	}

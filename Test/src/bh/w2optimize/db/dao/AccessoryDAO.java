@@ -62,7 +62,7 @@ public class AccessoryDAO {
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		try {
-			SQLQuery q4 = session.createSQLQuery("select * from woodboard");
+			SQLQuery q4 = session.createSQLQuery("select * from accessory");
 			q4.addEntity(Accessory.class);
 			list = q4.list();
 		} catch (Exception e) {
@@ -78,7 +78,7 @@ public class AccessoryDAO {
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		try {
-			SQLQuery q4 = session.createSQLQuery("select * from woodboard where id=" + id);
+			SQLQuery q4 = session.createSQLQuery("select * from accessory where id=" + id);
 			q4.addEntity(Accessory.class);
 			List<Accessory> list = q4.list();
 			if(list != null && !list.isEmpty()){
@@ -97,7 +97,7 @@ public class AccessoryDAO {
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
 		try {
-			SQLQuery q4 = session.createSQLQuery("select * from woodboard where code='" + code + "'");
+			SQLQuery q4 = session.createSQLQuery("select * from accessory where code='" + code + "'");
 			q4.addEntity(Accessory.class);
 			List<Accessory> list = q4.list();
 			if(list != null && !list.isEmpty()){
