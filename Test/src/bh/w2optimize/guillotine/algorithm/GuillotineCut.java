@@ -6,9 +6,7 @@ import bh.w2optimize.entity.Element;
 import bh.w2optimize.entity.ElementList;
 import bh.w2optimize.entity.FinalElement;
 import bh.w2optimize.gui.CutPanel;
-import bh.w2optimize.gui.Draw;
 import bh.w2optimize.gui.FrontInterfaceGUI;
-import program.Main;
 
 /**
  * Clasa ce contine algoritmul de taiere de tip ghilotina.
@@ -89,16 +87,11 @@ public class GuillotineCut {
 			java.util.Collections.swap(elements, k, i);
 			if(elements.get(i).isRotate()){
 				// metoda rotire
-				Element el = elements.get(i);
-				double elength = el.getLength();
-				double ewidth = el.getWidth();
-				el.setLength(ewidth);
-				el.setWidth(elength);
+				rotate(elements.get(i));
 				java.util.Collections.swap(elements, i, k);
 				permute(elements, root, k + 1);
 				java.util.Collections.swap(elements, k, i);
-				el.setLength(elength);
-				el.setWidth(ewidth);
+				rotate(elements.get(i));
 			}
 		}
 		
@@ -128,7 +121,7 @@ public class GuillotineCut {
 	 * @return Placa initiala transmisa catre parametrul Root cu modificarile
 	 *         efectuate.
 	 */
-	private Element cut(final ElementList elements, final Element root) {
+	public Element cut(final ElementList elements, final Element root) {
 		for (int i = 0; i < elements.size(); i++) {
 			Element element = elements.get(i);
 			if (!element.isUsed()) {
@@ -241,4 +234,10 @@ public class GuillotineCut {
 		cut2 = cut(elements, cut2);
 	}
 
+	public void rotate(Element el){
+		double elength = el.getLength();
+		double ewidth = el.getWidth();
+		el.setLength(ewidth);
+		el.setWidth(elength);
+	}
 }

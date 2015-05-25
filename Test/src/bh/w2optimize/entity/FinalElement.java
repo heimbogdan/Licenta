@@ -14,6 +14,11 @@ import java.util.ArrayList;
 public class FinalElement extends Element {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8579670788261692039L;
+
+	/**
 	 * Total surface of initial elements over which cuts will be made.
 	 */
 	private double area;

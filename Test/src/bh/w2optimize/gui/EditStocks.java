@@ -7,10 +7,10 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Dialog.ModalExclusionType;
-import java.awt.Dialog.ModalityType;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JScrollPane;
@@ -19,24 +19,39 @@ import javax.swing.JLayeredPane;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
 import java.awt.Color;
+
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JPopupMenu;
+
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Vector;
+
 import javax.swing.JMenuItem;
+
+import bh.w2optimize.entity.WoodBoard;
 
 public class EditStocks extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -776644945767968269L;
 	private final JPanel contentPanel = new JPanel();
-	private JTable table;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
+	private JTable stockTable;
+	private JTextField codeTB;
+	private JTextField nameTB;
+	private JTextField materialTB;
+	private JTextField lengthTB;
+	private JTextField widthTB;
+	private JTextField priceTB;
+	private DefaultTableModel stockData;
+	private ArrayList<WoodBoard> insertList;
+	private int editIndex;
 
 	/**
 	 * Launch the application.
@@ -116,76 +131,131 @@ public class EditStocks extends JDialog {
 		lblPrice.setBounds(38, 218, 46, 14);
 		layeredPane.add(lblPrice);
 		
-		this.textField = new JTextField();
-		this.textField.setBounds(94, 60, 86, 20);
-		layeredPane.add(this.textField);
-		this.textField.setColumns(10);
+		this.codeTB = new JTextField();
+		this.codeTB.setBounds(94, 60, 86, 20);
+		layeredPane.add(this.codeTB);
+		this.codeTB.setColumns(10);
 		
-		this.textField_1 = new JTextField();
-		this.textField_1.setBounds(94, 91, 86, 20);
-		layeredPane.add(this.textField_1);
-		this.textField_1.setColumns(10);
+		this.nameTB = new JTextField();
+		this.nameTB.setBounds(94, 91, 86, 20);
+		layeredPane.add(this.nameTB);
+		this.nameTB.setColumns(10);
 		
-		this.textField_2 = new JTextField();
-		this.textField_2.setBounds(94, 122, 86, 20);
-		layeredPane.add(this.textField_2);
-		this.textField_2.setColumns(10);
+		this.materialTB = new JTextField();
+		this.materialTB.setBounds(94, 122, 86, 20);
+		layeredPane.add(this.materialTB);
+		this.materialTB.setColumns(10);
 		
-		this.textField_3 = new JTextField();
-		this.textField_3.setBounds(94, 153, 86, 20);
-		layeredPane.add(this.textField_3);
-		this.textField_3.setColumns(10);
+		this.lengthTB = new JTextField();
+		this.lengthTB.setBounds(94, 153, 86, 20);
+		layeredPane.add(this.lengthTB);
+		this.lengthTB.setColumns(10);
 		
-		this.textField_4 = new JTextField();
-		this.textField_4.setBounds(94, 184, 86, 20);
-		layeredPane.add(this.textField_4);
-		this.textField_4.setColumns(10);
+		this.widthTB = new JTextField();
+		this.widthTB.setBounds(94, 184, 86, 20);
+		layeredPane.add(this.widthTB);
+		this.widthTB.setColumns(10);
 		
-		this.textField_5 = new JTextField();
-		this.textField_5.setBounds(94, 215, 86, 20);
-		layeredPane.add(this.textField_5);
-		this.textField_5.setColumns(10);
+		this.priceTB = new JTextField();
+		this.priceTB.setBounds(94, 215, 86, 20);
+		layeredPane.add(this.priceTB);
+		this.priceTB.setColumns(10);
 		
 		JButton btnAdd = new JButton("Add");
+		btnAdd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				Object[] newWood = new Object[] { codeTB.getText(),
+						nameTB.getText(), materialTB.getText(),
+						Double.valueOf(lengthTB.getText()),
+						Double.valueOf(widthTB.getText()),
+						Double.valueOf(priceTB.getText()) };
+				resetTB();
+				switch (((JButton)arg0.getComponent()).getText()){
+				case "Add":
+					stockData.addRow(newWood);
+					if (insertList == null) {
+						insertList = new ArrayList<WoodBoard>();
+					}
+					insertList.add(new WoodBoard((String) newWood[0],
+							(String) newWood[1], (String) newWood[2],
+							(Double) newWood[3], (Double) newWood[4],
+							(Double) newWood[5]));
+					break;
+				case "Save":
+					// salvare
+					stockData.setValueAt(newWood[0], editIndex, 0);
+					stockData.setValueAt(newWood[1], editIndex, 1);
+					stockData.setValueAt(newWood[2], editIndex, 2);
+					stockData.setValueAt(newWood[3], editIndex, 3);
+					stockData.setValueAt(newWood[4], editIndex, 4);
+					stockData.setValueAt(newWood[5], editIndex, 5);
+					btnAdd.setText("Add");
+				default: 
+					break;
+						
+				}
+			}
+		});
 		btnAdd.setBounds(117, 296, 89, 23);
 		layeredPane.add(btnAdd);
 		
-		JPopupMenu popupMenu = new JPopupMenu();
-		addPopup(scrollPane, popupMenu);
-		
-		JMenuItem mntmEdit = new JMenuItem("Edit");
-		popupMenu.add(mntmEdit);
-		
-		JMenuItem mntmDelete = new JMenuItem("Delete");
-		popupMenu.add(mntmDelete);
-		
-		this.table = new JTable();
-		this.table.setModel(new DefaultTableModel(
+		this.stockTable = new JTable();
+		this.stockTable.setFillsViewportHeight(true);
+		this.stockTable.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
 				"Code", "Name", "Material", "Length", "Width", "Price"
 			}
 		) {
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false, false
+			Class[] columnTypes = new Class[] {
+				String.class, String.class, String.class, Double.class, Double.class, Double.class
 			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
 			}
 		});
-		this.table.getColumnModel().getColumn(0).setResizable(false);
-		this.table.getColumnModel().getColumn(0).setPreferredWidth(60);
-		this.table.getColumnModel().getColumn(1).setResizable(false);
-		this.table.getColumnModel().getColumn(1).setPreferredWidth(80);
-		this.table.getColumnModel().getColumn(2).setResizable(false);
-		this.table.getColumnModel().getColumn(2).setPreferredWidth(80);
-		this.table.getColumnModel().getColumn(3).setResizable(false);
-		this.table.getColumnModel().getColumn(3).setPreferredWidth(60);
-		this.table.getColumnModel().getColumn(4).setResizable(false);
-		this.table.getColumnModel().getColumn(4).setPreferredWidth(60);
-		this.table.getColumnModel().getColumn(5).setResizable(false);
-		scrollPane.setViewportView(this.table);
+		this.stockTable.getColumnModel().getColumn(0).setResizable(false);
+		this.stockTable.getColumnModel().getColumn(0).setPreferredWidth(60);
+		this.stockTable.getColumnModel().getColumn(1).setResizable(false);
+		this.stockTable.getColumnModel().getColumn(1).setPreferredWidth(80);
+		this.stockTable.getColumnModel().getColumn(2).setResizable(false);
+		this.stockTable.getColumnModel().getColumn(2).setPreferredWidth(80);
+		this.stockTable.getColumnModel().getColumn(3).setResizable(false);
+		this.stockTable.getColumnModel().getColumn(3).setPreferredWidth(60);
+		this.stockTable.getColumnModel().getColumn(4).setResizable(false);
+		this.stockTable.getColumnModel().getColumn(4).setPreferredWidth(60);
+		this.stockTable.getColumnModel().getColumn(5).setResizable(false);
+		this.stockData = (DefaultTableModel) this.stockTable.getModel();
+		scrollPane.setViewportView(this.stockTable);
+		
+		JPopupMenu popupMenu = new JPopupMenu();
+		addPopup(this.stockTable, popupMenu);
+		
+		JMenuItem mntmEdit = new JMenuItem("Edit");
+		mntmEdit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				int index = stockTable.getSelectedRow();
+				if(index != -1){
+					editIndex = index;
+					resetTB();
+					Vector row = (Vector) stockData.getDataVector().get(index);
+					codeTB.setText((String) row.get(0));
+					nameTB.setText((String) row.get(1));
+					materialTB.setText((String) row.get(2));
+					lengthTB.setText(row.get(3).toString());
+					widthTB.setText(row.get(4).toString());
+					priceTB.setText(row.get(5).toString());
+					btnAdd.setText("Save");
+				}
+			}
+		});
+		popupMenu.add(mntmEdit);
+		
+		JMenuItem mntmDelete = new JMenuItem("Delete");
+		popupMenu.add(mntmDelete);
 		this.contentPanel.setLayout(gl_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();
@@ -226,5 +296,15 @@ public class EditStocks extends JDialog {
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});
+	}
+	
+	private void resetTB(){
+		String empty = "";
+		this.codeTB.setText(empty);
+		this.nameTB.setText(empty);
+		this.materialTB.setText(empty);
+		this.lengthTB.setText(empty);
+		this.widthTB.setText(empty);
+		this.priceTB.setText(empty);
 	}
 }

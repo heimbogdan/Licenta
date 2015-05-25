@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @version 1.0
  * @since 22.04.2015
  */
-public class Element implements Serializable{
+public class Element implements Serializable {
 
 	/**
 	 * 
@@ -165,8 +165,8 @@ public class Element implements Serializable{
 
 	public Element(final double length, final double width, final boolean rotate) {
 		super();
-		this.length = length;
-		this.width = width;
+		this.length = Math.abs(length);
+		this.width = Math.abs(width);
 		this.childrens = new ArrayList<Element>();
 		this.point = new Point2D.Double();
 		this.used = false;
@@ -175,14 +175,11 @@ public class Element implements Serializable{
 
 	public Element() {
 		super();
+		childrens = new ArrayList<Element>();
+		point = new Point2D.Double();
 	}
 
-	@Override
-	public String toString() {
-		return "Element [id=" + id + ", componentCode=" + componentCode
-				+ ", name=" + name + ", length=" + length + ", width=" + width
-				+ ", rotate=" + rotate + "]";
-	}
+	
 
 	/**
 	 * The method to calculate the element's surface
@@ -218,28 +215,30 @@ public class Element implements Serializable{
 	 *            current element
 	 */
 	public void addChild(final Element element) {
-		double p = 0;
-		final Point2D point = new Point2D.Double();
-		if (!this.childrens.isEmpty()) {
-			if (this.position == 'V') {
-				for (final Element s : this.childrens) {
-					p += s.getLength();
+		if (element != null) {
+			double p = 0;
+			final Point2D point = new Point2D.Double();
+			if (!this.childrens.isEmpty()) {
+				if (this.position == 'V') {
+					for (final Element s : this.childrens) {
+						p += s.getLength();
+					}
+					point.setLocation(p + this.getPoint().getX(), this
+							.getPoint().getY());
+				} else {
+					for (final Element s : this.childrens) {
+						p += s.getWidth();
+					}
+					point.setLocation(this.getPoint().getX(), p
+							+ this.getPoint().getY());
 				}
-				point.setLocation(p + this.getPoint().getX(), this.getPoint()
-						.getY());
+				element.setPoint(point);
 			} else {
-				for (final Element s : this.childrens) {
-					p += s.getWidth();
-				}
-				point.setLocation(this.getPoint().getX(), p
-						+ this.getPoint().getY());
+				element.setPoint(this.point);
 			}
-			element.setPoint(point);
-		} else {
-			element.setPoint(this.point);
+			element.setParent(this);
+			this.childrens.add(element);
 		}
-		element.setParent(this);
-		this.childrens.add(element);
 	}
 
 	public void addRoot(final Element e) {

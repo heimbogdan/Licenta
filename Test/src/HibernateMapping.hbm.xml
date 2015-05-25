@@ -52,4 +52,16 @@
 		<property name="width"></property>
 		<property name="price"></property>
 	</class>
+	<class name="bh.w2optimize.entity.WoodBoardPice" table="woodboardpice">
+		<id name="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="code"></property>
+		<property name="name"></property>
+		<property name="material"></property>
+		<property name="length"></property>
+		<property name="width"></property>
+		<property name="price"></property>
+		<property name="number"></property>
+	</class>
 </hibernate-mapping>

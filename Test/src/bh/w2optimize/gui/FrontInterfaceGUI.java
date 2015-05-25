@@ -19,6 +19,7 @@ import java.awt.Rectangle;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JCheckBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -166,19 +167,17 @@ public class FrontInterfaceGUI extends JFrame {
 		btnStart.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				e.getComponent().setEnabled(false);
 				panel.resetIncadrare();
 				ElementList elms = new ElementList();
 				Vector data = tableData.getDataVector();
 				for (Object element : data) {
 					Vector row = (Vector) element;
-					elms.addMore(Double.valueOf((String) row.get(1)),
-							Double.valueOf((String) row.get(2)), true,
-							Integer.parseInt((String) row.get(3)));
+					elms.addMore((Double) row.get(0),
+							(Double) row.get(1), (Boolean)row.get(3) == null? false : (Boolean)row.get(3),
+							(Integer) row.get(2));
 				}
-
-				GuillotineMain.start(elms, new Element(207, 280, false));
-				e.getComponent().setEnabled(true);
+				GuillotineMain guillotineMain = GuillotineMain.getInstance();
+				guillotineMain.start(elms, new Element(207, 280, false));
 			}
 		});
 
@@ -290,9 +289,25 @@ public class FrontInterfaceGUI extends JFrame {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setRowHeight(20);
 		table.setAutoCreateRowSorter(true);
-		tableData = new DefaultTableModel(new String[] { "Id", "Length",
-				"Width", "No." }, 1);
-		table.setModel(tableData);
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Length", "Width", "No.", "Rotate"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Double.class, Double.class, Integer.class, Boolean.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		tableData = (DefaultTableModel) table.getModel();
+		table.getColumnModel().getColumn(0).setResizable(false);
+		table.getColumnModel().getColumn(1).setResizable(false);
+		table.getColumnModel().getColumn(2).setResizable(false);
+		table.getColumnModel().getColumn(3).setResizable(false);
 		table.setFillsViewportHeight(true);
 		scrollPane.setViewportView(table);
 
@@ -303,7 +318,7 @@ public class FrontInterfaceGUI extends JFrame {
 		mntmNewRow.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				tableData.addRow(new Object[] {});
+				tableData.addRow(new Object[] {null,null,null,null});
 			}
 		});
 		popupMenu.add(mntmNewRow);

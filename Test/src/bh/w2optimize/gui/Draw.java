@@ -3,13 +3,10 @@ package bh.w2optimize.gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -17,7 +14,6 @@ import bh.w2optimize.entity.Element;
 import bh.w2optimize.entity.FinalElement;
 import javax.swing.SwingConstants;
 import java.awt.Component;
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
@@ -33,7 +29,6 @@ public class Draw extends JPanel {
 	private JLabel labPlaca;
 	private int nrIncadrare;
 	private int nrPlaci;
-	private boolean stopCutting;
 	public void setNrPlaci(int nr) {
 		this.nrPlaci = nr;
 	}

@@ -8,10 +8,24 @@ import bh.w2optimize.entity.ElementList;
 
 public class GuillotineMain {
 
-
-	public static void start(ElementList elementList, Element root) {
-
-		final ExecutorService executorService = Executors.newFixedThreadPool(2);
+	private static GuillotineMain instance;
+	private ExecutorService executorService;
+	
+	private GuillotineMain(){
+		executorService = Executors.newFixedThreadPool(2);
+	}
+	
+	public static GuillotineMain getInstance(){
+		if(instance == null){
+			instance = new GuillotineMain();
+		}
+		return instance;
+	}
+	
+	public void start(ElementList elementList, Element root) {
+		if(executorService.isShutdown()){
+			executorService = Executors.newFixedThreadPool(2);
+		}
 		executorService.submit(createThread(elementList, root, false));
 		executorService.submit(createThread(elementList, root, true));
 		executorService.shutdown();

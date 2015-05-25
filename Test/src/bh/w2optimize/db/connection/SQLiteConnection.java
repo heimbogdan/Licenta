@@ -1,9 +1,8 @@
 package bh.w2optimize.db.connection;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 /**
  * Class used to initialize the connection to the database
@@ -17,13 +16,13 @@ public final class SQLiteConnection {
 
 	private static SQLiteConnection instance;
 
-	private Connection connection;
-
+	private SessionFactory factory;
+	
 	private SQLiteConnection() {
 		try {
-			Class.forName("org.sqlite.JDBC");
-			this.connection = DriverManager.getConnection("jdbc:sqlite:w2o_data.db");
-			checkDataBase();
+			Configuration cfg=new Configuration();
+			cfg.configure("hibernate.cfg.xml");
+			factory=cfg.buildSessionFactory();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -36,20 +35,9 @@ public final class SQLiteConnection {
 		return instance;
 	}
 
-	public Connection getConnection() {
-		return this.connection;
+	public Session getSession() {
+		return this.factory.openSession();
 	}
 
-	private void checkDataBase() {
-		try {
-			final Statement statement = this.connection.createStatement();
-			statement
-					.executeUpdate("create table if not exists elements (id integer primary key autoincrement, component_id integer, length double, width double)");
-			statement
-					.executeUpdate("create table if not exists component (id integer primary key autoincrement, name text, code text)");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
+	
 }

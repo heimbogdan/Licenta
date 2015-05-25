@@ -1,41 +1,35 @@
 package bh.w2optimize.gui;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Path2D;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import bh.w2optimize.entity.Element;
 import bh.w2optimize.entity.FinalElement;
 
-import javax.swing.SwingConstants;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.BoxLayout;
 import javax.swing.border.LineBorder;
 
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-
-import java.awt.Component;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
 
 import javax.swing.JSplitPane;
-import java.awt.ComponentOrientation;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import com.sun.corba.se.impl.orbutil.ObjectWriter;
+
 import java.awt.SystemColor;
-import javax.swing.JRadioButton;
-import javax.swing.ButtonGroup;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 
 public class CutPanel extends JPanel implements ActionListener {
 
@@ -48,11 +42,7 @@ public class CutPanel extends JPanel implements ActionListener {
 	private int pageNumber;
 	private JButton button1 = null;
 	private JButton button2 = null;
-	private JLabel labPlaca = null;
-	private int nrIncadrare;
 	private Draw panel;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
-
 	public FinalElement getIncadrare() {
 		return incadrare;
 	}
@@ -79,8 +69,6 @@ public class CutPanel extends JPanel implements ActionListener {
 		setBackground(SystemColor.inactiveCaption);
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		this.pageNumber = 0;
-		this.nrIncadrare = 0;
-
 		JSplitPane splitPane = new JSplitPane();
 
 		panel = new Draw();
@@ -121,7 +109,7 @@ public class CutPanel extends JPanel implements ActionListener {
 	public void actionPerformed(final ActionEvent e) {
 		if (e.getSource() == this.button2) {
 			if (this.panel.getNrPlaci() == 2) {
-				int num = this.panel.getNrPlaci();
+				this.panel.getNrPlaci();
 				if (this.panel.getIncadrare().getChildrens().size()  >= ((this.pageNumber+1) * 2)+2) {
 					this.pageNumber += this.pageNumber == this.panel.getIncadrare()
 							.getChildrens().size() - 1 ? 0 : 1;
