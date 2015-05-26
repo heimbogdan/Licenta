@@ -46,6 +46,10 @@ public class Accessory {
 		this.price = price;
 	}
 
+	public Accessory(){
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "Accessory [id=" + id + ", code=" + code + ", name=" + name
