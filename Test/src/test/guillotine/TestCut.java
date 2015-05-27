@@ -1,4 +1,4 @@
-package bh.guillotine;
+package test.guillotine;
 
 import static org.junit.Assert.*;
 

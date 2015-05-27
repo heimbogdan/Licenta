@@ -1,4 +1,4 @@
-package bh.guillotine.entity.element;
+package test.guillotine.entity.element;
 
 import static org.junit.Assert.*;
 
@@ -25,11 +25,18 @@ public class TestElement{
 		Element el = new Element();
 		assertNotNull(el);
 		
+	}
+	
+	@Test
+	public void testElementConstructor2(){
 		Element el2 = new Element(10, 10, true);
 		assertNotNull(el2);
 		assertEquals(10, el2.getLength(),0.0001);
 		assertEquals(true, el2.isRotate());
-		
+	}
+	
+	@Test
+	public void testElementConstructorLimit(){
 		Element el3 = new Element(-10, -100, false);
 		assertNotNull(el3);
 		assertEquals(10, el3.getLength(), 0.0001);

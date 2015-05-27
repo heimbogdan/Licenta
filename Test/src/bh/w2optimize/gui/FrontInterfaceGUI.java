@@ -19,7 +19,6 @@ import java.awt.Rectangle;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JCheckBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -30,7 +29,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JPopupMenu;
 
 import bh.w2optimize.db.connection.SQLiteConnection;
-import bh.w2optimize.entity.Element;
 import bh.w2optimize.entity.ElementList;
 import bh.w2optimize.entity.WoodBoard;
 import bh.w2optimize.guillotine.GuillotineMain;
@@ -38,7 +36,6 @@ import bh.w2optimize.guillotine.GuillotineMain;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JTextField;

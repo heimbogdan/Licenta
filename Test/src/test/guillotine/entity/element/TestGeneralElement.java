@@ -1,4 +1,4 @@
-package bh.guillotine.entity.element;
+package test.guillotine.entity.element;
 
 import static org.junit.Assert.*;
 

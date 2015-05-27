@@ -1,4 +1,4 @@
-package bh.guillotine.db.accessory;
+package test.guillotine.db.accessory;
 
 import static org.junit.Assert.*;
 

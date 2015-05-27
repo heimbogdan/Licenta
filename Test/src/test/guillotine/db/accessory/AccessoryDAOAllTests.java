@@ -1,4 +1,4 @@
-package bh.guillotine.db.accessory;
+package test.guillotine.db.accessory;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
