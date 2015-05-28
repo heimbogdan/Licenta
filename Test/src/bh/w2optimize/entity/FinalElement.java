@@ -41,7 +41,7 @@ public class FinalElement extends Element {
 	}
 
 	public void setArea(final double area) {
-		this.area = area;
+		this.area = area < 0 ? 0 : area;
 	}
 
 	public double getLostArea() {
@@ -49,7 +49,7 @@ public class FinalElement extends Element {
 	}
 
 	public void setLostArea(final double lostArea) {
-		this.lostArea = lostArea;
+		this.lostArea = lostArea < 0 ? 0 : lostArea;
 	}
 
 	public double getUsebleArea() {
@@ -57,7 +57,7 @@ public class FinalElement extends Element {
 	}
 
 	public void setUsebleArea(final double usebleArea) {
-		this.useableArea = usebleArea;
+		this.useableArea = usebleArea < 0 ? 0 : usebleArea;
 	}
 
 	public ArrayList<Double> getIndividualLoss() {
@@ -145,13 +145,16 @@ public class FinalElement extends Element {
 	}
 
 	public static FinalElement deepCopy(final Element element) {
-		final FinalElement finalElementl = new FinalElement(
-				element.getLength(), element.getWidth());
-		finalElementl.setChildrens(element.getChildrens());
-		finalElementl.setPosition(element.getPosition());
-		finalElementl.setParent(element.getParent());
-		finalElementl.setPoint(element.getPoint());
-		finalElementl.setUsed(element.isUsed());
-		return finalElementl;
+		if (element != null) {
+			final FinalElement finalElementl = new FinalElement(
+					element.getLength(), element.getWidth());
+			finalElementl.setChildrens(element.getChildrens());
+			finalElementl.setPosition(element.getPosition());
+			finalElementl.setParent(element.getParent());
+			finalElementl.setPoint(element.getPoint());
+			finalElementl.setUsed(element.isUsed());
+			return finalElementl;
+		}
+		return null;
 	}
 }

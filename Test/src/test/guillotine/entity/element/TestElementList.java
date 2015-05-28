@@ -30,7 +30,6 @@ public class TestElementList {
 						Boolean.valueOf(res[2]), Integer.parseInt(res[3]));
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -6,6 +6,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import bh.w2optimize.db.connection.SQLiteConnection;
 import bh.w2optimize.db.dao.AccessoryDAO;
 import bh.w2optimize.entity.Accessory;
 
@@ -16,6 +17,7 @@ public class AccesoryDAOInsertTest {
 	@BeforeClass
 	public static void initialiare(){
 		accessory = new Accessory("EUR_S", "Euro Surub", 0.09);
+		SQLiteConnection.getInstance();
 	}
 	
 	@Test

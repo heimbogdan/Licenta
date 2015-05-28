@@ -31,14 +31,6 @@ public class TestCut {
 		assertEquals(10, elem.getWidth(), 9.9999);
 	}
 	
-	@Test
-	public void testPermutare(){
-		
-	}
 	
-	@Test
-	public void testCut(){
-		// testam algoritmul
-		// limite, erori, performanta
-	}
+	
 }

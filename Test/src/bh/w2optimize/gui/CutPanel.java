@@ -88,15 +88,15 @@ public class CutPanel extends JPanel{
 		button2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (panel.getNrPlaci() == 2) {
-					panel.getNrPlaci();
-					if (panel.getIncadrare().getChildrens().size()  >= ((pageNumber+1) * 2)+2) {
+				int aux = panel.getNrPlaci();
+				if (aux == 2) {
+					if (panel.getIncadrare().getChildrens().size()  >= ((pageNumber+1) * 2)+1) {
 						pageNumber += pageNumber == panel.getIncadrare()
 								.getChildrens().size() - 1 ? 0 : 1;
 						panel.setPageNumber(pageNumber);
 						panel.drawing();
 					}
-				} else if (panel.getNrPlaci() == 1) {
+				} else {
 					pageNumber += pageNumber == panel.getIncadrare()
 							.getChildrens().size() - 1 ? 0 : 1;
 					panel.setPageNumber(pageNumber);

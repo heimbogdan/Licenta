@@ -95,8 +95,8 @@ public class Element implements Serializable {
 		return length;
 	}
 
-	public void setLength(final double length) {
-		this.length = length;
+	public void setLength(final double length ) {
+		this.length = Math.abs(length);
 	}
 
 	public double getWidth() {
@@ -104,7 +104,7 @@ public class Element implements Serializable {
 	}
 
 	public void setWidth(final double width) {
-		this.width = width;
+		this.width = Math.abs(width);
 	}
 
 	public Element getParent() {

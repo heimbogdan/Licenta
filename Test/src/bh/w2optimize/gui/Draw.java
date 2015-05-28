@@ -29,6 +29,7 @@ public class Draw extends JPanel {
 	private JLabel labPlaca;
 	private int nrIncadrare;
 	private int nrPlaci;
+	
 	public void setNrPlaci(int nr) {
 		this.nrPlaci = nr;
 	}
@@ -154,12 +155,12 @@ public class Draw extends JPanel {
 								100);
 						this.labPlaca.setText("Placa " + (num + 1) + "-"
 								+ (num + 2) + "/ incadrare " + nrIncadrare);
-					} else {
-						g2 = drawPlaca(this.incadrare.getChildrens().get(num),
-								g2, 200, 100);
-						this.labPlaca.setText("Placa " + (num + 1)
-								+ "/ incadrare " + nrIncadrare);
-					}
+					} 
+				}else {
+					g2 = drawPlaca(this.incadrare.getChildrens().get(num),
+							g2, 200, 100);
+					this.labPlaca.setText("Placa " + (num + 1)
+							+ "/ incadrare " + nrIncadrare);
 				}
 			}
 		}
