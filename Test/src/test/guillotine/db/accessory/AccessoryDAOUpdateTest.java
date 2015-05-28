@@ -2,7 +2,8 @@ package test.guillotine.db.accessory;
 
 import static org.junit.Assert.*;
 
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import bh.w2optimize.db.dao.AccessoryDAO;
@@ -12,11 +13,16 @@ public class AccessoryDAOUpdateTest {
 
 	private static Accessory accessory;
 	
-	@BeforeClass
-	public static void initialiare(){
+	@Before
+	public void initialiare(){
 		
 		accessory = AccessoryDAO.getByCode("EUR_S");
 		
+	}
+	
+	@After
+	public void clear(){
+		accessory = null;
 	}
 	
 	@Test
@@ -33,4 +39,5 @@ public class AccessoryDAOUpdateTest {
 		assertEquals("Pretul nu este corect!",accessory.getPrice(), acc.getPrice(),0.0001);
 	}
 
+	
 }

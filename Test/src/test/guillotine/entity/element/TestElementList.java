@@ -1,6 +1,7 @@
 package test.guillotine.entity.element;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +13,6 @@ import org.junit.Test;
 
 import bh.w2optimize.entity.ElementList;
 import bh.w2optimize.entity.Element;
-import bh.w2optimize.entity.FinalElement;
 
 public class TestElementList {
 
@@ -56,8 +56,58 @@ public class TestElementList {
 
 	@Test
 	public void testAddMore() {
-		// testare addMore
+		ElementList li = new ElementList();
+		assertNotNull(li);
+		
+		li.addMore(10, 10, false, 1);
+		assertEquals(1, li.size());
 	}
+	
+	@Test
+	public void testAddMore2() {
+		ElementList li = new ElementList();
+		assertNotNull(li);
+		
+		li.addMore(10, 10, false, 4);
+		assertEquals(4, li.size());
+		li.addMore(20, 20, true, 5);
+		assertEquals(9, li.size());
+	}
+	
+	@Test
+	public void testAddMoreLimite() {
+		ElementList li = new ElementList();
+		assertNotNull(li);
+		
+		li.addMore(10, 10, false, 4);
+		assertEquals(4, li.size());
+		li.addMore(20, 20, true, 0);
+		assertEquals(4, li.size());
+	}
+	
+	// mock
+	@Test
+	public void testIsAllUsed(){
+		Element el1 = mock(Element.class);
+		when(el1.isUsed()).thenReturn(true);
+		ElementList li = new ElementList();
+		li.add(el1);
+		
+		assertTrue(li.isAllUsed());
+	}
+	
+	@Test
+	public void testIsAllUsed2(){
+		Element el1 = mock(Element.class);
+		Element el2 = mock(Element.class);
+		when(el1.isUsed()).thenReturn(true);
+		when(el2.isUsed()).thenReturn(false);
+		ElementList li = new ElementList();
+		li.add(el1);
+		li.add(el2);
+		assertFalse(li.isAllUsed());
+	}
+
 
 	@Test
 	public void testClone() {

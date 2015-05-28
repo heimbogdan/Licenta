@@ -19,7 +19,11 @@ public class GeneralElement extends Element implements Serializable {
 	}
 
 	public void setLengthCode(int lengthCode) {
-		this.lengthCode = lengthCode;
+		if(lengthCode >= 1 && lengthCode <=3){
+			this.lengthCode = lengthCode;
+		} else {
+			throw new NumberFormatException("Number is not in range!");
+		}
 	}
 
 	public int getWidthCode() {
@@ -27,7 +31,11 @@ public class GeneralElement extends Element implements Serializable {
 	}
 
 	public void setWidthCode(int widthCode) {
-		this.widthCode = widthCode;
+		if(widthCode >= 1 && widthCode <=3){
+			this.widthCode = widthCode;
+		} else {
+			throw new NumberFormatException("Number is not in range!");
+		}
 	}
 
 	public int getPercent1() {
@@ -35,7 +43,10 @@ public class GeneralElement extends Element implements Serializable {
 	}
 
 	public void setPercent1(int percent1) {
-		this.percent1 = percent1;
+		this.percent1 = Math.abs(percent1);
+		if( this.percent1 > 100 ){
+			this.percent1 = 100;
+		}
 	}
 
 	public int getPercent2() {
@@ -43,16 +54,19 @@ public class GeneralElement extends Element implements Serializable {
 	}
 
 	public void setPercent2(int percent2) {
-		this.percent2 = percent2;
+		this.percent2 = Math.abs(percent2);
+		if( this.percent2 > 100 ){
+			this.percent2 = 100;
+		}
 	}
 
 	public GeneralElement(double length, double width, boolean rotate,
 			int lengthCode, int widthCode, int percent1, int percent2) {
 		super(length, width, rotate);
-		this.lengthCode = lengthCode;
-		this.widthCode = widthCode;
-		this.percent1 = percent1;
-		this.percent2 = percent2;
+		setLengthCode(lengthCode);
+		setWidthCode(widthCode);
+		setPercent1(percent1);
+		setPercent2(percent2);
 	}
 	
 	
