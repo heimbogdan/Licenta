@@ -29,7 +29,7 @@ public class Draw extends JPanel {
 	private JLabel labPlaca;
 	private int nrIncadrare;
 	private int nrPlaci;
-	
+
 	public void setNrPlaci(int nr) {
 		this.nrPlaci = nr;
 	}
@@ -53,19 +53,23 @@ public class Draw extends JPanel {
 	public void setIncadrare(final FinalElement incadrare) {
 
 		boolean makeDraw = false;
-		
-		if (this.incadrare == null
-				|| incadrare.getChildrens().size() < this.incadrare
-						.getChildrens().size()) {
 
+		if (this.incadrare == null) {
 			this.incadrare = incadrare;
 			makeDraw = true;
 
+		} else if (incadrare.getChildrens().size() < this.incadrare
+				.getChildrens().size()) {
+
+			this.incadrare = incadrare;
+			makeDraw = true;
 		} else if (incadrare.getChildrens().size() == this.incadrare
 				.getChildrens().size()) {
 			if (this.incadrare.getUseableArea() <= incadrare.getUseableArea()) {
-				if(this.incadrare.getUseableArea() == incadrare.getUseableArea()){
-					if(this.incadrare.getUseablePices() > incadrare.getUseablePices()){
+				if (this.incadrare.getUseableArea() == incadrare
+						.getUseableArea()) {
+					if (this.incadrare.getUseablePices() > incadrare
+							.getUseablePices()) {
 						this.incadrare = incadrare;
 						makeDraw = true;
 					}
@@ -91,11 +95,12 @@ public class Draw extends JPanel {
 		}
 	}
 
-	public void resetIncadrare(){
+	public void resetIncadrare() {
 		this.incadrare = null;
 		this.pageNumber = 0;
-		this.nrIncadrare =0;
+		this.nrIncadrare = 0;
 	}
+
 	public void drawing() {
 		repaint();
 	}
@@ -155,12 +160,12 @@ public class Draw extends JPanel {
 								100);
 						this.labPlaca.setText("Placa " + (num + 1) + "-"
 								+ (num + 2) + "/ incadrare " + nrIncadrare);
-					} 
-				}else {
-					g2 = drawPlaca(this.incadrare.getChildrens().get(num),
-							g2, 200, 100);
-					this.labPlaca.setText("Placa " + (num + 1)
-							+ "/ incadrare " + nrIncadrare);
+					}
+				} else {
+					g2 = drawPlaca(this.incadrare.getChildrens().get(num), g2,
+							200, 100);
+					this.labPlaca.setText("Placa " + (num + 1) + "/ incadrare "
+							+ nrIncadrare);
 				}
 			}
 		}
