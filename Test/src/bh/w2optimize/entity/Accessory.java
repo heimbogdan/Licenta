@@ -6,6 +6,7 @@ public class Accessory {
 	private String code;
 	private String name;
 	private double price;
+	private int number;
 
 	public int getId() {
 		return id;
@@ -39,11 +40,20 @@ public class Accessory {
 		this.price = price;
 	}
 
-	public Accessory(String code, String name, double price) {
+	public int getNumber(){
+		return this.number;
+	}
+	
+	public void setNumber(int number){
+		this.number = number;
+	}
+	
+	public Accessory(String code, String name, double price, int number) {
 		super();
 		this.code = code;
 		this.name = name;
 		this.price = price;
+		this.number = number;
 	}
 
 	public Accessory(){
@@ -53,7 +63,7 @@ public class Accessory {
 	@Override
 	public String toString() {
 		return "Accessory [id=" + id + ", code=" + code + ", name=" + name
-				+ ", price=" + price + "]";
+				+ ", price=" + price + ", number=" + number + "]";
 	}
 
 	

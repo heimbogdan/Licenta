@@ -30,8 +30,9 @@ public class GeneralComponent extends Component {
 		this.height = height;
 	}
 
-	public GeneralComponent(final String name, final String code, final double length,
-			final double width, final double height, final ElementList elements) {
+	public GeneralComponent(final String name, final String code,
+			final double length, final double width, final double height,
+			final ElementList elements) {
 		super(name, code, elements);
 		this.length = length;
 		this.width = width;
@@ -42,11 +43,53 @@ public class GeneralComponent extends Component {
 		super();
 	}
 
+	public void rescaleElements(final double length, final double width,
+			final double height) {
+		final double _length = length - this.length;
+		final double _width = width - this.width;
+		final double _height = height - this.height;
+
+		for (Element elem : getElements()) {
+			GeneralElement el = (GeneralElement) elem;
+			double newLength;
+			double newWidth;
+			switch (el.getLengthCode()) {
+			case 1:
+				newLength = el.getLength() + (_length * (el.getPercent1() / 100));
+				break;
+			case 2:
+				newLength = el.getLength() + (_width * (el.getPercent1() / 100));
+				break;
+			case 3:
+				newLength = el.getLength() + (_height * (el.getPercent1() / 100));
+				break;
+			default:
+				newLength = el.getLength();
+				break;
+			}
+			switch (el.getWidthCode()) {
+			case 1:
+				newWidth = el.getWidth() + (_length * (el.getPercent2() / 100));
+				break;
+			case 2:
+				newWidth = el.getWidth() + (_width * (el.getPercent2() / 100));
+				break;
+			case 3:
+				newWidth = el.getWidth() + (_height * (el.getPercent2() / 100));
+				break;
+			default:
+				newWidth = el.getWidth();
+				break;
+			}
+			el.setLength(newLength);
+			el.setWidth(newWidth);
+		}
+	}
+
 	@Override
 	public String toString() {
-		return "GeneralComponent [ " + super.toString() + " length=" + length + ", width=" + width
-				+ ", height=" + height + "]";
+		return "GeneralComponent [ " + super.toString() + " length=" + length
+				+ ", width=" + width + ", height=" + height + "]";
 	}
- 
-	
+
 }

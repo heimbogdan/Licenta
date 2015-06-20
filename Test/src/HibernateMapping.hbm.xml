@@ -24,9 +24,10 @@
 		<id name="id">
 			<generator class="native"></generator>
 		</id>
-		<property name="code"></property>
-		<property name="name"></property>
-		<property name="price"></property>
+		<property name="code" column="code"></property>
+		<property name="name" column="name"></property>
+		<property name="price" column="price"></property>
+		<property name="number" column="number"></property>
 	</class>
 	<class name="bh.w2optimize.entity.WoodBoard" table="woodboard">
 		<id name="id" column="id">
