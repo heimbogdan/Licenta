@@ -84,6 +84,9 @@ public class GeneralComponent extends Component {
 			el.setLength(newLength);
 			el.setWidth(newWidth);
 		}
+		this.length = length;
+		this.width = width;
+		this.height = height;
 	}
 
 	@Override
