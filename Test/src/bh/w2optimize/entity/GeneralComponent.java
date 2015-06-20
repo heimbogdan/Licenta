@@ -53,29 +53,31 @@ public class GeneralComponent extends Component {
 			GeneralElement el = (GeneralElement) elem;
 			double newLength;
 			double newWidth;
+			double percent = el.getPercent1();
 			switch (el.getLengthCode()) {
 			case 1:
-				newLength = el.getLength() + (_length * (el.getPercent1() / 100));
+				newLength = el.getLength() + (_length * (percent / 100));
 				break;
 			case 2:
-				newLength = el.getLength() + (_width * (el.getPercent1() / 100));
+				newLength = el.getLength() + (_width * (percent / 100));
 				break;
 			case 3:
-				newLength = el.getLength() + (_height * (el.getPercent1() / 100));
+				newLength = el.getLength() + (_height * (percent / 100));
 				break;
 			default:
 				newLength = el.getLength();
 				break;
 			}
+			percent = el.getPercent2();
 			switch (el.getWidthCode()) {
 			case 1:
-				newWidth = el.getWidth() + (_length * (el.getPercent2() / 100));
+				newWidth = el.getWidth() + (_length * (percent / 100));
 				break;
 			case 2:
-				newWidth = el.getWidth() + (_width * (el.getPercent2() / 100));
+				newWidth = el.getWidth() + (_width * (percent / 100));
 				break;
 			case 3:
-				newWidth = el.getWidth() + (_height * (el.getPercent2() / 100));
+				newWidth = el.getWidth() + (_height * (percent / 100));
 				break;
 			default:
 				newWidth = el.getWidth();
