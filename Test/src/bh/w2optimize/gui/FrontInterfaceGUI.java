@@ -29,13 +29,16 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JPopupMenu;
 
 import bh.w2optimize.db.connection.SQLiteConnection;
+import bh.w2optimize.entity.Element;
 import bh.w2optimize.entity.ElementList;
 import bh.w2optimize.entity.WoodBoard;
+import bh.w2optimize.guillotine.GuillotineConstraints;
 import bh.w2optimize.guillotine.GuillotineMain;
 
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigInteger;
 import java.util.Vector;
 
 import javax.swing.JTextField;
@@ -44,6 +47,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.border.LineBorder;
 
 import java.awt.Color;
+
+import javax.swing.JRadioButton;
 
 public class FrontInterfaceGUI extends JFrame {
 
@@ -59,7 +64,8 @@ public class FrontInterfaceGUI extends JFrame {
 	private JTextField woodBoardNameTB;
 	private WoodBoard usedBoard;
 	private FrontInterfaceGUI _self;
-	
+	private JTextField restrictionTB;
+
 	public void setUsedBoard(WoodBoard board) {
 		this.usedBoard = board;
 		this.woodBoardNameTB.setText(board.getName());
@@ -98,7 +104,7 @@ public class FrontInterfaceGUI extends JFrame {
 		setTitle("W2Optimize");
 		setPreferredSize(new Dimension(840, 600));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 830, 600);
+		setBounds(100, 100, 851, 602);
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -167,38 +173,7 @@ public class FrontInterfaceGUI extends JFrame {
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		JButton btnStart = new JButton("Start");
-		btnStart.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (usedBoard == null) {
-					JOptionPane.showMessageDialog(_self,
-							"Please select wood board!", "Warning!",
-							JOptionPane.WARNING_MESSAGE);
-				} else {
-					panel.resetIncadrare();
-					ElementList elms = new ElementList();
-					Vector data = tableData.getDataVector();
-					if (data.isEmpty()) {
-						JOptionPane.showMessageDialog(_self,
-								"Please add some elements to begin cutting!", "Warning!",
-								JOptionPane.WARNING_MESSAGE);
-					} else {
-						for (Object element : data) {
-							Vector row = (Vector) element;
-							elms.addMore((Double) row.get(0), (Double) row
-									.get(1),
-									(Boolean) row.get(3) == null ? false
-											: (Boolean) row.get(3),
-									(Integer) row.get(2));
-						}
-						GuillotineMain guillotineMain = GuillotineMain
-								.getInstance();
-						panel.setIncadrare(null);
-						guillotineMain.start(elms, usedBoard.toElement());
-					}
-				}
-			}
-		});
+		
 
 		JButton btnNewComponent = new JButton("New Component");
 
@@ -214,77 +189,121 @@ public class FrontInterfaceGUI extends JFrame {
 
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setBorder(new LineBorder(new Color(0, 0, 0)));
+		
+		JLayeredPane constraints = new JLayeredPane();
+		constraints.setBorder(new LineBorder(new Color(0, 0, 0)));
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1
-				.setHorizontalGroup(gl_panel_1
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_panel_1
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												gl_panel_1
-														.createParallelGroup(
-																Alignment.LEADING)
-														.addComponent(
-																layeredPane,
-																GroupLayout.DEFAULT_SIZE,
-																270,
-																Short.MAX_VALUE)
-														.addComponent(
-																scrollPane,
-																Alignment.TRAILING,
-																GroupLayout.DEFAULT_SIZE,
-																270,
-																Short.MAX_VALUE)
-														.addGroup(
-																Alignment.TRAILING,
-																gl_panel_1
-																		.createSequentialGroup()
-																		.addComponent(
-																				btnNewComponent)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addComponent(
-																				btnAddComponent))
-														.addGroup(
-																Alignment.TRAILING,
-																gl_panel_1
-																		.createSequentialGroup()
-																		.addComponent(
-																				btnStop)
-																		.addPreferredGap(
-																				ComponentPlacement.RELATED)
-																		.addComponent(
-																				btnStart)))
-										.addContainerGap()));
-		gl_panel_1.setVerticalGroup(gl_panel_1.createParallelGroup(
-				Alignment.LEADING)
-				.addGroup(
-						gl_panel_1
-								.createSequentialGroup()
-								.addContainerGap()
-								.addComponent(layeredPane,
-										GroupLayout.PREFERRED_SIZE, 70,
-										GroupLayout.PREFERRED_SIZE)
-								.addGap(84)
-								.addGroup(
-										gl_panel_1
-												.createParallelGroup(
-														Alignment.BASELINE)
-												.addComponent(btnNewComponent)
-												.addComponent(btnAddComponent))
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(scrollPane,
-										GroupLayout.DEFAULT_SIZE, 291,
-										Short.MAX_VALUE)
-								.addGap(22)
-								.addGroup(
-										gl_panel_1
-												.createParallelGroup(
-														Alignment.BASELINE)
-												.addComponent(btnStart)
-												.addComponent(btnStop))));
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addComponent(constraints, GroupLayout.PREFERRED_SIZE, 289, GroupLayout.PREFERRED_SIZE)
+						.addComponent(layeredPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+						.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+							.addComponent(btnStop)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnStart))
+						.addComponent(scrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+						.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+							.addComponent(btnNewComponent)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnAddComponent)))
+					.addContainerGap())
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(layeredPane, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnNewComponent)
+						.addComponent(btnAddComponent))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(constraints, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnStart)
+						.addComponent(btnStop)))
+		);
+		
+		JLabel lblRestrictions = new JLabel("Restrictions");
+		lblRestrictions.setBounds(10, 11, 72, 14);
+		constraints.add(lblRestrictions);
+		
+		JRadioButton rdbtnTime = new JRadioButton("Time");
+		rdbtnTime.setBounds(78, 7, 72, 23);
+		constraints.add(rdbtnTime);
+		
+		JRadioButton rdbtnTries = new JRadioButton("Tries");
+		rdbtnTries.setBounds(78, 32, 109, 23);
+		constraints.add(rdbtnTries);
+		
+		JRadioButton rdbtnBestSolution = new JRadioButton("Best Solution");
+		rdbtnBestSolution.setBounds(78, 55, 109, 23);
+		constraints.add(rdbtnBestSolution);
+		
+		JRadioButton rdbtnNone = new JRadioButton("None");
+		rdbtnNone.setBounds(10, 32, 59, 23);
+		constraints.add(rdbtnNone);
+		rdbtnNone.setSelected(true);
+		
+		JLabel lblValue = new JLabel("Value");
+		lblValue.setBounds(207, 11, 53, 14);
+		constraints.add(lblValue);
+		
+		this.restrictionTB = new JTextField();
+		this.restrictionTB.setBounds(193, 33, 86, 20);
+		constraints.add(this.restrictionTB);
+		this.restrictionTB.setColumns(10);
+		this.restrictionTB.setEnabled(false);
+		
+		rdbtnTime.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				rdbtnTries.setSelected(false);
+				rdbtnBestSolution.setSelected(false);
+				rdbtnNone.setSelected(false);
+				restrictionTB.setEnabled(true);
+				restrictionTB.setToolTipText("Value representing time in seconds.");
+			}
+		});
+		rdbtnTries.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				rdbtnTime.setSelected(false);
+				rdbtnBestSolution.setSelected(false);
+				rdbtnNone.setSelected(false);
+				restrictionTB.setEnabled(true);
+				restrictionTB.setToolTipText("Value represent the number of tries.");
+				restrictionTB.setText("");
+			}
+		});
+		rdbtnBestSolution.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				rdbtnTime.setSelected(false);
+				rdbtnTries.setSelected(false);
+				rdbtnNone.setSelected(false);
+				restrictionTB.setEnabled(true);
+				restrictionTB.setToolTipText("Value represent the number of best solutions find before stop.");
+			}
+		});
+		rdbtnNone.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				rdbtnTime.setSelected(false);
+				rdbtnTries.setSelected(false);
+				rdbtnBestSolution.setSelected(false);
+				restrictionTB.setEnabled(false);
+				restrictionTB.setToolTipText(null);
+			}
+		});
+		
+				
 
 		JLabel lblWoodBoard = new JLabel("Wood Board Name");
 		lblWoodBoard.setBounds(10, 11, 125, 14);
@@ -362,37 +381,72 @@ public class FrontInterfaceGUI extends JFrame {
 		GroupLayout gl_contentPane = new GroupLayout(this.contentPane);
 		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(
 				Alignment.LEADING).addGroup(
-				gl_contentPane
-						.createSequentialGroup()
-						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(this.panel, GroupLayout.PREFERRED_SIZE,
-								508, GroupLayout.PREFERRED_SIZE)));
-		gl_contentPane
-				.setVerticalGroup(gl_contentPane
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								Alignment.TRAILING,
-								gl_contentPane
-										.createSequentialGroup()
-										.addGroup(
-												gl_contentPane
-														.createParallelGroup(
-																Alignment.TRAILING)
-														.addComponent(
-																this.panel,
-																Alignment.LEADING,
-																GroupLayout.DEFAULT_SIZE,
-																530,
-																Short.MAX_VALUE)
-														.addComponent(
-																panel_1,
-																GroupLayout.DEFAULT_SIZE,
-																GroupLayout.DEFAULT_SIZE,
-																Short.MAX_VALUE))
+				gl_contentPane.createSequentialGroup().addComponent(panel_1, GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addPreferredGap(ComponentPlacement.RELATED).addComponent(this.panel, GroupLayout.PREFERRED_SIZE,508, GroupLayout.PREFERRED_SIZE)));
+		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(Alignment.TRAILING,gl_contentPane.createSequentialGroup().addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+														.addComponent(this.panel,Alignment.LEADING,GroupLayout.DEFAULT_SIZE,530,Short.MAX_VALUE)
+														.addComponent(panel_1,GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE))
 										.addGap(0)));
 		this.contentPane.setLayout(gl_contentPane);
+		
+		btnStart.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (usedBoard == null) {
+					JOptionPane.showMessageDialog(_self,
+							"Please select wood board!", "Warning!",
+							JOptionPane.WARNING_MESSAGE);
+				} else {
+					panel.resetIncadrare();
+					ElementList elms = new ElementList();
+					Vector data = tableData.getDataVector();
+					if (data.isEmpty()) {
+						JOptionPane.showMessageDialog(_self,
+								"Please add some elements to begin cutting!", "Warning!",
+								JOptionPane.WARNING_MESSAGE);
+					} else {
+						for (Object element : data) {
+							Vector row = (Vector) element;
+							elms.addMore((Double) row.get(0), (Double) row
+									.get(1),
+									(Boolean) row.get(3) == null ? false
+											: (Boolean) row.get(3),
+									(Integer) row.get(2));
+						}
+						GuillotineMain guillotineMain = GuillotineMain
+								.getInstance();
+						Integer elemNr = elms.size();
+						int elemRotate = 0;
+						for(Element el : elms){
+							if(el.isRotate()){
+								elemRotate++;
+							}
+						}
+						BigInteger totalPerm = new BigInteger(elemNr.toString());
+						for (int i = elemNr - 1; i > 0; i--) {
+							totalPerm = totalPerm.multiply(new BigInteger(i + ""));
+						}
+						totalPerm = totalPerm.multiply(BigInteger.valueOf(2).pow(elemRotate));
+						panel.setTotalPerm(totalPerm);
+						panel.setIncadrare(null,0,false);
+						GuillotineConstraints constraint = GuillotineConstraints.NONE;
+						if(rdbtnTime.isSelected()){
+							constraint = GuillotineConstraints.TIME;
+						} else if (rdbtnTries.isSelected()){
+							constraint = GuillotineConstraints.TRIES;
+						}else if ( rdbtnBestSolution.isSelected()){
+							constraint = GuillotineConstraints.BESTSOLUTION;
+						}
+						String value = null; 
+						if(restrictionTB.isEnabled()){
+							value = restrictionTB.getText();
+						}
+						guillotineMain.start(elms, usedBoard.toElement(),constraint, value);
+					}
+				}
+			}
+		});
 	}
 
 	private static void addPopup(Component component, final JPopupMenu popup) {

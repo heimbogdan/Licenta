@@ -50,6 +50,10 @@ public class Draw extends JPanel {
 		this.pageNumber = pageNumber;
 	}
 
+	public int getNrIncadrare(){
+		return this.nrIncadrare;
+	}
+	
 	public void setIncadrare(final FinalElement incadrare) {
 
 		boolean makeDraw = false;

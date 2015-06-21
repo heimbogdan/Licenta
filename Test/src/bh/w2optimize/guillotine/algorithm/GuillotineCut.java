@@ -21,6 +21,8 @@ public class GuillotineCut {
 	private Element pal;
 	private boolean horizontal;
 	private boolean keepGoing;
+	private int tries;
+	private int permutationsNumber;
 	
 	public FinalElement getCutElement() {
 		return cutElement;
@@ -49,7 +51,9 @@ public class GuillotineCut {
 	public GuillotineCut(final boolean h) {
 		this.cutElement = new FinalElement(0, 0);
 		this.horizontal = h;
-		keepGoing = true;
+		this.keepGoing = true;
+		this.tries = 0;
+		this.permutationsNumber = 0;
 	}
 
 	/**
@@ -108,6 +112,7 @@ public class GuillotineCut {
 
 			if (keepGoing) {
 				if (k == elements.size()) {
+					permutationsNumber++;
 					pal = new Element(0, 0, false);
 					int index = 0;
 					while (!elements.isAllUsed()) {
@@ -117,6 +122,14 @@ public class GuillotineCut {
 						pal.addRoot(newRoot);
 						cut(elements, pal.getChildrens().get(index));
 						index++;
+					}
+					this.tries ++;
+					if (tries == 10) {
+						GuillotineMain main = GuillotineMain.getInstance();
+						synchronized (main) {
+							main.setTriesNumber(10);
+						}
+						tries = 0;
 					}
 					for (final Element el : elements) {
 						el.setUsed(false);
@@ -182,7 +195,7 @@ public class GuillotineCut {
 			if (cutElement.getChildrens().isEmpty()) {
 				synchronized (draw) {
 					cutElement = newFinal;
-					draw.setIncadrare(cutElement);
+					draw.setIncadrare(cutElement,permutationsNumber,horizontal);
 				}
 			} else {
 				final int initial = cutElement.getChildrens().size();
@@ -190,7 +203,7 @@ public class GuillotineCut {
 				if (initial > newFinalChildrens) {
 					synchronized (draw) {
 						cutElement = newFinal;
-						draw.setIncadrare(cutElement);
+						draw.setIncadrare(cutElement,permutationsNumber,horizontal);
 					}
 				} else if (initial == newFinalChildrens) {
 					int better = 0;
@@ -210,13 +223,13 @@ public class GuillotineCut {
 									.getUseablePices()) {
 								synchronized (draw) {
 									cutElement = newFinal;
-									draw.setIncadrare(cutElement);
+									draw.setIncadrare(cutElement,permutationsNumber,horizontal);
 								}
 							}
 						} else  {
 							synchronized (draw) {
 								cutElement = newFinal;
-								draw.setIncadrare(cutElement);
+								draw.setIncadrare(cutElement,permutationsNumber,horizontal);
 							}
 						}
 					}
