@@ -241,8 +241,8 @@ public class Element implements Serializable {
 		}
 	}
 
-	public void addRoot(final Element e) {
-		e.setParent(this);
-		this.childrens.add(e);
+	public void addRoot(final Element parent) {
+		parent.setParent(this);
+		this.childrens.add(parent);
 	}
 }

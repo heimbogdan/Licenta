@@ -11,8 +11,8 @@ public class GeneralElement extends Element implements Serializable {
 	
 	private int lengthCode;
 	private int widthCode;
-	private int percent1;
-	private int percent2;
+	private int lengthPercent;
+	private int widthPercent;
 
 	public int getLengthCode() {
 		return lengthCode;
@@ -38,25 +38,25 @@ public class GeneralElement extends Element implements Serializable {
 		}
 	}
 
-	public int getPercent1() {
-		return percent1;
+	public int getLengthPercent() {
+		return lengthPercent;
 	}
 
-	public void setPercent1(int percent1) {
-		this.percent1 = Math.abs(percent1);
-		if( this.percent1 > 100 ){
-			this.percent1 = 100;
+	public void setLengthPercent(int percent) {
+		this.lengthPercent = Math.abs(percent);
+		if( this.lengthPercent > 100 ){
+			this.lengthPercent = 100;
 		}
 	}
 
-	public int getPercent2() {
-		return percent2;
+	public int getWidthPercent() {
+		return widthPercent;
 	}
 
-	public void setPercent2(int percent2) {
-		this.percent2 = Math.abs(percent2);
-		if( this.percent2 > 100 ){
-			this.percent2 = 100;
+	public void setWidthPercent(int percent) {
+		this.widthPercent = Math.abs(percent);
+		if( this.widthPercent > 100 ){
+			this.widthPercent = 100;
 		}
 	}
 
@@ -65,8 +65,8 @@ public class GeneralElement extends Element implements Serializable {
 		super(length, width, rotate);
 		setLengthCode(lengthCode);
 		setWidthCode(widthCode);
-		setPercent1(percent1);
-		setPercent2(percent2);
+		setLengthPercent(percent1);
+		setWidthPercent(percent2);
 	}
 	
 	
@@ -85,8 +85,8 @@ public class GeneralElement extends Element implements Serializable {
 	@Override
 	public String toString() {
 		return "GeneralElement [ " + super.toString() + " lengthCode=" + lengthCode + ", widthCode="
-				+ widthCode + ", percent1=" + percent1 + ", percent2="
-				+ percent2 + "]";
+				+ widthCode + ", percent1=" + lengthPercent + ", percent2="
+				+ widthPercent + "]";
 	}
 
 	

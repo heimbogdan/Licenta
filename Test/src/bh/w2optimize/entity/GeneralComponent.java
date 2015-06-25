@@ -53,7 +53,7 @@ public class GeneralComponent extends Component {
 			GeneralElement el = (GeneralElement) elem;
 			double newLength;
 			double newWidth;
-			double percent = el.getPercent1();
+			double percent = el.getLengthPercent();
 			switch (el.getLengthCode()) {
 			case 1:
 				newLength = el.getLength() + (_length * (percent / 100));
@@ -68,7 +68,7 @@ public class GeneralComponent extends Component {
 				newLength = el.getLength();
 				break;
 			}
-			percent = el.getPercent2();
+			percent = el.getWidthPercent();
 			switch (el.getWidthCode()) {
 			case 1:
 				newWidth = el.getWidth() + (_length * (percent / 100));

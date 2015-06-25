@@ -287,7 +287,7 @@ public class GeneralComponentEditor extends JDialog {
 			for ( Element elem : list){
 				GeneralElement el = (GeneralElement) elem;
 				model.addRow(new Object[] {el.getName(),el.getLength(),el.getWidth(),el.isRotate(),el.getLengthCode(),el.getWidthCode(),
-						el.getPercent1(),el.getPercent2()});
+						el.getLengthPercent(),el.getWidthPercent()});
 			}
 		}
 	}

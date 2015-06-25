@@ -52,9 +52,6 @@ public class FinalElement extends Element {
 		this.lostArea = lostArea < 0 ? 0 : lostArea;
 	}
 
-	public double getUsebleArea() {
-		return useableArea;
-	}
 
 	public void setUsebleArea(final double usebleArea) {
 		this.useableArea = usebleArea < 0 ? 0 : usebleArea;
