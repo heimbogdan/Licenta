@@ -24,10 +24,15 @@ import bh.w2optimize.db.dao.WoodBoardDAO;
 import bh.w2optimize.entity.WoodBoard;
 
 import java.awt.Component;
-import java.awt.Dialog.ModalityType;
 
 public class WoodBoardAdder extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1573065020432656573L;
+	
+	
 	private final JPanel contentPanel = new JPanel();
 	private JTextField materialTB;
 	private JTextField lengthTB;

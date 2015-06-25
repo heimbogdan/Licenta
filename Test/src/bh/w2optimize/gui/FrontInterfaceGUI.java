@@ -97,6 +97,7 @@ public class FrontInterfaceGUI extends JFrame {
 		createContents();
 	}
 
+	@SuppressWarnings({ "serial", "static-access" })
 	private void createContents() {
 		_self = this;
 		SQLiteConnection.getInstance();
@@ -104,7 +105,7 @@ public class FrontInterfaceGUI extends JFrame {
 		setTitle("W2Optimize");
 		setPreferredSize(new Dimension(840, 600));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 851, 602);
+		setBounds(100, 100, 964, 602);
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -176,8 +177,21 @@ public class FrontInterfaceGUI extends JFrame {
 		
 
 		JButton btnNewComponent = new JButton("New Component");
+		btnNewComponent.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ComponentAdder compAdd = new ComponentAdder();
+				compAdd.setVisible(true);
+			}
+		});
 
 		JButton btnAddComponent = new JButton("Choose Component");
+		btnAddComponent.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new ComponentBrowser().setVisible(true);
+			}
+		});
 
 		JButton btnStop = new JButton("Stop");
 		btnStop.addMouseListener(new MouseAdapter() {
@@ -337,21 +351,23 @@ public class FrontInterfaceGUI extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Length", "Width", "No.", "Rotate"
+				"Name", "Length", "Width", "Rotate", "No."
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				Double.class, Double.class, Integer.class, Boolean.class
+				String.class, Double.class, Double.class, Boolean.class, Integer.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
 		});
-		tableData = (DefaultTableModel) table.getModel();
 		table.getColumnModel().getColumn(0).setResizable(false);
 		table.getColumnModel().getColumn(1).setResizable(false);
 		table.getColumnModel().getColumn(2).setResizable(false);
 		table.getColumnModel().getColumn(3).setResizable(false);
+		table.getColumnModel().getColumn(4).setResizable(false);
+		table.getColumnModel().getColumn(4).setPreferredWidth(60);
+		tableData = (DefaultTableModel) table.getModel();
 		table.setFillsViewportHeight(true);
 		scrollPane.setViewportView(table);
 
@@ -391,6 +407,7 @@ public class FrontInterfaceGUI extends JFrame {
 		this.contentPane.setLayout(gl_contentPane);
 		
 		btnStart.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (usedBoard == null) {
@@ -402,20 +419,16 @@ public class FrontInterfaceGUI extends JFrame {
 					ElementList elms = new ElementList();
 					Vector data = tableData.getDataVector();
 					if (data.isEmpty()) {
-						JOptionPane.showMessageDialog(_self,
-								"Please add some elements to begin cutting!", "Warning!",
-								JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(_self, "Please add some elements to begin cutting!", "Warning!", JOptionPane.WARNING_MESSAGE);
 					} else {
 						for (Object element : data) {
 							Vector row = (Vector) element;
-							elms.addMore((Double) row.get(0), (Double) row
-									.get(1),
-									(Boolean) row.get(3) == null ? false
-											: (Boolean) row.get(3),
-									(Integer) row.get(2));
+							elms.addMore((Double) row.get(1), (Double) row.get(2), (Boolean) row.get(3) == null ? false	: (Boolean) row.get(3),
+									(Integer) row.get(4));
 						}
-						GuillotineMain guillotineMain = GuillotineMain
-								.getInstance();
+						GuillotineMain guillotineMain = GuillotineMain.getInstance();
+						
+						// restrictii ???
 						Integer elemNr = elms.size();
 						int elemRotate = 0;
 						for(Element el : elms){
@@ -423,6 +436,7 @@ public class FrontInterfaceGUI extends JFrame {
 								elemRotate++;
 							}
 						}
+						
 						BigInteger totalPerm = new BigInteger(elemNr.toString());
 						for (int i = elemNr - 1; i > 0; i--) {
 							totalPerm = totalPerm.multiply(new BigInteger(i + ""));

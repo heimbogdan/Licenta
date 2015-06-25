@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLayeredPane;
@@ -28,10 +29,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JPopupMenu;
 
 import java.awt.Component;
-import java.text.Format;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -44,12 +42,8 @@ import bh.w2optimize.entity.WoodBoardPice;
 
 import javax.swing.JComboBox;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class EditStocks extends JDialog {
 
@@ -70,6 +64,7 @@ public class EditStocks extends JDialog {
 	private List<WoodBoard> listWood;
 	private JComboBox<String> codeCB;
 	private JTextField numberTB;
+	private EditStocks _self;
 	/**
 	 * Launch the application.
 	 */
@@ -89,7 +84,9 @@ public class EditStocks extends JDialog {
 	public EditStocks() {
 		createContents();
 	}
+	@SuppressWarnings("serial")
 	private void createContents() {
+		_self = this;
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle("Stocks");
 		setResizable(false);
@@ -222,6 +219,7 @@ public class EditStocks extends JDialog {
 		
 		codeCB = new JComboBox<String>();
 		this.codeCB.addItemListener(new ItemListener() {
+			@SuppressWarnings("unused")
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED) {
 			          Object item = arg0.getItem();
@@ -267,9 +265,11 @@ public class EditStocks extends JDialog {
 				"Code", "Name", "Material", "Length", "Width", "Price", "Number"
 			}
 		) {
+			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] {
 				String.class, String.class, String.class, Double.class, Double.class, Double.class, Integer.class
 			};
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -295,6 +295,7 @@ public class EditStocks extends JDialog {
 		
 		JMenuItem mntmEdit = new JMenuItem("Edit");
 		mntmEdit.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				int index = stockTable.getSelectedRow();
@@ -310,6 +311,10 @@ public class EditStocks extends JDialog {
 					priceTB.setText(row.get(5).toString());
 					numberTB.setText(row.get(6).toString());
 					btnAdd.setText("Save");
+				} else {
+					JOptionPane.showMessageDialog(_self,
+							"Please select a row!", "Warning!",
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -322,9 +327,12 @@ public class EditStocks extends JDialog {
 				int index = stockTable.getSelectedRow();
 				if(index != -1){
 					WoodBoardPice board = list.get(index);
-					list.remove(board);
 					WoodBoardPiceDAO.delete(board);
 					loadData();
+				} else {
+					JOptionPane.showMessageDialog(_self,
+							"Please select a row!", "Warning!",
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

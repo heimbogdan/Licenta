@@ -3,7 +3,6 @@ package bh.w2optimize.gui;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
-import java.awt.TrayIcon.MessageType;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -18,13 +17,11 @@ import javax.swing.GroupLayout.Alignment;
 
 import java.awt.Dimension;
 
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 
 import bh.w2optimize.db.dao.WoodBoardDAO;
 import bh.w2optimize.entity.WoodBoard;
 
-import java.awt.Dialog.ModalityType;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -32,6 +29,11 @@ import java.util.Vector;
 
 public class WoodBoardBrowser extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6050547569794768822L;
+	
 	private final JPanel contentPanel = new JPanel();
 	private static JTable table;
 	private JScrollPane n;
@@ -55,10 +57,12 @@ public class WoodBoardBrowser extends JDialog {
 	 * @param container 
 	 */
 	public WoodBoardBrowser(Container container) {
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		createContents();
 		front = (FrontInterfaceGUI) container;
 	}  
 	
+	@SuppressWarnings({ "static-access", "serial" })
 	private void createContents() {
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle("Wood Board Browser");
@@ -123,6 +127,7 @@ public class WoodBoardBrowser extends JDialog {
 			{
 				JButton okButton = new JButton("Select");
 				okButton.addMouseListener(new MouseAdapter() {
+					@SuppressWarnings("rawtypes")
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						if (table.getSelectedRow() != -1) {

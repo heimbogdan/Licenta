@@ -25,14 +25,12 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 
-import bh.w2optimize.db.dao.CompomentDAO;
+import bh.w2optimize.db.dao.ComponentDAO;
 import bh.w2optimize.db.dao.GeneralComponentDAO;
-import bh.w2optimize.db.dao.WoodBoardDAO;
 import bh.w2optimize.entity.Component;
 import bh.w2optimize.entity.Element;
 import bh.w2optimize.entity.ElementList;
 import bh.w2optimize.entity.GeneralComponent;
-import bh.w2optimize.entity.WoodBoard;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
@@ -45,6 +43,12 @@ import javax.swing.JMenuItem;
 
 public class ComponentBrowser extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2027311490164484117L;
+	
+	
 	private final JPanel contentPanel = new JPanel();
 	private JTable componentTable;
 	private JTextField codeCompTB;
@@ -69,7 +73,11 @@ public class ComponentBrowser extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
+	@SuppressWarnings("serial")
 	public ComponentBrowser() {
+		setTitle("Component Browser");
+		setResizable(false);
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		_self = this;
 		setBounds(100, 100, 589, 482);
 		getContentPane().setLayout(new BorderLayout());
@@ -77,18 +85,7 @@ public class ComponentBrowser extends JDialog {
 		getContentPane().add(this.contentPanel, BorderLayout.CENTER);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				if (arg0.getSource() instanceof JTabbedPane) {
-                    JTabbedPane pane = (JTabbedPane) arg0.getSource();
-                    if(pane.getSelectedIndex() == 0){
-                    	loadDataComp();
-                    }else if(pane.getSelectedIndex() == 1){
-                    	loadDataGenComp();
-                    }
-                }
-			}
-		});
+		
 		tabbedPane.setBackground(Color.LIGHT_GRAY);
 		GroupLayout gl_contentPanel = new GroupLayout(this.contentPanel);
 		gl_contentPanel.setHorizontalGroup(
@@ -127,11 +124,12 @@ public class ComponentBrowser extends JDialog {
 		
 		JButton btnSave = new JButton("Save");
 		btnSave.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings({"rawtypes"})
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				String code = codeCompTB.getText();
 				if(code != null && !code.isEmpty()){
-					Component comp = CompomentDAO.getByCode(code);
+					Component comp = ComponentDAO.getByCode(code);
 					ElementList listElem = new ElementList();
 					Vector data = ((DefaultTableModel)compElementTable.getModel()).getDataVector();
 					for (Object element : data) {
@@ -145,7 +143,7 @@ public class ComponentBrowser extends JDialog {
 					}
 					comp.setName(nameCompTB.getText());
 					comp.setElements(listElem);
-					CompomentDAO.update(comp);
+					ComponentDAO.update(comp);
 					loadDataComp();
 					resetEditFieldsComp();
 				}
@@ -211,9 +209,11 @@ public class ComponentBrowser extends JDialog {
 				"Name", "Length", "Width", "Rotate"
 			}
 		) {
+			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] {
 				String.class, Double.class, Double.class, Boolean.class
 			};
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -257,9 +257,11 @@ public class ComponentBrowser extends JDialog {
 				"Code", "Name", "Elements No."
 			}
 		) {
+			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] {
 				String.class, String.class, Integer.class
 			};
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -281,16 +283,16 @@ public class ComponentBrowser extends JDialog {
 		
 		JMenuItem mntmEdit = new JMenuItem("Edit");
 		mntmEdit.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("rawtypes")
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				int index = componentTable.getSelectedRow();
 				if(index != -1){
 					resetEditFieldsComp();
-					DefaultTableModel model = (DefaultTableModel) componentTable.getModel();
-					Vector row = (Vector) model.getDataVector().get(index);
-					codeCompTB.setText((String) row.get(0));
-					nameCompTB.setText((String) row.get(1));
-					loadDataCompElements((String) row.get(0));
+					DefaultTableModel model = (DefaultTableModel) componentTable.getModel();					
+					codeCompTB.setText((String) model.getValueAt(index, 0));
+					nameCompTB.setText((String) model.getValueAt(index, 1));
+					loadDataCompElements(codeCompTB.getText());
 				}
 			}
 		});
@@ -305,8 +307,8 @@ public class ComponentBrowser extends JDialog {
 					if (JOptionPane.showConfirmDialog(null,	"Are you sure you want to delete this compoment?",
 							"Warning!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 						DefaultTableModel model = (DefaultTableModel) componentTable.getModel();
-						Component comp = CompomentDAO.getByCode((String) model.getValueAt(index, 0));
-						CompomentDAO.delete(comp);
+						Component comp = ComponentDAO.getByCode((String) model.getValueAt(index, 0));
+						ComponentDAO.delete(comp);
 						model.removeRow(index);
 					}
 				} else {
@@ -323,7 +325,7 @@ public class ComponentBrowser extends JDialog {
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane_2.setBounds(0, 0, 548, 367);
+		scrollPane_2.setBounds(0, 0, 568, 382);
 		genCompLayeredPane.add(scrollPane_2);
 		
 		this.genCompTable = new JTable();
@@ -334,9 +336,11 @@ public class ComponentBrowser extends JDialog {
 				"Code", "Name", "Length", "Width", "Height", "Elements No."
 			}
 		) {
+			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] {
 				String.class, String.class, Double.class, Double.class, Double.class, Integer.class
 			};
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -368,7 +372,7 @@ public class ComponentBrowser extends JDialog {
 					resetEditFieldsComp();
 					DefaultTableModel model = (DefaultTableModel) genCompTable.getModel();
 					GeneralComponent genComp = GeneralComponentDAO.getByCode((String) model.getValueAt(index, 0));
-					
+					new GeneralComponentEditor(_self, genComp).setVisible(true);
 				} else {
 					JOptionPane.showMessageDialog(_self, "Please select a general component!", "Warning!", JOptionPane.WARNING_MESSAGE);
 				}
@@ -402,12 +406,24 @@ public class ComponentBrowser extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("Select");
+				okButton.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						//TODO adauga comp sau gencomp in lista din front
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
@@ -415,10 +431,22 @@ public class ComponentBrowser extends JDialog {
 		
 		tabbedPane.setSelectedIndex(0);
 		loadDataComp();
+		tabbedPane.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if (arg0.getSource() instanceof JTabbedPane) {
+                    JTabbedPane pane = (JTabbedPane) arg0.getSource();
+                    if(pane.getSelectedIndex() == 0){
+                    	loadDataComp();
+                    }else if(pane.getSelectedIndex() == 1){
+                    	loadDataGenComp();
+                    }
+                }
+			}
+		});
 	}
 	
 	public void loadDataComp(){
-		List<Component> list = CompomentDAO.getAll();
+		List<Component> list = ComponentDAO.getAll();
 		if(list != null && !list.isEmpty()){
 			DefaultTableModel model = (DefaultTableModel) componentTable.getModel();
 			while(model.getRowCount() != 0){
@@ -431,11 +459,11 @@ public class ComponentBrowser extends JDialog {
 	}
 	
 	public void loadDataCompElements(String code){
-		Component comp = CompomentDAO.getByCode(code);
+		Component comp = ComponentDAO.getByCode(code);
 		if (comp != null) {
 			ElementList list = comp.getElements();
 			if (list != null && !list.isEmpty()) {
-				DefaultTableModel model = (DefaultTableModel) componentTable.getModel();
+				DefaultTableModel model = (DefaultTableModel) compElementTable.getModel();
 				while (model.getRowCount() != 0) {
 					model.removeRow(0);
 				}
@@ -481,7 +509,7 @@ public class ComponentBrowser extends JDialog {
 		String empty = "";
 		codeCompTB.setText(empty);
 		nameCompTB.setText(empty);
-		DefaultTableModel model = (DefaultTableModel)componentTable.getModel();
+		DefaultTableModel model = (DefaultTableModel)compElementTable.getModel();
 		while(model.getRowCount() != 0){
 			model.removeRow(0);
 		}
