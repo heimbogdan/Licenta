@@ -415,7 +415,7 @@ public class EditStocks extends JDialog {
 			double basePrice = board.getPrice();
 			double squareCM = basePrice / (board.getLength()* board.getWidth());
 			Double price = Double.valueOf(lengthTB.getText().trim()) * Double.valueOf(widthTB.getText().trim()) * squareCM;
-			priceTB.setText(price.toString());
+			priceTB.setText(String.format("%.2f", price));
 		}
 	}
 }
