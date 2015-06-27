@@ -1,5 +1,8 @@
 package bh.w2optimize.entity;
 
+import bh.w2optimize.elements.Element;
+import bh.w2optimize.elements.ElementList;
+
 /**
  * Used to group multiple elements ({@link Element}) that together make a
  * furniture component

@@ -32,11 +32,11 @@ import javax.swing.JMenuItem;
 
 import bh.w2optimize.db.dao.ComponentDAO;
 import bh.w2optimize.db.dao.GeneralComponentDAO;
+import bh.w2optimize.elements.Element;
+import bh.w2optimize.elements.ElementList;
+import bh.w2optimize.elements.GeneralElement;
 import bh.w2optimize.entity.Component;
-import bh.w2optimize.entity.Element;
-import bh.w2optimize.entity.ElementList;
 import bh.w2optimize.entity.GeneralComponent;
-import bh.w2optimize.entity.GeneralElement;
 
 public class ComponentAdder extends JDialog {
 

@@ -1,4 +1,4 @@
-package bh.w2optimize.entity;
+package bh.w2optimize.elements;
 
 import java.io.Serializable;
 

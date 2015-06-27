@@ -27,9 +27,9 @@ import javax.swing.table.DefaultTableModel;
 
 import bh.w2optimize.db.dao.ComponentDAO;
 import bh.w2optimize.db.dao.GeneralComponentDAO;
+import bh.w2optimize.elements.Element;
+import bh.w2optimize.elements.ElementList;
 import bh.w2optimize.entity.Component;
-import bh.w2optimize.entity.Element;
-import bh.w2optimize.entity.ElementList;
 import bh.w2optimize.entity.GeneralComponent;
 
 import javax.swing.event.ChangeListener;

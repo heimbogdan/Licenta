@@ -27,10 +27,10 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
 
 import bh.w2optimize.db.dao.GeneralComponentDAO;
-import bh.w2optimize.entity.Element;
-import bh.w2optimize.entity.ElementList;
+import bh.w2optimize.elements.Element;
+import bh.w2optimize.elements.ElementList;
+import bh.w2optimize.elements.GeneralElement;
 import bh.w2optimize.entity.GeneralComponent;
-import bh.w2optimize.entity.GeneralElement;
 
 public class GeneralComponentEditor extends JDialog {
 

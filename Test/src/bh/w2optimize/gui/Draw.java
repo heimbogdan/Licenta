@@ -10,10 +10,13 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import bh.w2optimize.entity.Element;
-import bh.w2optimize.entity.FinalElement;
+import bh.w2optimize.elements.Element;
+import bh.w2optimize.elements.FinalElement;
+
 import javax.swing.SwingConstants;
+
 import java.awt.Component;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 

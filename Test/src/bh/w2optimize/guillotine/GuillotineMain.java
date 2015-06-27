@@ -6,8 +6,8 @@ import java.util.concurrent.Executors;
 
 import org.hibernate.hql.ast.tree.FromClause;
 
-import bh.w2optimize.entity.Element;
-import bh.w2optimize.entity.ElementList;
+import bh.w2optimize.elements.Element;
+import bh.w2optimize.elements.ElementList;
 import bh.w2optimize.gui.CutPanel;
 import bh.w2optimize.gui.FrontInterfaceGUI;
 

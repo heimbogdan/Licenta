@@ -1,5 +1,7 @@
 package bh.w2optimize.entity;
 
+import bh.w2optimize.elements.Element;
+
 public class WoodBoard {
 
 	private int id;

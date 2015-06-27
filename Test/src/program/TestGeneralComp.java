@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import bh.w2optimize.entity.ElementList;
+import bh.w2optimize.elements.ElementList;
+import bh.w2optimize.elements.GeneralElement;
 import bh.w2optimize.entity.GeneralComponent;
-import bh.w2optimize.entity.GeneralElement;
 
 public class TestGeneralComp {
 

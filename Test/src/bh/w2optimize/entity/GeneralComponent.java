@@ -1,5 +1,9 @@
 package bh.w2optimize.entity;
 
+import bh.w2optimize.elements.Element;
+import bh.w2optimize.elements.ElementList;
+import bh.w2optimize.elements.GeneralElement;
+
 public class GeneralComponent extends Component {
 
 	private double length;

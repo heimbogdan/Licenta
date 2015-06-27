@@ -29,8 +29,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JPopupMenu;
 
 import bh.w2optimize.db.connection.SQLiteConnection;
-import bh.w2optimize.entity.Element;
-import bh.w2optimize.entity.ElementList;
+import bh.w2optimize.elements.Element;
+import bh.w2optimize.elements.ElementList;
 import bh.w2optimize.entity.WoodBoard;
 import bh.w2optimize.guillotine.GuillotineConstraints;
 import bh.w2optimize.guillotine.GuillotineMain;

@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import bh.w2optimize.entity.FinalElement;
+import bh.w2optimize.elements.FinalElement;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;

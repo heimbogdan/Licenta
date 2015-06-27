@@ -2,9 +2,9 @@ package bh.w2optimize.guillotine.algorithm;
 
 import java.util.ArrayList;
 
-import bh.w2optimize.entity.Element;
-import bh.w2optimize.entity.ElementList;
-import bh.w2optimize.entity.FinalElement;
+import bh.w2optimize.elements.Element;
+import bh.w2optimize.elements.ElementList;
+import bh.w2optimize.elements.FinalElement;
 import bh.w2optimize.gui.CutPanel;
 import bh.w2optimize.gui.FrontInterfaceGUI;
 import bh.w2optimize.guillotine.GuillotineMain;
