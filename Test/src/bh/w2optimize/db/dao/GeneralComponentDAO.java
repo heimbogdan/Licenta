@@ -10,6 +10,10 @@ import bh.w2optimize.db.connection.SQLiteConnection;
 import bh.w2optimize.entity.GeneralComponent;
 
 public class GeneralComponentDAO {
+	
+	private GeneralComponentDAO(){
+		
+	}
 
 	public static void insert(GeneralComponent generalComponent){
 		SQLiteConnection conn = SQLiteConnection.getInstance();

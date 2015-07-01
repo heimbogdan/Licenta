@@ -11,6 +11,10 @@ import bh.w2optimize.entity.WoodBoard;
 import bh.w2optimize.entity.WoodBoardPice;
 
 public class WoodBoardPiceDAO {
+	
+	private WoodBoardPiceDAO(){
+		
+	}
 
 	public static void insert(WoodBoardPice boardPice){
 		SQLiteConnection conn = SQLiteConnection.getInstance();

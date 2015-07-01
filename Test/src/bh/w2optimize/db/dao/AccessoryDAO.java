@@ -10,6 +10,10 @@ import bh.w2optimize.db.connection.SQLiteConnection;
 import bh.w2optimize.entity.Accessory;
 
 public class AccessoryDAO {
+	
+	private AccessoryDAO(){
+		
+	}
 
 	public static void insert(Accessory accessory){
 		SQLiteConnection conn = SQLiteConnection.getInstance();
