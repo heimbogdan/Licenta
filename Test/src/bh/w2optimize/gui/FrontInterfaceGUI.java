@@ -105,7 +105,7 @@ public class FrontInterfaceGUI extends JFrame {
 		setTitle("W2Optimize");
 		setPreferredSize(new Dimension(840, 600));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 964, 602);
+		setBounds(100, 100, 1077, 602);
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -124,15 +124,36 @@ public class FrontInterfaceGUI extends JFrame {
 		mnNewMenu.add(mntmOpen);
 
 		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				dispose();
+			}
+		});
 		mnNewMenu.add(mntmExit);
 
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
 
 		JMenuItem mntmEditComponents = new JMenuItem("Edit Components");
+		mntmEditComponents.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				new ComponentBrowser().setVisible(true);
+			}
+		});
 		mnEdit.add(mntmEditComponents);
 
 		JMenuItem mntmEditWoodBoards = new JMenuItem("Edit Wood Boards");
+		mntmEditWoodBoards.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				WoodBoardBrowser wb = new WoodBoardBrowser(arg0.getComponent()
+						.getParent().getParent().getParent().getParent()
+						.getParent().getParent());
+				wb.setVisible(true);
+			}
+		});
 		mnEdit.add(mntmEditWoodBoards);
 		
 		JMenuItem mntmEditStocks = new JMenuItem("Edit Stocks");
@@ -346,27 +367,40 @@ public class FrontInterfaceGUI extends JFrame {
 		table = new JTable();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setRowHeight(20);
-		table.setAutoCreateRowSorter(true);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"Name", "Length", "Width", "Rotate", "No."
+				"ID", "Component", "Name", "Length", "Width", "Rotate", "No."
 			}
 		) {
 			Class[] columnTypes = new Class[] {
-				String.class, Double.class, Double.class, Boolean.class, Integer.class
+				Integer.class, Object.class, String.class, Double.class, Double.class, Boolean.class, Integer.class
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			boolean[] columnEditables = new boolean[] {
+				false, true, true, true, true, true, true
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
 		});
 		table.getColumnModel().getColumn(0).setResizable(false);
+		table.getColumnModel().getColumn(0).setPreferredWidth(40);
 		table.getColumnModel().getColumn(1).setResizable(false);
+		table.getColumnModel().getColumn(1).setPreferredWidth(65);
 		table.getColumnModel().getColumn(2).setResizable(false);
+		table.getColumnModel().getColumn(2).setPreferredWidth(90);
 		table.getColumnModel().getColumn(3).setResizable(false);
+		table.getColumnModel().getColumn(3).setPreferredWidth(60);
 		table.getColumnModel().getColumn(4).setResizable(false);
 		table.getColumnModel().getColumn(4).setPreferredWidth(60);
+		table.getColumnModel().getColumn(5).setResizable(false);
+		table.getColumnModel().getColumn(5).setPreferredWidth(60);
+		table.getColumnModel().getColumn(6).setResizable(false);
+		table.getColumnModel().getColumn(6).setPreferredWidth(40);
 		tableData = (DefaultTableModel) table.getModel();
 		table.setFillsViewportHeight(true);
 		scrollPane.setViewportView(table);
@@ -378,7 +412,7 @@ public class FrontInterfaceGUI extends JFrame {
 		mntmNewRow.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				tableData.addRow(new Object[] {null,null,null,null});
+				tableData.addRow(new Object[] {tableData.getRowCount()+1,null,null,null,null,null});
 			}
 		});
 		popupMenu.add(mntmNewRow);
@@ -411,9 +445,7 @@ public class FrontInterfaceGUI extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (usedBoard == null) {
-					JOptionPane.showMessageDialog(_self,
-							"Please select wood board!", "Warning!",
-							JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(_self,"Please select wood board!", "Warning!",JOptionPane.WARNING_MESSAGE);
 				} else {
 					panel.resetIncadrare();
 					ElementList elms = new ElementList();
@@ -423,8 +455,14 @@ public class FrontInterfaceGUI extends JFrame {
 					} else {
 						for (Object element : data) {
 							Vector row = (Vector) element;
-							elms.addMore((Double) row.get(1), (Double) row.get(2), (Boolean) row.get(3) == null ? false	: (Boolean) row.get(3),
-									(Integer) row.get(4));
+							int number = (Integer) row.get(6);
+							for(int i = 0; i < number; i++){
+								Element el = new Element((Double) row.get(3), (Double) row.get(4), (Boolean) row.get(5) == null ? false	: (Boolean) row.get(5));
+								el.setComponentCode((String)row.get(1));
+								el.setName((String)row.get(2));
+								el.setId((Integer) row.get(0));
+								elms.add(el);
+							}
 						}
 						GuillotineMain guillotineMain = GuillotineMain.getInstance();
 						
@@ -456,6 +494,7 @@ public class FrontInterfaceGUI extends JFrame {
 						if(restrictionTB.isEnabled()){
 							value = restrictionTB.getText();
 						}
+						//TODO de trimis catre main codul placii
 						guillotineMain.start(elms, usedBoard.toElement(),constraint, value);
 					}
 				}

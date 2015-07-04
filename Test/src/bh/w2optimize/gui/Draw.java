@@ -233,7 +233,7 @@ public class Draw extends JPanel {
 				path.closePath();
 				g2.draw(path);
 			}
-			xVal += root.getWidth() - 50;
+			xVal += root.getLength() + 20;
 		}
 		return g2;
 	}

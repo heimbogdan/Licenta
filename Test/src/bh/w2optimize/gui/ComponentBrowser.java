@@ -409,7 +409,29 @@ public class ComponentBrowser extends JDialog {
 				okButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						//TODO adauga comp sau gencomp in lista din front
+						int index = tabbedPane.getSelectedIndex();
+						if(index != -1){
+							if(index == 0){
+								DefaultTableModel model = (DefaultTableModel) componentTable.getModel();					
+								String code = (String) model.getValueAt(index, 0);
+								Component comp = ComponentDAO.getByCode(code);
+								if (comp != null) {
+									// TODO trimitere date catre interfata principala
+									
+								} else {
+									JOptionPane.showMessageDialog(_self, "Nothing return from database!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+								}
+							} else if(index ==1){
+								DefaultTableModel model = (DefaultTableModel) genCompTable.getModel();					
+								String code = (String) model.getValueAt(index, 0);
+								GeneralComponent genComp = GeneralComponentDAO.getByCode(code);
+								if (genComp != null) {
+									// TODO trimitere date catre interfata principala
+								} else {
+									JOptionPane.showMessageDialog(_self, "Nothing return from database!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+								}
+							}
+						}
 					}
 				});
 				okButton.setActionCommand("OK");
