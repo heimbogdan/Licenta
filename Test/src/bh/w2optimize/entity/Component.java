@@ -71,6 +71,9 @@ public class Component {
 
 	public void setElements(ElementList elements) {
 		this.elements = elements;
+		for (Element el : elements){
+			el.setComponentCode(this.code);
+		}
 	}
 
 	/**

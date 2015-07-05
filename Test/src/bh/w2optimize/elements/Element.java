@@ -171,12 +171,16 @@ public class Element implements Serializable {
 		this.point = new Point2D.Double();
 		this.used = false;
 		this.rotate = rotate;
+		this.name = "";
+		this.componentCode = "";
 	}
 
 	public Element() {
 		super();
 		childrens = new ArrayList<Element>();
 		point = new Point2D.Double();
+		this.name = "";
+		this.componentCode = "";
 	}
 
 	
@@ -196,13 +200,14 @@ public class Element implements Serializable {
 	}
 
 	public Element cloneElement() {
-		final Element element = new Element(this.length, this.width,
-				this.rotate);
+		final Element element = new Element(this.length, this.width, this.rotate);
 		element.setChildrens(this.getChildrens());
 		element.setParent(this.parent);
 		element.setPoint(this.point);
 		element.setLoss(this.loss);
 		element.setUsed(this.used);
+		element.setComponentCode(this.componentCode);
+		element.setName(this.name);
 		return element;
 	}
 
@@ -244,5 +249,22 @@ public class Element implements Serializable {
 	public void addRoot(final Element parent) {
 		parent.setParent(this);
 		this.childrens.add(parent);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Element el = (Element) obj;
+		if(!this.name.equals(el.getName())){
+			return false;
+		} else if(this.length != el.getLength()){
+			return false;
+		} else if (this.width != el.getWidth()){
+			return false;
+		} else if ( this.rotate != el.isRotate()){
+			return false;
+		} else if ( !this.componentCode.equals(el.getComponentCode())){
+			return false;
+		}
+		return true;
 	}
 }

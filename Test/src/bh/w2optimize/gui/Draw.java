@@ -181,12 +181,12 @@ public class Draw extends JPanel {
 	private Graphics2D drawPlaca(final Element root, Graphics2D g2,
 			double xVal, double yVal) {
 		Path2D path = new Path2D.Double();
-		final double x = root.getPoint().getX() + xVal;
-		final double y = root.getPoint().getY() + yVal;
+		final double x = (root.getPoint().getX() / 10) + xVal;
+		final double y = (root.getPoint().getY() / 10) + yVal;
 		g2.setColor(Color.BLACK);
 		if (root.isUsed()) {
 			final Rectangle2D rect = new Rectangle2D.Double();
-			rect.setRect(x, y, root.getLength(), root.getWidth());
+			rect.setRect(x, y, root.getLength() / 10, root.getWidth() / 10);
 			g2.setColor(Color.RED);
 			g2.fill(rect);
 			g2.setColor(Color.BLACK);
@@ -198,9 +198,9 @@ public class Draw extends JPanel {
 					g2 = drawPlaca(el, g2, xVal, yVal);
 				}
 			}
-			path.lineTo(x, y + root.getWidth());
-			path.lineTo(x + root.getLength(), y + root.getWidth());
-			path.lineTo(x + root.getLength(), y);
+			path.lineTo(x, y + root.getWidth() / 10);
+			path.lineTo(x + root.getLength() / 10, y + root.getWidth() / 10);
+			path.lineTo(x + root.getLength() / 10, y);
 			path.closePath();
 			g2.draw(path);
 		}
@@ -212,12 +212,12 @@ public class Draw extends JPanel {
 
 		for (Element root : roots) {
 			Path2D path = new Path2D.Double();
-			final double x = root.getPoint().getX() + xVal;
-			final double y = root.getPoint().getY() + 100;
+			final double x = root.getPoint().getX() / 10 + xVal;
+			final double y = root.getPoint().getY() / 10 + 100;
 			g2.setColor(Color.BLACK);
 			if (root.isUsed()) {
 				final Rectangle2D rect = new Rectangle2D.Double();
-				rect.setRect(x, y, root.getLength(), root.getWidth());
+				rect.setRect(x, y, root.getLength() / 10, root.getWidth() / 10);
 				g2.setColor(Color.RED);
 				g2.fill(rect);
 			} else {
@@ -227,13 +227,13 @@ public class Draw extends JPanel {
 						g2 = drawPlaca(el, g2, xVal, yVal);
 					}
 				}
-				path.lineTo(x, y + root.getWidth());
-				path.lineTo(x + root.getLength(), y + root.getWidth());
-				path.lineTo(x + root.getLength(), y);
+				path.lineTo(x, y + root.getWidth() / 10);
+				path.lineTo(x + root.getLength() / 10, y + root.getWidth() / 10);
+				path.lineTo(x + root.getLength() / 10, y);
 				path.closePath();
 				g2.draw(path);
 			}
-			xVal += root.getLength() + 20;
+			xVal += root.getLength() / 10 + 20;
 		}
 		return g2;
 	}

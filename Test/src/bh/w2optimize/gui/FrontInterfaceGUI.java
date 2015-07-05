@@ -39,6 +39,7 @@ import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.JTextField;
@@ -49,6 +50,9 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 
 import javax.swing.JRadioButton;
+import javax.swing.JCheckBox;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class FrontInterfaceGUI extends JFrame {
 
@@ -64,7 +68,7 @@ public class FrontInterfaceGUI extends JFrame {
 	private JTextField woodBoardNameTB;
 	private WoodBoard usedBoard;
 	private FrontInterfaceGUI _self;
-	private JTextField restrictionTB;
+	private JTextField timeTB;
 
 	public void setUsedBoard(WoodBoard board) {
 		this.usedBoard = board;
@@ -139,7 +143,7 @@ public class FrontInterfaceGUI extends JFrame {
 		mntmEditComponents.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				new ComponentBrowser().setVisible(true);
+				new ComponentBrowser(_self).setVisible(true);
 			}
 		});
 		mnEdit.add(mntmEditComponents);
@@ -210,7 +214,7 @@ public class FrontInterfaceGUI extends JFrame {
 		btnAddComponent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ComponentBrowser().setVisible(true);
+				new ComponentBrowser(_self).setVisible(true);
 			}
 		});
 
@@ -233,13 +237,14 @@ public class FrontInterfaceGUI extends JFrame {
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addComponent(constraints, GroupLayout.PREFERRED_SIZE, 289, GroupLayout.PREFERRED_SIZE)
-						.addComponent(layeredPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+						.addComponent(scrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
+						.addComponent(layeredPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
 						.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+							.addComponent(constraints, GroupLayout.PREFERRED_SIZE, 402, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnStop)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnStart))
-						.addComponent(scrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
 						.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
 							.addComponent(btnNewComponent)
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -256,87 +261,38 @@ public class FrontInterfaceGUI extends JFrame {
 						.addComponent(btnNewComponent)
 						.addComponent(btnAddComponent))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(constraints, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnStart)
-						.addComponent(btnStop)))
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+							.addComponent(btnStart)
+							.addComponent(btnStop))
+						.addComponent(constraints, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)))
 		);
 		
-		JLabel lblRestrictions = new JLabel("Restrictions");
-		lblRestrictions.setBounds(10, 11, 72, 14);
-		constraints.add(lblRestrictions);
-		
-		JRadioButton rdbtnTime = new JRadioButton("Time");
-		rdbtnTime.setBounds(78, 7, 72, 23);
-		constraints.add(rdbtnTime);
-		
-		JRadioButton rdbtnTries = new JRadioButton("Tries");
-		rdbtnTries.setBounds(78, 32, 109, 23);
-		constraints.add(rdbtnTries);
-		
-		JRadioButton rdbtnBestSolution = new JRadioButton("Best Solution");
-		rdbtnBestSolution.setBounds(78, 55, 109, 23);
-		constraints.add(rdbtnBestSolution);
-		
-		JRadioButton rdbtnNone = new JRadioButton("None");
-		rdbtnNone.setBounds(10, 32, 59, 23);
-		constraints.add(rdbtnNone);
-		rdbtnNone.setSelected(true);
-		
-		JLabel lblValue = new JLabel("Value");
-		lblValue.setBounds(207, 11, 53, 14);
-		constraints.add(lblValue);
-		
-		this.restrictionTB = new JTextField();
-		this.restrictionTB.setBounds(193, 33, 86, 20);
-		constraints.add(this.restrictionTB);
-		this.restrictionTB.setColumns(10);
-		this.restrictionTB.setEnabled(false);
-		
-		rdbtnTime.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				rdbtnTries.setSelected(false);
-				rdbtnBestSolution.setSelected(false);
-				rdbtnNone.setSelected(false);
-				restrictionTB.setEnabled(true);
-				restrictionTB.setToolTipText("Value representing time in seconds.");
+		JCheckBox chckbxTimeRestriction = new JCheckBox("Time restriction");
+		chckbxTimeRestriction.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				if(chckbxTimeRestriction.isSelected()){
+					timeTB.setEnabled(true);
+					timeTB.setEditable(true);
+				} else {
+					timeTB.setEnabled(false);
+					timeTB.setEditable(false);
+					timeTB.setText("");
+				}
 			}
 		});
-		rdbtnTries.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				rdbtnTime.setSelected(false);
-				rdbtnBestSolution.setSelected(false);
-				rdbtnNone.setSelected(false);
-				restrictionTB.setEnabled(true);
-				restrictionTB.setToolTipText("Value represent the number of tries.");
-				restrictionTB.setText("");
-			}
-		});
-		rdbtnBestSolution.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				rdbtnTime.setSelected(false);
-				rdbtnTries.setSelected(false);
-				rdbtnNone.setSelected(false);
-				restrictionTB.setEnabled(true);
-				restrictionTB.setToolTipText("Value represent the number of best solutions find before stop.");
-			}
-		});
-		rdbtnNone.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				rdbtnTime.setSelected(false);
-				rdbtnTries.setSelected(false);
-				rdbtnBestSolution.setSelected(false);
-				restrictionTB.setEnabled(false);
-				restrictionTB.setToolTipText(null);
-			}
-		});
+		chckbxTimeRestriction.setBounds(6, 7, 116, 23);
+		constraints.add(chckbxTimeRestriction);
+		
+		this.timeTB = new JTextField();
+		this.timeTB.setEditable(false);
+		this.timeTB.setToolTipText("number of seconds");
+		this.timeTB.setEnabled(false);
+		this.timeTB.setBounds(128, 8, 101, 20);
+		constraints.add(this.timeTB);
+		this.timeTB.setColumns(10);
 		
 				
 
@@ -466,33 +422,18 @@ public class FrontInterfaceGUI extends JFrame {
 						}
 						GuillotineMain guillotineMain = GuillotineMain.getInstance();
 						
-						// restrictii ???
-						Integer elemNr = elms.size();
-						int elemRotate = 0;
-						for(Element el : elms){
-							if(el.isRotate()){
-								elemRotate++;
-							}
-						}
-						
-						BigInteger totalPerm = new BigInteger(elemNr.toString());
-						for (int i = elemNr - 1; i > 0; i--) {
-							totalPerm = totalPerm.multiply(new BigInteger(i + ""));
-						}
-						totalPerm = totalPerm.multiply(BigInteger.valueOf(2).pow(elemRotate));
-						panel.setTotalPerm(totalPerm);
-						panel.setIncadrare(null,0,false);
+						panel.setIncadrare(null,false);
 						GuillotineConstraints constraint = GuillotineConstraints.NONE;
-						if(rdbtnTime.isSelected()){
-							constraint = GuillotineConstraints.TIME;
-						} else if (rdbtnTries.isSelected()){
-							constraint = GuillotineConstraints.TRIES;
-						}else if ( rdbtnBestSolution.isSelected()){
-							constraint = GuillotineConstraints.BESTSOLUTION;
-						}
-						String value = null; 
-						if(restrictionTB.isEnabled()){
-							value = restrictionTB.getText();
+						int value = 0;
+						if (chckbxTimeRestriction.isSelected()){
+							if(timeTB.getText() != null && !timeTB.getText().isEmpty()){
+								try{
+									int val = Integer.parseInt(timeTB.getText());
+									value = val;
+								} catch (Exception ex){
+									// TODO log4j
+								}
+							}
 						}
 						//TODO de trimis catre main codul placii
 						guillotineMain.start(elms, usedBoard.toElement(),constraint, value);
@@ -502,6 +443,29 @@ public class FrontInterfaceGUI extends JFrame {
 		});
 	}
 
+	public void addData(ArrayList<Element> list) {
+		ArrayList<Element> newList = new ArrayList<Element>();
+		ArrayList<Integer> numList = new ArrayList<Integer>();
+		for (Element el : list) {
+			boolean isNew = true;
+			for (int i = 0; i < newList.size(); i++) {
+				if (el.equals(newList.get(i))) {
+					numList.set(i, numList.get(i) + 1);
+					isNew = false;
+				}
+			}
+			if (isNew) {
+				newList.add(el);
+				numList.add(1);
+			}
+		}
+		for (int i = 0; i < newList.size(); i++){
+			Element el = newList.get(i);
+			tableData.addRow(new Object[] {tableData.getRowCount()+1,el.getComponentCode(),el.getName(),el.getLength(),
+					el.getWidth(),el.isRotate(),numList.get(i)});
+		}
+	}
+	
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {

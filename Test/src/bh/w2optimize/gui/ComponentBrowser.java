@@ -56,13 +56,14 @@ public class ComponentBrowser extends JDialog {
 	private JTable compElementTable;
 	private ComponentBrowser _self;
 	private JTable genCompTable;
+	private FrontInterfaceGUI parent;
 	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			ComponentBrowser dialog = new ComponentBrowser();
+			ComponentBrowser dialog = new ComponentBrowser(null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -74,7 +75,8 @@ public class ComponentBrowser extends JDialog {
 	 * Create the dialog.
 	 */
 	@SuppressWarnings("serial")
-	public ComponentBrowser() {
+	public ComponentBrowser(FrontInterfaceGUI parent) {
+		this.parent = parent;
 		setTitle("Component Browser");
 		setResizable(false);
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -412,21 +414,38 @@ public class ComponentBrowser extends JDialog {
 						int index = tabbedPane.getSelectedIndex();
 						if(index != -1){
 							if(index == 0){
-								DefaultTableModel model = (DefaultTableModel) componentTable.getModel();					
-								String code = (String) model.getValueAt(index, 0);
+								DefaultTableModel model = (DefaultTableModel) componentTable.getModel();
+								int rowid = componentTable.getSelectedRow();
+								String code = (String) model.getValueAt(rowid, 0);
 								Component comp = ComponentDAO.getByCode(code);
 								if (comp != null) {
-									// TODO trimitere date catre interfata principala
-									
+									parent.addData(comp.getElements());
 								} else {
 									JOptionPane.showMessageDialog(_self, "Nothing return from database!", "ERROR!", JOptionPane.ERROR_MESSAGE);
 								}
-							} else if(index ==1){
-								DefaultTableModel model = (DefaultTableModel) genCompTable.getModel();					
-								String code = (String) model.getValueAt(index, 0);
+							} else if(index == 1){
+								DefaultTableModel model = (DefaultTableModel) genCompTable.getModel();
+								int rowid = genCompTable.getSelectedRow();
+								String code = (String) model.getValueAt(rowid, 0);
 								GeneralComponent genComp = GeneralComponentDAO.getByCode(code);
 								if (genComp != null) {
-									// TODO trimitere date catre interfata principala
+									JTextField lenTB = new JTextField();
+									JTextField widTB = new JTextField();
+									JTextField heiTB = new JTextField();
+									lenTB.setText(genComp.getLength() + "");
+									widTB.setText(genComp.getWidth() + "");
+									heiTB.setText(genComp.getHeight() + "");
+									Object[] message = {
+											"Please enter your values or leave the default ones!\n",
+										    "Length:", lenTB,"Width:", widTB,"Height:", heiTB};
+									int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
+									if (option == JOptionPane.OK_OPTION) {
+										double len = Double.valueOf(lenTB.getText());
+										double wid = Double.valueOf(widTB.getText());
+										double hei = Double.valueOf(heiTB.getText());
+										genComp.rescaleElements(len, wid, hei);
+										parent.addData(genComp.getElements());
+									}
 								} else {
 									JOptionPane.showMessageDialog(_self, "Nothing return from database!", "ERROR!", JOptionPane.ERROR_MESSAGE);
 								}

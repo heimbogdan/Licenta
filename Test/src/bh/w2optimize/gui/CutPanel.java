@@ -33,31 +33,15 @@ public class CutPanel extends JPanel{
 
 	private FinalElement incadrare;
 	private int pageNumber;
-	private int permNumber1;
-	private int permNumber2;
-	private BigInteger totalPerm;
 	private JButton button1 = null;
 	private JButton button2 = null;
 	private Draw panel;
-	private JLabel percentDone;
 	
 	public FinalElement getIncadrare() {
 		return incadrare;
 	}
 
-	public void setIncadrare(FinalElement incadrare, int perm, boolean horizontal ) {
-		if (incadrare != null) {
-			if (horizontal) {
-				this.permNumber1 = perm;
-			} else {
-				this.permNumber2 = perm;
-			}
-		} else {
-			this.permNumber1 = 0;
-			this.permNumber2 = 0;
-		}
-		int value = new BigInteger((permNumber1 + permNumber2) + "").divide(totalPerm).multiply(new BigInteger(10 + "")).intValue();
-		percentDone.setText((new Float(value)/10) + "%");
+	public void setIncadrare(FinalElement incadrare, boolean horizontal ) {
 		panel.setIncadrare(incadrare);
 		this.repaint();
 	}
@@ -79,25 +63,16 @@ public class CutPanel extends JPanel{
 		return this.panel.getNrIncadrare();
 	}
 	
-	public void setTotalPerm(BigInteger totalPerm){
-		this.totalPerm = totalPerm;
-	}
-	
 	private void createContents() {
 		setMinimumSize(new Dimension(500, 500));
 		setBackground(SystemColor.inactiveCaption);
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		this.pageNumber = 0;
-		this.permNumber1 = 0;
-		this.permNumber2 = 0;
 		JSplitPane splitPane = new JSplitPane();
 
 		panel = new Draw();
 		panel.setBackground(SystemColor.activeCaption);
 		panel.setPreferredSize(new Dimension(200, 200));
-		
-		percentDone = new JLabel("0%");
-		percentDone.setHorizontalAlignment(SwingConstants.RIGHT);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -110,17 +85,11 @@ public class CutPanel extends JPanel{
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(this.panel, GroupLayout.PREFERRED_SIZE, 417, Short.MAX_VALUE)
 							.addContainerGap())))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap(397, Short.MAX_VALUE)
-					.addComponent(percentDone, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(percentDone)
-					.addGap(26)
+					.addGap(51)
 					.addComponent(this.panel, GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(splitPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)

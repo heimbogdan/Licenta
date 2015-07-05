@@ -42,13 +42,14 @@ public class WoodBoardAdder extends JDialog {
 	private JTextField priceTB;
 	private WoodBoardAdder _self;
 	private WoodBoardBrowser parent;
-
+	private boolean editable;
+	private String editCode;
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			WoodBoardAdder dialog = new WoodBoardAdder(null);
+			WoodBoardAdder dialog = new WoodBoardAdder(null,false,null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -59,8 +60,10 @@ public class WoodBoardAdder extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public WoodBoardAdder(WoodBoardBrowser parent) {
+	public WoodBoardAdder(WoodBoardBrowser parent,boolean edit, String code) {
 		this.parent = parent;
+		this.editable = edit;
+		this.editCode = code;
 		createContents();
 	}
 
@@ -103,6 +106,15 @@ public class WoodBoardAdder extends JDialog {
 
 		this.priceTB = new JTextField();
 		this.priceTB.setColumns(10);
+		if(editable){
+			WoodBoard board = WoodBoardDAO.getByCode(editCode);
+			this.codeTB.setText(board.getCode());
+			this.nameTB.setText(board.getName());
+			this.materialTB.setText(board.getMaterial());
+			this.lengthTB.setText(board.getLength() + "");
+			this.widthTB.setText(board.getWidth() + "");
+			this.priceTB.setText(board.getPrice() + "");
+		}
 		GroupLayout gl_contentPanel = new GroupLayout(this.contentPanel);
 		gl_contentPanel
 				.setHorizontalGroup(gl_contentPanel
@@ -299,10 +311,22 @@ public class WoodBoardAdder extends JDialog {
 									JOptionPane.WARNING_MESSAGE);
 						} else if (WoodBoardDAO.getByCode(codeTB.getText()
 								.trim()) != null) {
-
-							JOptionPane.showMessageDialog(_self,
-									"The code you entered is allready in use!",
-									"Warning!", JOptionPane.WARNING_MESSAGE);
+							if(editable){
+								WoodBoard board = WoodBoardDAO.getByCode(editCode);
+								board.setCode(codeTB.getText().trim());
+								board.setName(nameTB.getText().trim());
+								board.setMaterial(materialTB.getText().trim());
+								board.setLength(Double.valueOf(lengthTB.getText().trim()));
+								board.setWidth(Double.valueOf(widthTB.getText().trim()));
+								board.setPrice(Double.valueOf(priceTB.getText().trim()));
+								WoodBoardDAO.update(board);
+								parent.loadData();
+								dispose();
+							}else{
+								JOptionPane.showMessageDialog(_self,
+										"The code you entered is allready in use!",
+										"Warning!", JOptionPane.WARNING_MESSAGE);
+							}
 						} else {
 							WoodBoard board = new WoodBoard(codeTB.getText()
 									.trim(), nameTB.getText().trim(),

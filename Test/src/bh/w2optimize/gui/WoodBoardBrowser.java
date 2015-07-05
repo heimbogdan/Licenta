@@ -27,6 +27,12 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.JPopupMenu;
+
+import java.awt.Component;
+
+import javax.swing.JMenuItem;
+
 public class WoodBoardBrowser extends JDialog {
 
 	/**
@@ -95,6 +101,7 @@ public class WoodBoardBrowser extends JDialog {
 		);
 		{
 			this.table = new JTable();
+			table.setFillsViewportHeight(true);
 			this.n.setViewportView(this.table);
 			this.table.setModel(new DefaultTableModel(
 				new Object[][] {
@@ -110,6 +117,45 @@ public class WoodBoardBrowser extends JDialog {
 					return columnEditables[column];
 				}
 			});
+			{
+				JPopupMenu popupMenu = new JPopupMenu();
+				addPopup(table, popupMenu);
+				{
+					JMenuItem mntmEdit = new JMenuItem("Edit");
+					mntmEdit.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mousePressed(MouseEvent e) {
+							DefaultTableModel model = (DefaultTableModel) table.getModel();
+							int rowid = table.getSelectedRow();
+							if(rowid != -1){
+								new WoodBoardAdder(_self,true,(String) table.getValueAt(rowid, 0)).setVisible(true);
+							} else {
+								JOptionPane.showMessageDialog(_self, "Please select a board!", "Warning!", JOptionPane.WARNING_MESSAGE);
+							}
+						}
+					});
+					popupMenu.add(mntmEdit);
+				}
+				{
+					JMenuItem mntmDelete = new JMenuItem("Delete");
+					mntmDelete.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mousePressed(MouseEvent e) {
+							DefaultTableModel model = (DefaultTableModel) table.getModel();
+							int rowid = table.getSelectedRow();
+							if (rowid != -1){
+								String code = (String) table.getValueAt(rowid, 0);
+								WoodBoard board = WoodBoardDAO.getByCode(code);
+								WoodBoardDAO.delete(board);
+								loadData();
+							} else {
+								JOptionPane.showMessageDialog(_self, "Please select a board!", "Warning!", JOptionPane.WARNING_MESSAGE);
+							}
+						}
+					});
+					popupMenu.add(mntmDelete);
+				}
+			}
 			this.table.getColumnModel().getColumn(0).setPreferredWidth(70);
 			this.table.getColumnModel().getColumn(1).setResizable(false);
 			this.table.getColumnModel().getColumn(1).setPreferredWidth(80);
@@ -146,7 +192,7 @@ public class WoodBoardBrowser extends JDialog {
 					btnAdd.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent e) {
-							new WoodBoardAdder(_self).setVisible(true);
+							new WoodBoardAdder(_self,false,null).setVisible(true);
 						}
 					});
 					buttonPane.add(btnAdd);
@@ -182,4 +228,21 @@ public class WoodBoardBrowser extends JDialog {
 		}
 	}
 	
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+	}
 }
