@@ -423,7 +423,6 @@ public class FrontInterfaceGUI extends JFrame {
 						GuillotineMain guillotineMain = GuillotineMain.getInstance();
 						
 						panel.setIncadrare(null,false);
-						GuillotineConstraints constraint = GuillotineConstraints.NONE;
 						int value = 0;
 						if (chckbxTimeRestriction.isSelected()){
 							if(timeTB.getText() != null && !timeTB.getText().isEmpty()){
@@ -436,7 +435,7 @@ public class FrontInterfaceGUI extends JFrame {
 							}
 						}
 						//TODO de trimis catre main codul placii
-						guillotineMain.start(elms, usedBoard.toElement(),constraint, value);
+						guillotineMain.start(elms, usedBoard, value);
 					}
 				}
 			}

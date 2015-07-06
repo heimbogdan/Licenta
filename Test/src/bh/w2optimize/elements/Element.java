@@ -246,9 +246,9 @@ public class Element implements Serializable {
 		}
 	}
 
-	public void addRoot(final Element parent) {
-		parent.setParent(this);
-		this.childrens.add(parent);
+	public void addRoot(final Element child) {
+		child.setParent(this);
+		this.childrens.add(child);
 	}
 	
 	@Override

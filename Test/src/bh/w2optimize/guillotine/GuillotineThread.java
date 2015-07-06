@@ -3,12 +3,13 @@ package bh.w2optimize.guillotine;
 import bh.w2optimize.elements.Element;
 import bh.w2optimize.elements.ElementList;
 import bh.w2optimize.elements.FinalElement;
+import bh.w2optimize.entity.WoodBoard;
 import bh.w2optimize.guillotine.algorithm.GuillotineCut;
 
 public class GuillotineThread extends Thread {
 	
 	private ElementList elements;
-	private Element root;
+	private WoodBoard root;
 	private boolean horizontal;
 	private FinalElement fin;
 	
@@ -22,8 +23,8 @@ public class GuillotineThread extends Thread {
 	}
 
 //TODO de modificat din element in string / se va prelua codul placii
-	public void setRoot(Element root) {
-		this.root = root.cloneElement();
+	public void setRoot(WoodBoard root) {
+		this.root = root;
 	}
 
 	

@@ -157,6 +157,7 @@ public class EditStocks extends JDialog {
 		layeredPane.add(this.materialTB);
 		this.materialTB.setColumns(10);
 		
+		// MODEL TextField Number
 		this.lengthTB = new JFormattedTextField(NumberFormat.getNumberInstance());
 		this.lengthTB.setBounds(94, 153, 112, 20);
 		layeredPane.add(this.lengthTB);
@@ -180,9 +181,9 @@ public class EditStocks extends JDialog {
 			public void mouseClicked(MouseEvent arg0) {
 				Object[] newWood = new Object[] { codeCB.getSelectedItem().toString(),
 						nameTB.getText(), materialTB.getText(),
-						Double.valueOf(lengthTB.getText()),
-						Double.valueOf(widthTB.getText()),
-						Double.valueOf(priceTB.getText()), Integer.parseInt(numberTB.getText()) };
+						Double.valueOf(lengthTB.getText().replaceAll(",", "")),
+						Double.valueOf(widthTB.getText().replaceAll(",", "")),
+						Double.valueOf(priceTB.getText().replaceAll(",", "")), Integer.parseInt(numberTB.getText()) };
 				resetTB();
 				switch (((JButton)arg0.getComponent()).getText()){
 				case "Add":
@@ -273,6 +274,12 @@ public class EditStocks extends JDialog {
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			boolean[] columnEditables = new boolean[] {
+					false, false, false, false, false, false, false
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
 		});
 		this.stockTable.getColumnModel().getColumn(0).setResizable(false);
 		this.stockTable.getColumnModel().getColumn(0).setPreferredWidth(60);
@@ -414,7 +421,7 @@ public class EditStocks extends JDialog {
 			WoodBoard board = listWood.get(i);
 			double basePrice = board.getPrice();
 			double squareCM = basePrice / (board.getLength()* board.getWidth());
-			Double price = Double.valueOf(lengthTB.getText().trim()) * Double.valueOf(widthTB.getText().trim()) * squareCM;
+			Double price = Double.valueOf(lengthTB.getText().trim().replaceAll(",", "")) * Double.valueOf(widthTB.getText().trim().replaceAll(",", "")) * squareCM;
 			priceTB.setText(String.format("%.2f", price));
 		}
 	}

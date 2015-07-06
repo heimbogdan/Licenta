@@ -2,6 +2,7 @@ package bh.w2optimize.guillotine;
 
 import bh.w2optimize.elements.Element;
 import bh.w2optimize.elements.ElementList;
+import bh.w2optimize.entity.WoodBoard;
 import bh.w2optimize.gui.CutPanel;
 import bh.w2optimize.gui.FrontInterfaceGUI;
 
@@ -27,7 +28,7 @@ public class GuillotineMain {
 		return instance;
 	}
 	
-	public void start(ElementList elementList, Element root,GuillotineConstraints type, int time) {
+	public void start(ElementList elementList, WoodBoard board, int time) {
 		if(thread1 != null && thread1.isAlive() && thread2 != null && thread2.isAlive()){
 			stopCurrentThreads();
 		}
@@ -45,8 +46,8 @@ public class GuillotineMain {
 		thread2 = new GuillotineThread(true);
 		thread1.setElements(elementList);
 		thread2.setElements(elementList);
-		thread1.setRoot(root);
-		thread2.setRoot(root);
+		thread1.setRoot(board);
+		thread2.setRoot(board);
 		thread1.start();
 		thread2.start();
 		

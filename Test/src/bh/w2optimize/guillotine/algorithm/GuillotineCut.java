@@ -2,9 +2,12 @@ package bh.w2optimize.guillotine.algorithm;
 
 import java.util.ArrayList;
 
+import bh.w2optimize.db.dao.WoodBoardPiceDAO;
 import bh.w2optimize.elements.Element;
 import bh.w2optimize.elements.ElementList;
 import bh.w2optimize.elements.FinalElement;
+import bh.w2optimize.entity.WoodBoard;
+import bh.w2optimize.entity.WoodBoardPice;
 import bh.w2optimize.gui.CutPanel;
 import bh.w2optimize.gui.FrontInterfaceGUI;
 import bh.w2optimize.guillotine.GuillotineMain;
@@ -21,7 +24,7 @@ public class GuillotineCut {
 	private Element pal;
 	private boolean horizontal;
 	private boolean keepGoing;
-
+	private boolean boardUsed;
 	public FinalElement getCutElement() {
 		return cutElement;
 	}
@@ -62,10 +65,10 @@ public class GuillotineCut {
 	 * @return Incadrarea finala ({@link FinalElement})
 	 */
 
-	public FinalElement beginCutting(final ElementList elements,
-			final Element root) {
+	public FinalElement beginCutting(final ElementList elements,final WoodBoard root) {
 		elements.sort(ElementList.comparator);
-		permute(elements, root, 0);
+		ArrayList<WoodBoardPice> listOfBoards = (ArrayList<WoodBoardPice>) WoodBoardPiceDAO.getByCode(root.getCode());
+		permute(elements, listOfBoards, 0);
 		return cutElement;
 	}
 
@@ -81,7 +84,7 @@ public class GuillotineCut {
 	 *            - Indica pozitia din lista de la care sa inceapa permutarea
 	 *            (de regula 0).
 	 */
-	private void permute(final ElementList elements, final Element root,
+	private void permute(final ElementList elements, final ArrayList<WoodBoardPice> listOfBoards,
 			final int k) {
 		if (keepGoing) {
 			GuillotineMain main = GuillotineMain.getInstance();
@@ -93,12 +96,12 @@ public class GuillotineCut {
 			for (int i = k; i < elements.size(); i++) {
 				if (keepGoing) {
 					java.util.Collections.swap(elements, i, k);
-					permute(elements, root, k + 1);
+					permute(elements, listOfBoards, k + 1);
 					java.util.Collections.swap(elements, k, i);
 					if (elements.get(i).isRotate()) {
 						rotate(elements.get(i));
 						java.util.Collections.swap(elements, i, k);
-						permute(elements, root, k + 1);
+						permute(elements, listOfBoards, k + 1);
 						java.util.Collections.swap(elements, k, i);
 						rotate(elements.get(i));
 					}
@@ -109,9 +112,25 @@ public class GuillotineCut {
 				if (k == elements.size()) {
 					pal = new Element(0, 0, false);
 					int index = 0;
+					int wbId = 0;
+					boardUsed = false;
+					listOfBoards.sort(WoodBoardPice.comparator);
+					WoodBoardPice board = null;
 					while (!elements.isAllUsed()) {
-						Element newRoot = new Element(root.getLength(),
-								root.getWidth(), root.isRotate());
+						if(board == null){
+							board = listOfBoards.get(wbId);
+						} else if (boardUsed) {
+							board.setNumber(board.getNumber() - 1);
+							if (board.getNumber() == 0) {
+								wbId++;
+								board = listOfBoards.get(wbId);
+							}
+						} else {
+							wbId++;
+							board = listOfBoards.get(wbId);
+						}
+						
+						Element newRoot = board.toElement();
 						newRoot.setLoss(false);
 						pal.addRoot(newRoot);
 						cut(elements, pal.getChildrens().get(index));
@@ -148,6 +167,7 @@ public class GuillotineCut {
 						if (horizontal) { // first horizontal , then vertical
 							if (ely < ry) {
 								horizontalCut(elements, root, ely, rx, ry);
+								horizontal = !horizontal;
 								break;
 							} else if (elx < rx) {
 								verticalCut(elements, root, elx, rx, ry);
@@ -156,6 +176,7 @@ public class GuillotineCut {
 						} else { // first vertical , then horizontal
 							if (elx < rx) {
 								verticalCut(elements, root, elx, rx, ry);
+								horizontal = !horizontal;
 								break;
 							} else if (ely < ry) {
 								horizontalCut(elements, root, ely, rx, ry);
@@ -163,6 +184,7 @@ public class GuillotineCut {
 							}
 						}
 						if (elx == rx && ely == ry && !root.isUsed()) {
+							boardUsed = true;
 							element.setUsed(true);
 							root.setUsed(true);
 							root.getParent().setLoss(true);

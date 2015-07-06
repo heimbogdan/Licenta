@@ -267,6 +267,7 @@ public class ComponentBrowser extends JDialog {
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
+			// MODEL tabel cells not editable
 			boolean[] columnEditables = new boolean[] {
 				false, false, false
 			};
