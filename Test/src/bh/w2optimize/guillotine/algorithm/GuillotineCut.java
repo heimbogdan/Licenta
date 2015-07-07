@@ -23,6 +23,7 @@ public class GuillotineCut {
 	private FinalElement cutElement;
 	private Element pal;
 	private boolean horizontal;
+	private boolean cutModeH;
 	private boolean keepGoing;
 	private boolean boardUsed;
 	public FinalElement getCutElement() {
@@ -52,6 +53,7 @@ public class GuillotineCut {
 	public GuillotineCut(final boolean h) {
 		this.cutElement = new FinalElement(0, 0);
 		this.horizontal = h;
+		cutModeH = h;
 		this.keepGoing = true;
 	}
 
@@ -133,6 +135,7 @@ public class GuillotineCut {
 						Element newRoot = board.toElement();
 						newRoot.setLoss(false);
 						pal.addRoot(newRoot);
+						horizontal = cutModeH;
 						cut(elements, pal.getChildrens().get(index));
 						index++;
 					}
@@ -171,6 +174,7 @@ public class GuillotineCut {
 								break;
 							} else if (elx < rx) {
 								verticalCut(elements, root, elx, rx, ry);
+								horizontal = !horizontal;
 								break;
 							}
 						} else { // first vertical , then horizontal
@@ -180,6 +184,7 @@ public class GuillotineCut {
 								break;
 							} else if (ely < ry) {
 								horizontalCut(elements, root, ely, rx, ry);
+								horizontal = !horizontal;
 								break;
 							}
 						}
@@ -187,7 +192,12 @@ public class GuillotineCut {
 							boardUsed = true;
 							element.setUsed(true);
 							root.setUsed(true);
+							root.setId(element.getId());
+							root.setName(element.getName());
+							root.setComponentCode(element.getComponentCode());
+							root.setRotate(element.isRotate());
 							root.getParent().setLoss(true);
+							horizontal = !horizontal;
 							break;
 						}
 					}

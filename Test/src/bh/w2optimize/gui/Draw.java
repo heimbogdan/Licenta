@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
@@ -56,7 +57,6 @@ public class Draw extends JPanel {
 	public int getNrIncadrare(){
 		return this.nrIncadrare;
 	}
-	
 	public void setIncadrare(final FinalElement incadrare) {
 
 		boolean makeDraw = false;
@@ -120,7 +120,6 @@ public class Draw extends JPanel {
 	private void createContents() {
 		this.pageNumber = 0;
 		this.nrIncadrare = 0;
-
 		labPlaca = new JLabel(new StringBuilder().append("Placa ")
 				.append(pageNumber + 1).append("/ incadrare ")
 				.append(nrIncadrare).toString());
@@ -187,9 +186,12 @@ public class Draw extends JPanel {
 		if (root.isUsed()) {
 			final Rectangle2D rect = new Rectangle2D.Double();
 			rect.setRect(x, y, root.getLength() / 10, root.getWidth() / 10);
-			g2.setColor(Color.RED);
+			g2.setColor(getElemColor(root.getId()%10));
 			g2.fill(rect);
 			g2.setColor(Color.BLACK);
+			Point2D p = root.getPoint();
+			g2.drawString(root.getId() + "", Float.parseFloat((x + root.getLength()/20)+ ""), 
+					Float.parseFloat((y + root.getWidth()/20)+ ""));
 			g2.draw(rect);
 		} else {
 			path.moveTo(x, y);
@@ -218,7 +220,7 @@ public class Draw extends JPanel {
 			if (root.isUsed()) {
 				final Rectangle2D rect = new Rectangle2D.Double();
 				rect.setRect(x, y, root.getLength() / 10, root.getWidth() / 10);
-				g2.setColor(Color.RED);
+				g2.setColor(getElemColor(root.getId()%10));
 				g2.fill(rect);
 			} else {
 				path.moveTo(x, y);
@@ -236,5 +238,30 @@ public class Draw extends JPanel {
 			xVal += root.getLength() / 10 + 20;
 		}
 		return g2;
+	}
+	
+	private Color getElemColor(int color){
+		switch (color) {
+		case 1:
+			return new Color(255, 51, 0);
+		case 2:
+			return new Color(255, 153, 51);
+		case 3:
+			return new Color(153, 204, 0);
+		case 4:
+			return new Color(0, 204, 153);
+		case 5:
+			return new Color(163, 71, 71);
+		case 6:
+			return new Color(98, 98, 184);
+		case 7:
+			return new Color(80, 137, 80);
+		case 8:
+			return new Color(230, 180, 77);
+		case 9:
+			return new Color(103, 203, 111);
+		default:
+			return new Color(102, 51, 0);
+		}
 	}
 }

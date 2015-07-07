@@ -2,6 +2,7 @@ package bh.w2optimize.gui;
 
 import java.awt.EventQueue;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -14,7 +15,11 @@ import java.awt.Cursor;
 
 import javax.swing.JMenu;
 
+import java.awt.BasicStroke;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import javax.swing.GroupLayout;
@@ -31,6 +36,7 @@ import javax.swing.JPopupMenu;
 import bh.w2optimize.db.connection.SQLiteConnection;
 import bh.w2optimize.elements.Element;
 import bh.w2optimize.elements.ElementList;
+import bh.w2optimize.elements.FinalElement;
 import bh.w2optimize.entity.WoodBoard;
 import bh.w2optimize.guillotine.GuillotineConstraints;
 import bh.w2optimize.guillotine.GuillotineMain;
@@ -38,6 +44,15 @@ import bh.w2optimize.guillotine.GuillotineMain;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -53,6 +68,15 @@ import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+
+import com.pdfjet.A4;
+import com.pdfjet.CoreFont;
+import com.pdfjet.Image;
+import com.pdfjet.ImageType;
+import com.pdfjet.PDF;
+import com.pdfjet.Page;
+import com.pdfjet.Text;
+import com.pdfjet.TextLine;
 
 public class FrontInterfaceGUI extends JFrame {
 
@@ -121,12 +145,6 @@ public class FrontInterfaceGUI extends JFrame {
 		mnNewMenu.setSize(new Dimension(50, 20));
 		menuBar.add(mnNewMenu);
 
-		JMenuItem mntmNew = new JMenuItem("New");
-		mnNewMenu.add(mntmNew);
-
-		JMenuItem mntmOpen = new JMenuItem("Open ...");
-		mnNewMenu.add(mntmOpen);
-
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addMouseListener(new MouseAdapter() {
 			@Override
@@ -134,6 +152,77 @@ public class FrontInterfaceGUI extends JFrame {
 				dispose();
 			}
 		});
+		
+		JMenuItem mntmSave = new JMenuItem("Save");
+		mntmSave.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("rawtypes")
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				//MODEL graphics 2 png
+				FinalElement incadrare = panel.getIncadrare();
+				if (incadrare != null) {
+					ArrayList<Element> list = incadrare.getChildrens();
+					for (int i = 0; i < list.size(); i++) {
+						Element el = list.get(i);
+						BufferedImage bi = new BufferedImage(595, 842, BufferedImage.TYPE_INT_ARGB);
+						Graphics2D g2 = bi.createGraphics();
+						g2.setStroke(new BasicStroke(3));
+						g2 = drawPlaca(el, g2, 10, 10);
+						g2.setFont(new Font("TimesRoman", Font.BOLD, 16)); 
+						g2.drawString(el.getLength() + " X " + el.getWidth(), Float.parseFloat((el.getLength()/8 - 20)+ ""), 
+								Float.parseFloat((35 + el.getWidth()/4)+ ""));
+						g2.dispose();
+						try {
+							ImageIO.write(bi, "png", new File(
+									"./resultPNG/test" + i + ".png"));
+						} catch (Exception e) {
+						}
+					}
+					try {
+						FileOutputStream fos = new FileOutputStream("Example_01.pdf");
+						PDF pdf = new PDF(fos);
+						for (int i = 0; i < incadrare.getChildrens().size(); i++) {
+							Page page = new Page(pdf, A4.PORTRAIT);
+							String fileName = "./resultPNG/test" + i + ".png";
+							BufferedInputStream bis1 = new BufferedInputStream(new FileInputStream(fileName));
+							Image image1 = new Image(pdf, bis1, ImageType.PNG);
+							image1.setPosition(0, 0);
+							image1.drawOn(page);
+						}
+						Page listPage = new Page(pdf, A4.PORTRAIT);
+						TextLine text = new TextLine(new com.pdfjet.Font(pdf, CoreFont.TIMES_ROMAN),"\t\tList of elements:");
+						double y = 50;
+						text.setPosition(50, y);
+						text.drawOn(listPage);
+						y += 40;
+						text.setPosition(50, y);
+						StringBuilder sb = new StringBuilder();
+						sb.append(padLeft("ID", 5))
+								.append(padLeft("Component Code", 25))
+								.append(padLeft("Name", 25))
+								.append(padLeft("Length (mm)", 15))
+								.append(padLeft("Width (mm)", 15))
+								.append(padLeft("Rotate", 15))
+								.append(padLeft("Number", 10));
+						text.setText(sb.toString());
+						text.drawOn(listPage);
+						Vector data = tableData.getDataVector();
+						for (Object element : data) {
+							Vector row = (Vector) element;
+							y += 20;
+							text.setPosition(50, y);
+							text.setText(ElementLine(row));
+							text.drawOn(listPage);
+						}
+				        pdf.flush();
+				        fos.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		mnNewMenu.add(mntmSave);
 		mnNewMenu.add(mntmExit);
 
 		JMenu mnEdit = new JMenu("Edit");
@@ -423,7 +512,7 @@ public class FrontInterfaceGUI extends JFrame {
 						GuillotineMain guillotineMain = GuillotineMain.getInstance();
 						
 						panel.setIncadrare(null,false);
-						int value = 0;
+						int value = 120;
 						if (chckbxTimeRestriction.isSelected()){
 							if(timeTB.getText() != null && !timeTB.getText().isEmpty()){
 								try{
@@ -483,5 +572,82 @@ public class FrontInterfaceGUI extends JFrame {
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});
+	}
+	
+	private Graphics2D drawPlaca(final Element root, Graphics2D g2,
+			double xVal, double yVal) {
+		Path2D path = new Path2D.Double();
+		final double x = (root.getPoint().getX()/4) + xVal;
+		final double y = (root.getPoint().getY()/4) + yVal;
+		g2.setBackground(Color.WHITE);
+		g2.setColor(Color.BLACK);
+		if (root.isUsed()) {
+			final Rectangle2D rect = new Rectangle2D.Double();
+			rect.setRect(x, y, root.getLength()/4, root.getWidth()/4);
+			g2.setColor(getElemColor(root.getId()%10));
+			g2.fill(rect);
+			g2.setColor(Color.BLACK);
+			Point2D p = root.getPoint();
+			g2.setFont(new Font("TimesRoman", Font.BOLD, 16)); 
+			g2.drawString(root.getId() + "", Float.parseFloat((x + root.getLength()/8)+ ""), 
+					Float.parseFloat((y + root.getWidth()/8)+ ""));
+			g2.draw(rect);
+		} else {
+			path.moveTo(x, y);
+			if (!root.getChildrens().isEmpty()) {
+				for (final Element el : root.getChildrens()) {
+					g2 = drawPlaca(el, g2, xVal, yVal);
+				}
+			}
+			path.lineTo(x, y + root.getWidth()/4);
+			path.lineTo(x + root.getLength()/4, y + root.getWidth()/4);
+			path.lineTo(x + root.getLength()/4, y);
+			path.closePath();
+			g2.draw(path);
+		}
+		return g2;
+	}
+	
+	private Color getElemColor(int color){
+		switch (color) {
+		case 1:
+			return new Color(255, 51, 0);
+		case 2:
+			return new Color(255, 153, 51);
+		case 3:
+			return new Color(153, 204, 0);
+		case 4:
+			return new Color(0, 204, 153);
+		case 5:
+			return new Color(163, 71, 71);
+		case 6:
+			return new Color(98, 98, 184);
+		case 7:
+			return new Color(80, 137, 80);
+		case 8:
+			return new Color(230, 180, 77);
+		case 9:
+			return new Color(103, 203, 111);
+		default:
+			return new Color(102, 51, 0);
+		}
+	}
+	
+	private String ElementLine(Vector row){
+		StringBuilder sb = new StringBuilder(padLeft((Integer) row.get(0) + "", 5));
+		sb.append(padLeft((String)row.get(1), 30));
+		sb.append(padLeft((String)row.get(2), 30));
+		sb.append(padLeft((Double) row.get(3) + "", 20));
+		sb.append(padLeft((Double) row.get(4) + "", 20));
+		sb.append(padLeft(((Boolean) row.get(5) == null ? false	: (Boolean) row.get(5)) + "", 20));
+		sb.append(padLeft((Integer) row.get(6) + "", 15));
+		return sb.toString();
+	}
+	
+	private  String padLeft(String s, int n) {
+		while(s.length() < n){
+			s = " " + s;
+		}
+	    return s;  
 	}
 }

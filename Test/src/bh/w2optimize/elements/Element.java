@@ -208,6 +208,7 @@ public class Element implements Serializable {
 		element.setUsed(this.used);
 		element.setComponentCode(this.componentCode);
 		element.setName(this.name);
+		element.setId(this.id);
 		return element;
 	}
 

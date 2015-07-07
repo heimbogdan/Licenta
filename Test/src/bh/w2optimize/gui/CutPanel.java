@@ -1,6 +1,7 @@
 package bh.w2optimize.gui;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -38,7 +39,7 @@ public class CutPanel extends JPanel{
 	private Draw panel;
 	
 	public FinalElement getIncadrare() {
-		return incadrare;
+		return panel.getIncadrare();
 	}
 
 	public void setIncadrare(FinalElement incadrare, boolean horizontal ) {
