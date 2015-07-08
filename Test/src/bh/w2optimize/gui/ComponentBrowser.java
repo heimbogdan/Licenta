@@ -417,38 +417,46 @@ public class ComponentBrowser extends JDialog {
 							if(index == 0){
 								DefaultTableModel model = (DefaultTableModel) componentTable.getModel();
 								int rowid = componentTable.getSelectedRow();
-								String code = (String) model.getValueAt(rowid, 0);
-								Component comp = ComponentDAO.getByCode(code);
-								if (comp != null) {
-									parent.addData(comp.getElements());
+								if(rowid != -1){
+									String code = (String) model.getValueAt(rowid, 0);
+									Component comp = ComponentDAO.getByCode(code);
+									if (comp != null) {
+										parent.addData(comp.getElements());
+									} else {
+										JOptionPane.showMessageDialog(_self, "Nothing return from database!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+									}
 								} else {
-									JOptionPane.showMessageDialog(_self, "Nothing return from database!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+									JOptionPane.showMessageDialog(_self, "No component selected!", "ERROR!", JOptionPane.ERROR_MESSAGE);
 								}
 							} else if(index == 1){
 								DefaultTableModel model = (DefaultTableModel) genCompTable.getModel();
 								int rowid = genCompTable.getSelectedRow();
-								String code = (String) model.getValueAt(rowid, 0);
-								GeneralComponent genComp = GeneralComponentDAO.getByCode(code);
-								if (genComp != null) {
-									JTextField lenTB = new JTextField();
-									JTextField widTB = new JTextField();
-									JTextField heiTB = new JTextField();
-									lenTB.setText(genComp.getLength() + "");
-									widTB.setText(genComp.getWidth() + "");
-									heiTB.setText(genComp.getHeight() + "");
-									Object[] message = {
-											"Please enter your values or leave the default ones!\n",
-										    "Length:", lenTB,"Width:", widTB,"Height:", heiTB};
-									int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
-									if (option == JOptionPane.OK_OPTION) {
-										double len = Double.valueOf(lenTB.getText());
-										double wid = Double.valueOf(widTB.getText());
-										double hei = Double.valueOf(heiTB.getText());
-										genComp.rescaleElements(len, wid, hei);
-										parent.addData(genComp.getElements());
+								if(rowid != -1){
+									String code = (String) model.getValueAt(rowid, 0);
+									GeneralComponent genComp = GeneralComponentDAO.getByCode(code);
+									if (genComp != null) {
+										JTextField lenTB = new JTextField();
+										JTextField widTB = new JTextField();
+										JTextField heiTB = new JTextField();
+										lenTB.setText(genComp.getLength() + "");
+										widTB.setText(genComp.getWidth() + "");
+										heiTB.setText(genComp.getHeight() + "");
+										Object[] message = {
+												"Please enter your values or leave the default ones!\n",
+											    "Length:", lenTB,"Width:", widTB,"Height:", heiTB};
+										int option = JOptionPane.showConfirmDialog(null, message, "Login", JOptionPane.OK_CANCEL_OPTION);
+										if (option == JOptionPane.OK_OPTION) {
+											double len = Double.valueOf(lenTB.getText());
+											double wid = Double.valueOf(widTB.getText());
+											double hei = Double.valueOf(heiTB.getText());
+											genComp.rescaleElements(len, wid, hei);
+											parent.addData(genComp.getElements());
+										}
+									} else {
+										JOptionPane.showMessageDialog(_self, "Nothing return from database!", "Warning!", JOptionPane.WARNING_MESSAGE);
 									}
 								} else {
-									JOptionPane.showMessageDialog(_self, "Nothing return from database!", "ERROR!", JOptionPane.ERROR_MESSAGE);
+									JOptionPane.showMessageDialog(_self, "No general component selected!", "Warning!", JOptionPane.WARNING_MESSAGE);
 								}
 							}
 						}

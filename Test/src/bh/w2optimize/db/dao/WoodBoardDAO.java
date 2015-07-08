@@ -72,8 +72,9 @@ public class WoodBoardDAO {
 			list = q4.list();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			session.close();
 		}
-		session.close();
 		return list;
 	}
 	
@@ -91,8 +92,9 @@ public class WoodBoardDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			session.close();
 		}
-		session.close();
 		return board;
 	}
 	
@@ -110,8 +112,9 @@ public class WoodBoardDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			session.close();
 		}
-		session.close();
 		return board;
 	}
 	

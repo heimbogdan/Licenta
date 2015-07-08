@@ -24,6 +24,7 @@ import java.awt.Rectangle;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JFileChooser;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -34,10 +35,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JPopupMenu;
 
 import bh.w2optimize.db.connection.SQLiteConnection;
+import bh.w2optimize.db.dao.WoodBoardDAO;
+import bh.w2optimize.db.dao.WoodBoardPiceDAO;
 import bh.w2optimize.elements.Element;
 import bh.w2optimize.elements.ElementList;
 import bh.w2optimize.elements.FinalElement;
 import bh.w2optimize.entity.WoodBoard;
+import bh.w2optimize.entity.WoodBoardPice;
 import bh.w2optimize.guillotine.GuillotineConstraints;
 import bh.w2optimize.guillotine.GuillotineMain;
 
@@ -68,6 +72,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.pdfjet.A4;
 import com.pdfjet.CoreFont;
@@ -158,68 +164,239 @@ public class FrontInterfaceGUI extends JFrame {
 			@SuppressWarnings("rawtypes")
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				//MODEL graphics 2 png
+				GuillotineMain.getInstance().stopCurrentThreads();
 				FinalElement incadrare = panel.getIncadrare();
 				if (incadrare != null) {
-					ArrayList<Element> list = incadrare.getChildrens();
-					for (int i = 0; i < list.size(); i++) {
-						Element el = list.get(i);
-						BufferedImage bi = new BufferedImage(595, 842, BufferedImage.TYPE_INT_ARGB);
-						Graphics2D g2 = bi.createGraphics();
-						g2.setStroke(new BasicStroke(3));
-						g2 = drawPlaca(el, g2, 10, 10);
-						g2.setFont(new Font("TimesRoman", Font.BOLD, 16)); 
-						g2.drawString(el.getLength() + " X " + el.getWidth(), Float.parseFloat((el.getLength()/8 - 20)+ ""), 
-								Float.parseFloat((35 + el.getWidth()/4)+ ""));
-						g2.dispose();
+					ArrayList<WoodBoardPice> boards = panel.getBoardList();
+					int doUpdate = JOptionPane.showConfirmDialog(null,"Do you want to update the stock now?\nIf there will be needed more boards,\nthose will be shown in the report.",
+							"Warning!", JOptionPane.YES_NO_OPTION);
+					//MODEL File chooser
+					JFileChooser fc = new JFileChooser(new File("."));
+					fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+					fc.setFileFilter(new FileNameExtensionFilter("Portable Document Format (*.pdf)", "pdf"));
+					int opt = fc.showSaveDialog(_self);
+					if(opt == JFileChooser.APPROVE_OPTION){
+						File file = fc.getSelectedFile();
+						//MODEL graphics 2 png
+						ArrayList<Element> list = incadrare.getChildrens();
+						for (int i = 0; i < list.size(); i++) {
+							Element el = list.get(i);
+							BufferedImage bi = new BufferedImage(595, 842, BufferedImage.TYPE_INT_ARGB);
+							Graphics2D g2 = bi.createGraphics();
+							g2.setStroke(new BasicStroke(3));
+							g2 = drawPlaca(el, g2, 10, 10);
+							g2.setFont(new Font("TimesRoman", Font.BOLD, 16)); 
+							g2.drawString(el.getLength() + " X " + el.getWidth(), Float.parseFloat((el.getLength()/8 - 20)+ ""), 
+									Float.parseFloat((35 + el.getWidth()/4)+ ""));
+							g2.dispose();
+							try {
+								ImageIO.write(bi, "png", new File(
+										"./resultPNG/test" + i + ".png"));
+							} catch (Exception e) {
+							}
+						}
 						try {
-							ImageIO.write(bi, "png", new File(
-									"./resultPNG/test" + i + ".png"));
-						} catch (Exception e) {
-						}
-					}
-					try {
-						FileOutputStream fos = new FileOutputStream("Example_01.pdf");
-						PDF pdf = new PDF(fos);
-						for (int i = 0; i < incadrare.getChildrens().size(); i++) {
-							Page page = new Page(pdf, A4.PORTRAIT);
-							String fileName = "./resultPNG/test" + i + ".png";
-							BufferedInputStream bis1 = new BufferedInputStream(new FileInputStream(fileName));
-							Image image1 = new Image(pdf, bis1, ImageType.PNG);
-							image1.setPosition(0, 0);
-							image1.drawOn(page);
-						}
-						Page listPage = new Page(pdf, A4.PORTRAIT);
-						TextLine text = new TextLine(new com.pdfjet.Font(pdf, CoreFont.TIMES_ROMAN),"\t\tList of elements:");
-						double y = 50;
-						text.setPosition(50, y);
-						text.drawOn(listPage);
-						y += 40;
-						text.setPosition(50, y);
-						StringBuilder sb = new StringBuilder();
-						sb.append(padLeft("ID", 5))
-								.append(padLeft("Component Code", 25))
-								.append(padLeft("Name", 25))
-								.append(padLeft("Length (mm)", 15))
-								.append(padLeft("Width (mm)", 15))
-								.append(padLeft("Rotate", 15))
-								.append(padLeft("Number", 10));
-						text.setText(sb.toString());
-						text.drawOn(listPage);
-						Vector data = tableData.getDataVector();
-						for (Object element : data) {
-							Vector row = (Vector) element;
-							y += 20;
+							//MODEL create pdf
+							FileOutputStream fos = new FileOutputStream(file);
+							PDF pdf = new PDF(fos);
+							for (int i = 0; i < incadrare.getChildrens().size(); i++) {
+								Page page = new Page(pdf, A4.PORTRAIT);
+								String fileName = "./resultPNG/test" + i + ".png";
+								BufferedInputStream bis1 = new BufferedInputStream(new FileInputStream(fileName));
+								Image image1 = new Image(pdf, bis1, ImageType.PNG);
+								image1.setPosition(0, 0);
+								image1.drawOn(page);
+							}
+							Page listPage = new Page(pdf, A4.PORTRAIT);
+							TextLine text = new TextLine(new com.pdfjet.Font(pdf, CoreFont.TIMES_ROMAN),"\t\tList of elements:");
+							double y = 50;
 							text.setPosition(50, y);
-							text.setText(ElementLine(row));
 							text.drawOn(listPage);
+							y += 40;
+							StringBuilder sb = new StringBuilder();
+							appentElemHeaders(sb);
+							drawText(text, y, sb, listPage);
+							int lines = 90 + 25 * 20;
+							Vector data = tableData.getDataVector();
+							for (Object element : data) {
+								if(y + 20 > lines){
+									listPage = new Page(pdf, A4.PORTRAIT);
+									y = 50;
+									sb = new StringBuilder();
+									appentElemHeaders(sb);
+									drawText(text, y, sb, listPage);
+								}
+								y+=20;
+								Vector row = (Vector) element;
+								text.setPosition(50, y);
+								text.setText(elementLine(row));
+								text.drawOn(listPage);
+							}
+							Page boardPage = new Page(pdf, A4.PORTRAIT);
+							y = 50;
+							sb = new StringBuilder("\t\tList of used boards:");
+							drawText(text, y, sb, boardPage);
+							y += 40;
+							sb = new StringBuilder();
+							appendUsedBoardsHeaders(sb);
+							drawText(text, y, sb, boardPage);
+							int boardId = 0;
+							for( WoodBoardPice board : boards){
+								WoodBoardPice stockBoard = WoodBoardPiceDAO.getById(board.getId());
+								int number = stockBoard.getNumber() - board.getNumber();
+								for(int i = 0 ; i< number ; i++){
+									boardId++;
+									if (y + 20 > lines) {
+										boardPage = new Page(pdf, A4.PORTRAIT);
+										y = 50;
+										sb = new StringBuilder();
+										appendUsedBoardsHeaders(sb);
+										drawText(text, y, sb, boardPage);
+									}
+									y += 20;
+									sb = new StringBuilder();
+									sb.append(padLeft(boardId + "", 5))
+											.append(padLeft(board.getCode(), 25))
+											.append(padLeft(board.getName(), 25))
+											.append(padLeft(board.getLength() + "",	20))
+											.append(padLeft(board.getWidth() + "", 20))
+											.append(padLeft(board.getPrice() + "", 20));
+									drawText(text, y, sb, boardPage);
+								}
+							}
+							if(doUpdate == JOptionPane.OK_OPTION){
+								SQLiteConnection.closeConnection();
+								for (int i = 0; i<boards.size(); i++){
+									WoodBoardPice board = boards.get(i);
+									if (board.getNumber() == 0	&& i != boards.size() - 1) {
+										WoodBoardPice stockBoard = WoodBoardPiceDAO.getById(board.getId());
+										WoodBoardPiceDAO.delete(stockBoard);
+									} else {
+										WoodBoardPice stockBoard = WoodBoardPiceDAO.getById(board.getId());
+										stockBoard.setNumber(board.getNumber());
+										WoodBoardPiceDAO.update(stockBoard);
+									}
+									if (i == boards.size() - 1 && board.getNumber() < 0) {
+										if (y + 80 > lines) {
+											boardPage = new Page(pdf, A4.PORTRAIT);
+											y = 50;
+										} else {
+											y += 40;
+										}
+										text.setPosition(50, y);
+										text.setText("\t\tList of needed boards:");
+										text.drawOn(boardPage);
+										sb = new StringBuilder();
+										appendNeedUseBoardsHeaders(sb);
+										y+=20;
+										drawText(text, y, sb, boardPage);
+										sb = new StringBuilder();
+										appendNeedUseBoardsLine(sb, board, -1);
+										y+=20;
+										drawText(text, y, sb, boardPage);
+									}
+								}
+							}
+							ArrayList<Element> newEl = incadrare.getListOfUseableBoards();
+							ArrayList<WoodBoardPice> newBoards = new ArrayList<WoodBoardPice>();
+							WoodBoard sBoard = WoodBoardDAO.getByCode(boards.get(0).getCode());
+							if (y + 80 > lines) {
+								boardPage = new Page(pdf, A4.PORTRAIT);
+								y = 50;
+							} else {
+								y += 40;
+							}
+							text.setPosition(50, y);
+							text.setText("\t\tList of new useable boards:");
+							text.drawOn(boardPage);
+							sb = new StringBuilder();
+							appendNeedUseBoardsHeaders(sb);
+							y+=20;
+							drawText(text, y, sb, boardPage);
+							for (Element el : newEl){
+								Double price = (sBoard.getPrice() / (sBoard.getLength()*sBoard.getWidth())) * (el.getLength() * el.getWidth()) * 100;
+								price = (double) (price.intValue() /100);
+//								newBoards.add(new WoodBoardPice(sBoard.getCode(), sBoard.getName(), sBoard.getMaterial(), el.getLength(), el.getWidth(), price, 1));
+								WoodBoardPice wbp = new WoodBoardPice(sBoard.getCode(), sBoard.getName(), sBoard.getMaterial(), el.getLength(), el.getWidth(), price, 1);
+								if (y + 20 > lines) {
+									boardPage = new Page(pdf, A4.PORTRAIT);
+									y = 50;
+								}
+								sb = new StringBuilder();
+								appendNeedUseBoardsLine(sb, wbp, 1);
+								y+=20;
+								drawText(text, y, sb, boardPage);
+								if(doUpdate == JOptionPane.OK_OPTION){
+									WoodBoardPiceDAO.insert(wbp);
+								}
+							}
+//							for(WoodBoardPice newBoard : newBoards){
+//								if (y + 20 > lines) {
+//									boardPage = new Page(pdf, A4.PORTRAIT);
+//									y = 50;
+//								}
+//								sb = new StringBuilder();
+//								appendNeedUseBoardsLine(sb, newBoard, 1);
+//								y+=20;
+//								drawText(text, y, sb, boardPage);
+//								if(doUpdate == JOptionPane.OK_OPTION){
+//									WoodBoardPiceDAO.insert(newBoard);
+//								}
+//							}
+					        pdf.flush();
+					        fos.close();
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
-				        pdf.flush();
-				        fos.close();
-					} catch (Exception e) {
-						e.printStackTrace();
 					}
+				} else {
+					JOptionPane.showMessageDialog(_self,"No result found!", "Warning!",JOptionPane.WARNING_MESSAGE);
 				}
+			}
+
+			private void appendNeedUseBoardsLine(StringBuilder sb,
+					WoodBoardPice board, int val) {
+				sb.append(padLeft(board.getCode(), 25))
+					.append(padLeft(board.getName(), 25))
+					.append(padLeft(board.getLength() + "",	20))
+					.append(padLeft(board.getWidth() + "", 20))
+					.append(padLeft(board.getPrice() + "", 20))
+					.append(padLeft((board.getNumber() * (val)) + "", 15));
+			}
+
+			private void appendNeedUseBoardsHeaders(StringBuilder sb) {
+				sb.append(padLeft("Code", 25))
+					.append(padLeft("Name", 25))
+					.append(padLeft("Length (mm)", 20))
+					.append(padLeft("Width (mm)", 15))
+					.append(padLeft("Price", 15))
+					.append(padLeft("Number", 10));
+			}
+
+			private void appendUsedBoardsHeaders(StringBuilder sb) {
+				sb.append(padLeft("ID", 5))
+					.append(padLeft("Code", 25))
+					.append(padLeft("Name", 25))
+					.append(padLeft("Length (mm)", 20))
+					.append(padLeft("Width (mm)", 15))
+					.append(padLeft("Price", 15));
+			}
+
+			private void appentElemHeaders(StringBuilder sb) {
+				sb.append(padLeft("ID", 5))
+					.append(padLeft("Component Code", 25))
+					.append(padLeft("Name", 25))
+					.append(padLeft("Length (mm)", 15))
+					.append(padLeft("Width (mm)", 15))
+					.append(padLeft("Rotate", 15))
+					.append(padLeft("Number", 10));
+			}
+
+			private void drawText(TextLine text, double y, StringBuilder sb,
+					Page boardPage) throws Exception {
+				text.setPosition(50, y);
+				text.setText(sb.toString());
+				text.drawOn(boardPage);
 			}
 		});
 		mnNewMenu.add(mntmSave);
@@ -511,7 +688,7 @@ public class FrontInterfaceGUI extends JFrame {
 						}
 						GuillotineMain guillotineMain = GuillotineMain.getInstance();
 						
-						panel.setIncadrare(null,false);
+						panel.setIncadrare(null,false,null);
 						int value = 120;
 						if (chckbxTimeRestriction.isSelected()){
 							if(timeTB.getText() != null && !timeTB.getText().isEmpty()){
@@ -633,7 +810,7 @@ public class FrontInterfaceGUI extends JFrame {
 		}
 	}
 	
-	private String ElementLine(Vector row){
+	private String elementLine(Vector row){
 		StringBuilder sb = new StringBuilder(padLeft((Integer) row.get(0) + "", 5));
 		sb.append(padLeft((String)row.get(1), 30));
 		sb.append(padLeft((String)row.get(2), 30));

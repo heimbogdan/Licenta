@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import bh.w2optimize.elements.Element;
 import bh.w2optimize.elements.FinalElement;
+import bh.w2optimize.entity.WoodBoardPice;
 
 import javax.swing.SwingConstants;
 
@@ -33,7 +34,12 @@ public class Draw extends JPanel {
 	private JLabel labPlaca;
 	private int nrIncadrare;
 	private int nrPlaci;
-
+	private ArrayList<WoodBoardPice> boardList = null;
+	
+	public ArrayList<WoodBoardPice> getBoardList(){
+		return boardList;
+	}
+	
 	public void setNrPlaci(int nr) {
 		this.nrPlaci = nr;
 	}
@@ -57,12 +63,13 @@ public class Draw extends JPanel {
 	public int getNrIncadrare(){
 		return this.nrIncadrare;
 	}
-	public void setIncadrare(final FinalElement incadrare) {
+	public void setIncadrare(final FinalElement incadrare, ArrayList<WoodBoardPice> boardList) {
 
 		boolean makeDraw = false;
 
 		if (this.incadrare == null) {
 			this.incadrare = incadrare;
+			this.boardList = boardList;
 			makeDraw = true;
 
 		} else if (incadrare.getChildrens().size() < this.incadrare
@@ -78,6 +85,7 @@ public class Draw extends JPanel {
 					if (this.incadrare.getUseablePices() > incadrare
 							.getUseablePices()) {
 						this.incadrare = incadrare;
+						this.boardList = boardList;
 						makeDraw = true;
 					}
 				} else {
@@ -88,6 +96,7 @@ public class Draw extends JPanel {
 					for (int i = 0; i < newLoss.size(); i++) {
 						if (newLoss.get(i) < oldLoss.get(i)) {
 							this.incadrare = incadrare;
+							this.boardList = boardList;
 							makeDraw = true;
 							break;
 						}
@@ -104,6 +113,7 @@ public class Draw extends JPanel {
 
 	public void resetIncadrare() {
 		this.incadrare = null;
+		this.boardList =  null;
 		this.pageNumber = 0;
 		this.nrIncadrare = 0;
 	}
@@ -153,8 +163,8 @@ public class Draw extends JPanel {
 				g2 = drawPlaca(
 						this.incadrare.getChildrens().get(this.pageNumber), g2,
 						200, 100);
-				this.labPlaca.setText("Placa " + (pageNumber + 1)
-						+ "/ incadrare " + nrIncadrare);
+				this.labPlaca.setText("Board " + (pageNumber + 1)
+						+ "/ Result " + nrIncadrare);
 			} else if (this.nrPlaci == 2) {
 				int num = this.pageNumber * 2;
 				if (this.incadrare.getChildrens().size() - 1 > num) {

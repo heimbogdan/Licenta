@@ -23,9 +23,10 @@ public class GuillotineCut {
 	private FinalElement cutElement;
 	private Element pal;
 	private boolean horizontal;
-	private boolean cutModeH;
 	private boolean keepGoing;
 	private boolean boardUsed;
+	private ArrayList<WoodBoardPice> boardList = null;
+	
 	public FinalElement getCutElement() {
 		return cutElement;
 	}
@@ -53,7 +54,6 @@ public class GuillotineCut {
 	public GuillotineCut(final boolean h) {
 		this.cutElement = new FinalElement(0, 0);
 		this.horizontal = h;
-		cutModeH = h;
 		this.keepGoing = true;
 	}
 
@@ -69,8 +69,7 @@ public class GuillotineCut {
 
 	public FinalElement beginCutting(final ElementList elements,final WoodBoard root) {
 		elements.sort(ElementList.comparator);
-		ArrayList<WoodBoardPice> listOfBoards = (ArrayList<WoodBoardPice>) WoodBoardPiceDAO.getByCode(root.getCode());
-		permute(elements, listOfBoards, 0);
+		permute(elements, root.getCode(), 0);
 		return cutElement;
 	}
 
@@ -86,7 +85,7 @@ public class GuillotineCut {
 	 *            - Indica pozitia din lista de la care sa inceapa permutarea
 	 *            (de regula 0).
 	 */
-	private void permute(final ElementList elements, final ArrayList<WoodBoardPice> listOfBoards,
+	private void permute(final ElementList elements, String code,
 			final int k) {
 		if (keepGoing) {
 			GuillotineMain main = GuillotineMain.getInstance();
@@ -98,12 +97,12 @@ public class GuillotineCut {
 			for (int i = k; i < elements.size(); i++) {
 				if (keepGoing) {
 					java.util.Collections.swap(elements, i, k);
-					permute(elements, listOfBoards, k + 1);
+					permute(elements, code, k + 1);
 					java.util.Collections.swap(elements, k, i);
 					if (elements.get(i).isRotate()) {
 						rotate(elements.get(i));
 						java.util.Collections.swap(elements, i, k);
-						permute(elements, listOfBoards, k + 1);
+						permute(elements, code, k + 1);
 						java.util.Collections.swap(elements, k, i);
 						rotate(elements.get(i));
 					}
@@ -116,28 +115,41 @@ public class GuillotineCut {
 					int index = 0;
 					int wbId = 0;
 					boardUsed = false;
-					listOfBoards.sort(WoodBoardPice.comparator);
+					boardList = (ArrayList<WoodBoardPice>) WoodBoardPiceDAO.getByCode(code);
+					boardList.sort(WoodBoardPice.comparator);
 					WoodBoardPice board = null;
 					while (!elements.isAllUsed()) {
 						if(board == null){
-							board = listOfBoards.get(wbId);
+							board = boardList.get(wbId);
 						} else if (boardUsed) {
 							board.setNumber(board.getNumber() - 1);
 							if (board.getNumber() == 0) {
 								wbId++;
-								board = listOfBoards.get(wbId);
+								if (wbId < boardList.size()) {
+									board = boardList.get(wbId);
+								} else {
+									board = boardList.get(boardList.size()-1);
+									board.setNumber(board.getNumber()-1);
+								}
 							}
 						} else {
 							wbId++;
-							board = listOfBoards.get(wbId);
+							if (wbId < boardList.size()) {
+								board = boardList.get(wbId);
+							} else {
+								board = boardList.get(boardList.size()-1);
+								board.setNumber(board.getNumber()-1);
+							}
 						}
-						
 						Element newRoot = board.toElement();
 						newRoot.setLoss(false);
 						pal.addRoot(newRoot);
-						horizontal = cutModeH;
+						boardUsed = false;
 						cut(elements, pal.getChildrens().get(index));
 						index++;
+					}
+					if (boardUsed) {
+						board.setNumber(board.getNumber()-1);
 					}
 					for (final Element el : elements) {
 						el.setUsed(false);
@@ -170,21 +182,17 @@ public class GuillotineCut {
 						if (horizontal) { // first horizontal , then vertical
 							if (ely < ry) {
 								horizontalCut(elements, root, ely, rx, ry);
-								horizontal = !horizontal;
 								break;
 							} else if (elx < rx) {
 								verticalCut(elements, root, elx, rx, ry);
-								horizontal = !horizontal;
 								break;
 							}
 						} else { // first vertical , then horizontal
 							if (elx < rx) {
 								verticalCut(elements, root, elx, rx, ry);
-								horizontal = !horizontal;
 								break;
 							} else if (ely < ry) {
 								horizontalCut(elements, root, ely, rx, ry);
-								horizontal = !horizontal;
 								break;
 							}
 						}
@@ -212,7 +220,7 @@ public class GuillotineCut {
 				if (cutElement.getChildrens().isEmpty()) {
 					synchronized (draw) {
 						cutElement = newFinal;
-						draw.setIncadrare(cutElement, horizontal);
+						draw.setIncadrare(cutElement, horizontal, boardList);
 					}
 				} else {
 					final int initial = cutElement.getChildrens().size();
@@ -221,7 +229,7 @@ public class GuillotineCut {
 					if (initial > newFinalChildrens) {
 						synchronized (draw) {
 							cutElement = newFinal;
-							draw.setIncadrare(cutElement, horizontal);
+							draw.setIncadrare(cutElement, horizontal, boardList);
 						}
 					} else if (initial == newFinalChildrens) {
 						int better = 0;
@@ -244,13 +252,13 @@ public class GuillotineCut {
 										.getUseablePices()) {
 									synchronized (draw) {
 										cutElement = newFinal;
-										draw.setIncadrare(cutElement, horizontal);
+										draw.setIncadrare(cutElement, horizontal, boardList);
 									}
 								}
 							} else {
 								synchronized (draw) {
 									cutElement = newFinal;
-									draw.setIncadrare(cutElement, horizontal);
+									draw.setIncadrare(cutElement, horizontal, boardList);
 								}
 							}
 						}

@@ -2,6 +2,8 @@ package bh.w2optimize.elements;
 
 import java.util.ArrayList;
 
+import bh.w2optimize.entity.WoodBoardPice;
+
 /**
  * Class that extends the class {@link Element}. Final Element object is the
  * final arrangement.
@@ -35,7 +37,8 @@ public class FinalElement extends Element {
 	private double lostArea;
 
 	private ArrayList<Double> individualLoss;
-
+	private ArrayList<Element> useableBoardPices = null;
+	
 	public double getArea() {
 		return area;
 	}
@@ -72,6 +75,13 @@ public class FinalElement extends Element {
 
 	public int getUseablePices() {
 		return useablePices;
+	}
+	
+	public ArrayList<Element> getListOfUseableBoards(){
+		for(Element el : this.getChildrens()){
+			extractUseableBoards(el);
+		}
+		return useableBoardPices;
 	}
 
 	public FinalElement(final double length, final double width) {
@@ -141,6 +151,19 @@ public class FinalElement extends Element {
 		}
 	}
 
+	public void extractUseableBoards(Element el){
+		if(useableBoardPices == null){
+			useableBoardPices = new ArrayList<Element>();
+		}
+		if(el.getChildrens() != null && !el.getChildrens().isEmpty()){
+			for(Element child : el.getChildrens()){
+				extractUseableBoards(child);
+			}
+		} else if (!el.isUsed() && el.getLength() > 30 && el.getWidth() > 30){
+			useableBoardPices.add(el);
+		}
+	}
+	
 	public static FinalElement deepCopy(final Element element) {
 		if (element != null) {
 			final FinalElement finalElementl = new FinalElement(

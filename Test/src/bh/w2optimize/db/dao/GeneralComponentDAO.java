@@ -71,8 +71,9 @@ public class GeneralComponentDAO {
 			list = q4.list();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			session.close();
 		}
-		session.close();
 		return list;
 	}
 	
@@ -90,8 +91,9 @@ public class GeneralComponentDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			session.close();
 		}
-		session.close();
 		return board;
 	}
 	
@@ -109,8 +111,9 @@ public class GeneralComponentDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			session.close();
 		}
-		session.close();
 		return board;
 	}
 }

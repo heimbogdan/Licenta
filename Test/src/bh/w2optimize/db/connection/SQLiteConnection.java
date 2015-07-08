@@ -42,6 +42,10 @@ public final class SQLiteConnection {
 		}
 		return instance;
 	}
+	
+	public static void closeConnection(){
+		instance = null;
+	}
 
 	public Session getSession() {
 		return this.factory.openSession();

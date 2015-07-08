@@ -6,7 +6,9 @@ import java.awt.Graphics2D;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import bh.w2optimize.db.dao.WoodBoardPiceDAO;
 import bh.w2optimize.elements.FinalElement;
+import bh.w2optimize.entity.WoodBoardPice;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -21,6 +23,7 @@ import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -38,12 +41,16 @@ public class CutPanel extends JPanel{
 	private JButton button2 = null;
 	private Draw panel;
 	
+	public ArrayList<WoodBoardPice> getBoardList(){
+		return panel.getBoardList();
+	}
+	
 	public FinalElement getIncadrare() {
 		return panel.getIncadrare();
 	}
 
-	public void setIncadrare(FinalElement incadrare, boolean horizontal ) {
-		panel.setIncadrare(incadrare);
+	public void setIncadrare(FinalElement incadrare, boolean horizontal, ArrayList<WoodBoardPice> boardList ) {
+		panel.setIncadrare(incadrare,boardList);
 		this.repaint();
 	}
 

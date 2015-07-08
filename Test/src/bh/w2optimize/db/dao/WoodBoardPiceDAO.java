@@ -72,13 +72,14 @@ public class WoodBoardPiceDAO {
 			list = q4.list();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			session.close();
 		}
-		session.close();
 		return list;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static WoodBoard getById(int id){
+	public static WoodBoardPice getById(int id){
 		WoodBoardPice board = null;
 		SQLiteConnection conn = SQLiteConnection.getInstance();
 		Session session = conn.getSession();
@@ -91,8 +92,9 @@ public class WoodBoardPiceDAO {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			session.close();
 		}
-		session.close();
 		return board;
 	}
 	
@@ -107,8 +109,9 @@ public class WoodBoardPiceDAO {
 			list = q4.list();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			session.close();
 		}
-		session.close();
 		return list;
 	}
 }
