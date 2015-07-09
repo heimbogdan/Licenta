@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>  
+<!DOCTYPE hibernate-mapping SYSTEM "hib_map.dtd">
+<hibernate-mapping>
+	<class name="bh.w2optimize.entity.Component" table="component">
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name" column="name" not-null="true" ></property>
+		<property name="code" column="code" unique="true" not-null="true"></property>
+		<property name="elements" column="elements" not-null="true"></property>
+	</class>
+	<class name="bh.w2optimize.entity.GeneralComponent" table="generalcomponent">
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="name" column="name" not-null="true"></property>
+		<property name="code" column="code" unique="true" not-null="true"></property>
+		<property name="length" column="length" not-null="true"></property>
+		<property name="width" column="width" not-null="true"></property>
+		<property name="height" column="height" not-null="true"></property>
+		<property name="elements" column="elements" not-null="true"></property>
+	</class>
+	
+	
+	<class name="bh.w2optimize.entity.WoodBoard" table="woodboard">
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="code" column="code" unique="true" not-null="true"></property>
+		<property name="name" column="name" not-null="true"></property>
+		<property name="material" column="material" not-null="true"></property>
+		<property name="length" column="length"></property>
+		<property name="width" column="width" not-null="true"></property>
+		<property name="price" column="price" not-null="true"></property>
+	</class>
+	<class name="bh.w2optimize.entity.WoodBoardPice" table="woodboardpice">
+		<id name="id" column="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="code" column="code" not-null="true"></property>
+		<property name="name" column="name" not-null="true"></property>
+		<property name="material" column="material" not-null="true"></property>
+		<property name="length" column="length" not-null="true"></property>
+		<property name="width" column="width" not-null="true"></property>
+		<property name="price" column="price" not-null="true"></property>
+		<property name="number" column="number" not-null="true"></property>
+	</class>
+</hibernate-mapping>
+
+<!-- De scos accessory 
+	<class name="bh.w2optimize.entity.Accessory" table="accessory">
+		<id name="id">
+			<generator class="native"></generator>
+		</id>
+		<property name="code" column="code" unique="true" not-null="true"></property>
+		<property name="name" column="name" not-null="true"></property>
+		<property name="price" column="price" not-null="true"></property>
+		<property name="number" column="number" not-null="true"></property>
+	</class> -->
