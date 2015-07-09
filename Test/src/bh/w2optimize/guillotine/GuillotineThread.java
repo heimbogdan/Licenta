@@ -1,15 +1,16 @@
 package bh.w2optimize.guillotine;
 
-import bh.w2optimize.elements.Element;
+import java.util.List;
+
 import bh.w2optimize.elements.ElementList;
 import bh.w2optimize.elements.FinalElement;
-import bh.w2optimize.entity.WoodBoard;
+import bh.w2optimize.entity.WoodBoardPice;
 import bh.w2optimize.guillotine.algorithm.GuillotineCut;
 
 public class GuillotineThread extends Thread {
 	
 	private ElementList elements;
-	private WoodBoard root;
+	private List<WoodBoardPice> roots;
 	private boolean horizontal;
 	private FinalElement fin;
 	
@@ -23,8 +24,8 @@ public class GuillotineThread extends Thread {
 	}
 
 //TODO de modificat din element in string / se va prelua codul placii
-	public void setRoot(WoodBoard root) {
-		this.root = root;
+	public void setRoots(List<WoodBoardPice> roots) {
+		this.roots = roots;
 	}
 
 	
@@ -34,7 +35,7 @@ public class GuillotineThread extends Thread {
 	public void run() {
 		final GuillotineCut gCut = new GuillotineCut(this.horizontal);
 		//TODO nu se va mai trimite un element (root) ci lista cu placiile existente in stoc probabil si codul
-		gCut.beginCutting(this.elements, this.root);
+		gCut.beginCutting(this.elements, roots);
 		fin = gCut.getCutElement();
 	}
 

@@ -1,9 +1,11 @@
 package bh.w2optimize.db.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 
 import bh.w2optimize.db.connection.SQLiteConnection;
@@ -17,10 +19,17 @@ public class GeneralComponentDAO {
 
 	public static void insert(GeneralComponent generalComponent){
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Transaction transaction = session.beginTransaction();
 		try {
-			session.persist(generalComponent);
+			session.insert(generalComponent);
+//			session.persist(generalComponent);
 			transaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -32,7 +41,13 @@ public class GeneralComponentDAO {
 	
 	public static void update(GeneralComponent generalComponent){
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.update(generalComponent);
@@ -47,7 +62,13 @@ public class GeneralComponentDAO {
 	
 	public static void delete(GeneralComponent generalComponent){
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.delete(generalComponent);
@@ -64,7 +85,13 @@ public class GeneralComponentDAO {
 	public static List<GeneralComponent> getAll(){
 		List<GeneralComponent> list = null;
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from generalcomponent");
 			q4.addEntity(GeneralComponent.class);
@@ -81,7 +108,13 @@ public class GeneralComponentDAO {
 	public static GeneralComponent getById(int id){
 		GeneralComponent board = null;
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from generalcomponent where id=" + id);
 			q4.addEntity(GeneralComponent.class);
@@ -101,7 +134,13 @@ public class GeneralComponentDAO {
 	public static GeneralComponent getByCode(String code){
 		GeneralComponent board = null;
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from generalcomponent where code='" + code + "'");
 			q4.addEntity(GeneralComponent.class);

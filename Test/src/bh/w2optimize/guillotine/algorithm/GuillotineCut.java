@@ -1,12 +1,11 @@
 package bh.w2optimize.guillotine.algorithm;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import bh.w2optimize.db.dao.WoodBoardPiceDAO;
 import bh.w2optimize.elements.Element;
 import bh.w2optimize.elements.ElementList;
 import bh.w2optimize.elements.FinalElement;
-import bh.w2optimize.entity.WoodBoard;
 import bh.w2optimize.entity.WoodBoardPice;
 import bh.w2optimize.gui.CutPanel;
 import bh.w2optimize.gui.FrontInterfaceGUI;
@@ -67,9 +66,9 @@ public class GuillotineCut {
 	 * @return Incadrarea finala ({@link FinalElement})
 	 */
 
-	public FinalElement beginCutting(final ElementList elements,final WoodBoard root) {
+	public FinalElement beginCutting(final ElementList elements,List<WoodBoardPice> list) {
 		elements.sort(ElementList.comparator);
-		permute(elements, root.getCode(), 0);
+		permute(elements, list, 0);
 		return cutElement;
 	}
 
@@ -85,7 +84,7 @@ public class GuillotineCut {
 	 *            - Indica pozitia din lista de la care sa inceapa permutarea
 	 *            (de regula 0).
 	 */
-	private void permute(final ElementList elements, String code,
+	private void permute(final ElementList elements, List<WoodBoardPice> list,
 			final int k) {
 		if (keepGoing) {
 			GuillotineMain main = GuillotineMain.getInstance();
@@ -97,12 +96,12 @@ public class GuillotineCut {
 			for (int i = k; i < elements.size(); i++) {
 				if (keepGoing) {
 					java.util.Collections.swap(elements, i, k);
-					permute(elements, code, k + 1);
+					permute(elements, list, k + 1);
 					java.util.Collections.swap(elements, k, i);
 					if (elements.get(i).isRotate()) {
 						rotate(elements.get(i));
 						java.util.Collections.swap(elements, i, k);
-						permute(elements, code, k + 1);
+						permute(elements, list, k + 1);
 						java.util.Collections.swap(elements, k, i);
 						rotate(elements.get(i));
 					}
@@ -115,7 +114,7 @@ public class GuillotineCut {
 					int index = 0;
 					int wbId = 0;
 					boardUsed = false;
-					boardList = (ArrayList<WoodBoardPice>) WoodBoardPiceDAO.getByCode(code);
+					boardList = getList(list);
 					boardList.sort(WoodBoardPice.comparator);
 					WoodBoardPice board = null;
 					while (!elements.isAllUsed()) {
@@ -297,5 +296,16 @@ public class GuillotineCut {
 		double ewidth = el.getWidth();
 		el.setLength(ewidth);
 		el.setWidth(elength);
+	}
+	
+	private ArrayList<WoodBoardPice> getList(List<WoodBoardPice> list){
+		ArrayList<WoodBoardPice> newList = new ArrayList<WoodBoardPice>();
+		for(WoodBoardPice w : list){
+			WoodBoardPice newW = new WoodBoardPice(w.getCode(), w.getName(), w.getMaterial(), w.getLength(), 
+					w.getWidth(), w.getPrice(), w.getNumber());
+			newW.setId(w.getId());
+			newList.add(newW);
+		}
+		return newList;
 	}
 }

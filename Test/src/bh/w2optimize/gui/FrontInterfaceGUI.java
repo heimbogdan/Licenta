@@ -59,6 +59,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JTextField;
@@ -74,6 +75,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.hibernate.StatelessSession;
+import org.hibernate.Transaction;
 
 import com.pdfjet.A4;
 import com.pdfjet.CoreFont;
@@ -164,7 +168,7 @@ public class FrontInterfaceGUI extends JFrame {
 			@SuppressWarnings("rawtypes")
 			@Override
 			public void mousePressed(MouseEvent arg0) {
-				GuillotineMain.getInstance().stopCurrentThreads();
+				GuillotineMain.getInstance().stopThreads();
 				FinalElement incadrare = panel.getIncadrare();
 				if (incadrare != null) {
 					ArrayList<WoodBoardPice> boards = panel.getBoardList();
@@ -701,7 +705,8 @@ public class FrontInterfaceGUI extends JFrame {
 							}
 						}
 						//TODO de trimis catre main codul placii
-						guillotineMain.start(elms, usedBoard, value);
+						List<WoodBoardPice> list = WoodBoardPiceDAO.getByCode(usedBoard.getCode());
+						guillotineMain.start(elms, list, value);
 					}
 				}
 			}

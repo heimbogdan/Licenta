@@ -8,8 +8,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.StatelessSession;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
+import org.hibernate.connection.C3P0ConnectionProvider;
+import org.hibernate.connection.ConnectionProvider;
+import org.hibernate.impl.SessionFactoryImpl;
+import org.sqlite.SQLite;
 import org.w3c.dom.Document;
 
 /**
@@ -47,7 +52,7 @@ public final class SQLiteConnection {
 		instance = null;
 	}
 
-	public Session getSession() {
-		return this.factory.openSession();
+	public StatelessSession getSession() {
+		return this.factory.openStatelessSession();
 	}
 }

@@ -1,9 +1,11 @@
 package bh.w2optimize.db.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 
 import bh.w2optimize.db.connection.SQLiteConnection;
@@ -17,10 +19,17 @@ public class AccessoryDAO {
 
 	public static void insert(Accessory accessory){
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Transaction transaction = session.beginTransaction();
 		try {
-			session.persist(accessory);
+			session.insert(accessory);
+//			session.persist(accessory);
 			transaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -32,7 +41,13 @@ public class AccessoryDAO {
 	
 	public static void update(Accessory accessory){
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.update(accessory);
@@ -47,7 +62,13 @@ public class AccessoryDAO {
 	
 	public static void delete(Accessory accessory){
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.delete(accessory);
@@ -64,7 +85,13 @@ public class AccessoryDAO {
 	public static List<Accessory> getAll(){
 		List<Accessory> list = null;
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from accessory");
 			q4.addEntity(Accessory.class);
@@ -81,7 +108,13 @@ public class AccessoryDAO {
 	public static Accessory getById(int id){
 		Accessory board = null;
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from accessory where id=" + id);
 			q4.addEntity(Accessory.class);
@@ -101,7 +134,13 @@ public class AccessoryDAO {
 	public static Accessory getByCode(String code){
 		Accessory board = null;
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from accessory where code='" + code + "'");
 			q4.addEntity(Accessory.class);

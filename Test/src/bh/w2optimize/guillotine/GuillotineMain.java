@@ -1,8 +1,11 @@
 package bh.w2optimize.guillotine;
 
+import java.util.List;
+
 import bh.w2optimize.elements.Element;
 import bh.w2optimize.elements.ElementList;
 import bh.w2optimize.entity.WoodBoard;
+import bh.w2optimize.entity.WoodBoardPice;
 import bh.w2optimize.gui.CutPanel;
 import bh.w2optimize.gui.FrontInterfaceGUI;
 
@@ -28,26 +31,25 @@ public class GuillotineMain {
 		return instance;
 	}
 	
-	public void start(ElementList elementList, WoodBoard board, int time) {
+	public void start(ElementList elementList, List<WoodBoardPice> boards, int time) {
 		if(thread1 != null && thread1.isAlive() && thread2 != null && thread2.isAlive()){
 			stopCurrentThreads();
 		}
 		try {
-			Thread.sleep(10);
+			Thread.sleep(50);
 		} catch (InterruptedException e) {
 			// TODO de pus log4j
 			e.printStackTrace();
 		}
 		synchronized(this){
 			stop = false;
-		}
-					
+		}			
 		thread1 = new GuillotineThread(false);
 		thread2 = new GuillotineThread(true);
 		thread1.setElements(elementList);
 		thread2.setElements(elementList);
-		thread1.setRoot(board);
-		thread2.setRoot(board);
+		thread1.setRoots(boards);
+		thread2.setRoots(boards);
 		thread1.start();
 		thread2.start();
 		
@@ -76,5 +78,17 @@ public class GuillotineMain {
 		synchronized(this){
 			this.stop = true;
 		}
+	}
+	
+	public void stopThreads(){
+		stopCurrentThreads();
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		thread1.stop();
+		thread2.stop();
 	}
 }

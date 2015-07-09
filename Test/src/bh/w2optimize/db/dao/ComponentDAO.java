@@ -1,9 +1,11 @@
 package bh.w2optimize.db.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 
 import bh.w2optimize.db.connection.SQLiteConnection;
@@ -17,10 +19,17 @@ public class ComponentDAO {
 
 	public static void insert(Component component){
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Transaction transaction = session.beginTransaction();
 		try {
-			session.persist(component);
+			session.insert(component);
+//			session.persist(component);
 			transaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -32,7 +41,13 @@ public class ComponentDAO {
 	
 	public static void update(Component component){
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.update(component);
@@ -47,7 +62,13 @@ public class ComponentDAO {
 	
 	public static void delete(Component component){
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.delete(component);
@@ -64,7 +85,13 @@ public class ComponentDAO {
 	public static List<Component> getAll(){
 		List<Component> list = null;
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from component");
 			q4.addEntity(Component.class);
@@ -81,7 +108,13 @@ public class ComponentDAO {
 	public static Component getById(int id){
 		Component board = null;
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from component where id=" + id);
 			q4.addEntity(Component.class);
@@ -101,7 +134,13 @@ public class ComponentDAO {
 	public static Component getByCode(String code){
 		Component board = null;
 		SQLiteConnection conn = SQLiteConnection.getInstance();
-		Session session = conn.getSession();
+		StatelessSession session = conn.getSession();
+		try {
+			session.connection().setAutoCommit(true);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from component where code='" + code + "'");
 			q4.addEntity(Component.class);
