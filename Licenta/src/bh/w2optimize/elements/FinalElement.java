@@ -2,6 +2,8 @@ package bh.w2optimize.elements;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import bh.w2optimize.entity.WoodBoardPice;
 
 /**
@@ -20,6 +22,8 @@ public class FinalElement extends Element {
 	 */
 	private static final long serialVersionUID = -8579670788261692039L;
 
+	private static final Logger log = Logger.getLogger(FinalElement.class);
+	
 	/**
 	 * Total surface of initial elements over which cuts will be made.
 	 */

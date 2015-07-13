@@ -2,12 +2,16 @@ package bh.w2optimize.elements;
 
 import java.io.Serializable;
 
+import org.apache.log4j.Logger;
+
 public class GeneralElement extends Element implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5585714780386931738L;
+	
+	private final static Logger log = Logger.getLogger(GeneralElement.class);
 	
 	private int lengthCode;
 	private int widthCode;

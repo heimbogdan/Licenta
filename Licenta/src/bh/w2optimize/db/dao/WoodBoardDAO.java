@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
@@ -13,6 +15,8 @@ import bh.w2optimize.db.connection.SQLiteConnection;
 import bh.w2optimize.entity.WoodBoard;
 
 public class WoodBoardDAO {
+	
+	private final static Logger log = Logger.getLogger(WoodBoardDAO.class);
 	
 	private WoodBoardDAO(){
 		
@@ -24,8 +28,9 @@ public class WoodBoardDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		Transaction transaction = session.beginTransaction();
 		try {
@@ -33,7 +38,9 @@ public class WoodBoardDAO {
 //			session.persist(board);
 			transaction.commit();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 			transaction.rollback();
 		} finally {
 			session.close();
@@ -46,15 +53,18 @@ public class WoodBoardDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.update(board);
 			transaction.commit();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 			transaction.rollback();
 		} finally {
 			session.close();
@@ -67,15 +77,18 @@ public class WoodBoardDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.delete(board);
 			transaction.commit();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 			transaction.rollback();
 		} finally {
 			session.close();
@@ -90,15 +103,18 @@ public class WoodBoardDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from woodboard");
 			q4.addEntity(WoodBoard.class);
 			list = q4.list();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}finally {
 			session.close();
 		}
@@ -113,8 +129,9 @@ public class WoodBoardDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from woodboard where id=" + id);
@@ -124,7 +141,9 @@ public class WoodBoardDAO {
 				board = list.get(0);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}finally {
 			session.close();
 		}
@@ -139,8 +158,9 @@ public class WoodBoardDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from woodboard where code='" + code + "'");
@@ -150,7 +170,9 @@ public class WoodBoardDAO {
 				board = list.get(0);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}finally {
 			session.close();
 		}

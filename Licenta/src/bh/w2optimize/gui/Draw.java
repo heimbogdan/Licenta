@@ -22,6 +22,8 @@ import java.awt.Component;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
+import org.apache.log4j.Logger;
+
 public class Draw extends JPanel {
 
 	/**
@@ -29,11 +31,13 @@ public class Draw extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private FinalElement incadrare;
+	private final static Logger log = Logger.getLogger(Draw.class);
+	
+	private FinalElement result;
 	private int pageNumber;
 	private JLabel labPlaca;
-	private int nrIncadrare;
-	private int nrPlaci;
+	private int resultNumber;
+	private int boardNumber;
 	private ArrayList<WoodBoardPice> boardList = null;
 	
 	public ArrayList<WoodBoardPice> getBoardList(){
@@ -41,15 +45,15 @@ public class Draw extends JPanel {
 	}
 	
 	public void setNrPlaci(int nr) {
-		this.nrPlaci = nr;
+		this.boardNumber = nr;
 	}
 
 	public int getNrPlaci() {
-		return this.nrPlaci;
+		return this.boardNumber;
 	}
 
 	public FinalElement getIncadrare() {
-		return incadrare;
+		return result;
 	}
 
 	public int getPageNumber() {
@@ -61,41 +65,41 @@ public class Draw extends JPanel {
 	}
 
 	public int getNrIncadrare(){
-		return this.nrIncadrare;
+		return this.resultNumber;
 	}
 	public void setIncadrare(final FinalElement incadrare, ArrayList<WoodBoardPice> boardList) {
 
 		boolean makeDraw = false;
 
-		if (this.incadrare == null) {
-			this.incadrare = incadrare;
+		if (this.result == null) {
+			this.result = incadrare;
 			this.boardList = boardList;
 			makeDraw = true;
 
-		} else if (incadrare.getChildrens().size() < this.incadrare
+		} else if (incadrare.getChildrens().size() < this.result
 				.getChildrens().size()) {
 
-			this.incadrare = incadrare;
+			this.result = incadrare;
 			makeDraw = true;
-		} else if (incadrare.getChildrens().size() == this.incadrare
+		} else if (incadrare.getChildrens().size() == this.result
 				.getChildrens().size()) {
-			if (this.incadrare.getUseableArea() <= incadrare.getUseableArea()) {
-				if (this.incadrare.getUseableArea() == incadrare
+			if (this.result.getUseableArea() <= incadrare.getUseableArea()) {
+				if (this.result.getUseableArea() == incadrare
 						.getUseableArea()) {
-					if (this.incadrare.getUseablePices() > incadrare
+					if (this.result.getUseablePices() > incadrare
 							.getUseablePices()) {
-						this.incadrare = incadrare;
+						this.result = incadrare;
 						this.boardList = boardList;
 						makeDraw = true;
 					}
 				} else {
 					final ArrayList<Double> newLoss = incadrare
 							.getIndividualLoss();
-					final ArrayList<Double> oldLoss = this.incadrare
+					final ArrayList<Double> oldLoss = this.result
 							.getIndividualLoss();
 					for (int i = 0; i < newLoss.size(); i++) {
 						if (newLoss.get(i) < oldLoss.get(i)) {
-							this.incadrare = incadrare;
+							this.result = incadrare;
 							this.boardList = boardList;
 							makeDraw = true;
 							break;
@@ -106,16 +110,16 @@ public class Draw extends JPanel {
 		}
 		if (makeDraw) {
 			this.pageNumber = 0;
-			this.nrIncadrare++;
+			this.resultNumber++;
 			this.drawing();
 		}
 	}
 
 	public void resetIncadrare() {
-		this.incadrare = null;
+		this.result = null;
 		this.boardList =  null;
 		this.pageNumber = 0;
-		this.nrIncadrare = 0;
+		this.resultNumber = 0;
 	}
 
 	public void drawing() {
@@ -129,10 +133,10 @@ public class Draw extends JPanel {
 
 	private void createContents() {
 		this.pageNumber = 0;
-		this.nrIncadrare = 0;
+		this.resultNumber = 0;
 		labPlaca = new JLabel(new StringBuilder().append("Placa ")
 				.append(pageNumber + 1).append("/ incadrare ")
-				.append(nrIncadrare).toString());
+				.append(resultNumber).toString());
 		this.labPlaca.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.labPlaca.setHorizontalAlignment(SwingConstants.CENTER);
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -156,32 +160,32 @@ public class Draw extends JPanel {
 	protected void paintComponent(final Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		if (incadrare != null) {
+		if (result != null) {
 			g.setColor(Color.BLACK);
-			this.nrPlaci = this.incadrare.getChildrens().size() > 1 ? 2 : 1;
-			if (this.nrPlaci == 1) {
+			this.boardNumber = this.result.getChildrens().size() > 1 ? 2 : 1;
+			if (this.boardNumber == 1) {
 				g2 = drawPlaca(
-						this.incadrare.getChildrens().get(this.pageNumber), g2,
+						this.result.getChildrens().get(this.pageNumber), g2,
 						200, 100);
 				this.labPlaca.setText("Board " + (pageNumber + 1)
-						+ "/ Result " + nrIncadrare);
-			} else if (this.nrPlaci == 2) {
+						+ "/ Result " + resultNumber);
+			} else if (this.boardNumber == 2) {
 				int num = this.pageNumber * 2;
-				if (this.incadrare.getChildrens().size() - 1 > num) {
-					if (this.incadrare.getChildrens().size() >= num + 2) {
-						Element root1 = this.incadrare.getChildrens().get(num);
-						Element root2 = this.incadrare.getChildrens().get(
+				if (this.result.getChildrens().size() - 1 > num) {
+					if (this.result.getChildrens().size() >= num + 2) {
+						Element root1 = this.result.getChildrens().get(num);
+						Element root2 = this.result.getChildrens().get(
 								num + 1);
 						g2 = drawPlaci(new Element[] { root1, root2 }, g2, 20,
 								100);
-						this.labPlaca.setText("Placa " + (num + 1) + "-"
-								+ (num + 2) + "/ incadrare " + nrIncadrare);
+						this.labPlaca.setText("Board " + (num + 1) + "-"
+								+ (num + 2) + "/ Result " + resultNumber);
 					}
 				} else {
-					g2 = drawPlaca(this.incadrare.getChildrens().get(num), g2,
+					g2 = drawPlaca(this.result.getChildrens().get(num), g2,
 							200, 100);
-					this.labPlaca.setText("Placa " + (num + 1) + "/ incadrare "
-							+ nrIncadrare);
+					this.labPlaca.setText("Board " + (num + 1) + "/ Result "
+							+ resultNumber);
 				}
 			}
 		}

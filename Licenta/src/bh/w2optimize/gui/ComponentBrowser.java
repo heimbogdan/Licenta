@@ -41,6 +41,9 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JMenuItem;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 public class ComponentBrowser extends JDialog {
 
 	/**
@@ -48,6 +51,7 @@ public class ComponentBrowser extends JDialog {
 	 */
 	private static final long serialVersionUID = -2027311490164484117L;
 	
+	private final static Logger log = Logger.getLogger(ComponentBrowser.class);
 	
 	private final JPanel contentPanel = new JPanel();
 	private JTable componentTable;
@@ -67,7 +71,9 @@ public class ComponentBrowser extends JDialog {
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}
 	}
 

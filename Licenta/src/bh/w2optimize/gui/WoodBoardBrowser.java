@@ -33,12 +33,17 @@ import java.awt.Component;
 
 import javax.swing.JMenuItem;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 public class WoodBoardBrowser extends JDialog {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6050547569794768822L;
+	
+	private final static Logger log = Logger.getLogger(WoodBoardBrowser.class);
 	
 	private final JPanel contentPanel = new JPanel();
 	private static JTable table;
@@ -54,7 +59,9 @@ public class WoodBoardBrowser extends JDialog {
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}
 	}
 

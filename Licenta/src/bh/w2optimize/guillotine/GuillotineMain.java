@@ -2,6 +2,9 @@ package bh.w2optimize.guillotine;
 
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import bh.w2optimize.elements.Element;
 import bh.w2optimize.elements.ElementList;
 import bh.w2optimize.entity.WoodBoard;
@@ -11,6 +14,8 @@ import bh.w2optimize.gui.FrontInterfaceGUI;
 
 public class GuillotineMain {
 
+	private static final Logger log = Logger.getLogger(GuillotineMain.class);
+	
 	private static GuillotineMain instance;
 	private GuillotineThread thread1,thread2;
 	private boolean stop;
@@ -38,8 +43,9 @@ public class GuillotineMain {
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
-			// TODO de pus log4j
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}
 		synchronized(this){
 			stop = false;
@@ -65,7 +71,9 @@ public class GuillotineMain {
 							instance.stop = true;
 						}
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						if(log.isDebugEnabled()){
+							log.error(e.getStackTrace().toString());
+						}
 					}
 				}
 			});
@@ -85,8 +93,9 @@ public class GuillotineMain {
 		try {
 			Thread.sleep(10);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}
 		thread1.stop();
 		thread2.stop();

@@ -42,6 +42,9 @@ import bh.w2optimize.entity.WoodBoardPice;
 
 import javax.swing.JComboBox;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
@@ -51,6 +54,9 @@ public class EditStocks extends JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = -776644945767968269L;
+	
+	private final static Logger log = Logger.getLogger(EditStocks.class);
+	
 	private final JPanel contentPanel = new JPanel();
 	private JTable stockTable;
 	private JTextField nameTB;
@@ -74,7 +80,9 @@ public class EditStocks extends JDialog {
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}
 	}
 

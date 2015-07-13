@@ -18,7 +18,6 @@ import javax.swing.JMenu;
 import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
@@ -42,7 +41,6 @@ import bh.w2optimize.elements.ElementList;
 import bh.w2optimize.elements.FinalElement;
 import bh.w2optimize.entity.WoodBoard;
 import bh.w2optimize.entity.WoodBoardPice;
-import bh.w2optimize.guillotine.GuillotineConstraints;
 import bh.w2optimize.guillotine.GuillotineMain;
 
 import java.awt.Component;
@@ -55,9 +53,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -69,15 +65,14 @@ import javax.swing.border.LineBorder;
 
 import java.awt.Color;
 
-import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.hibernate.StatelessSession;
-import org.hibernate.Transaction;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+import org.hibernate.cfg.Environment;
 
 import com.pdfjet.A4;
 import com.pdfjet.CoreFont;
@@ -85,7 +80,6 @@ import com.pdfjet.Image;
 import com.pdfjet.ImageType;
 import com.pdfjet.PDF;
 import com.pdfjet.Page;
-import com.pdfjet.Text;
 import com.pdfjet.TextLine;
 
 public class FrontInterfaceGUI extends JFrame {
@@ -95,6 +89,8 @@ public class FrontInterfaceGUI extends JFrame {
 	 */
 	private static final long serialVersionUID = 1562082775449087719L;
 
+	private final static Logger log = Logger.getLogger(FrontInterfaceGUI.class);
+	
 	private JPanel contentPane;
 	public static CutPanel panel;
 	private static JTable table;
@@ -116,13 +112,16 @@ public class FrontInterfaceGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					PropertyConfigurator.configure("./log.properties");
 					FrontInterfaceGUI frame = new FrontInterfaceGUI();
 					frame.setVisible(true);
 					while (frame.isActive()) {
 						Thread.sleep(1);
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					if(log.isDebugEnabled()){
+						log.error(e.getStackTrace().toString());
+					}
 				}
 			}
 		});
@@ -132,7 +131,12 @@ public class FrontInterfaceGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public FrontInterfaceGUI() {
+		
+		if(log.isDebugEnabled()){
+			log.debug("Application started!");
+		}
 		createContents();
+		
 	}
 
 	@SuppressWarnings({ "serial", "static-access" })
@@ -197,6 +201,9 @@ public class FrontInterfaceGUI extends JFrame {
 								ImageIO.write(bi, "png", new File(
 										"./resultPNG/test" + i + ".png"));
 							} catch (Exception e) {
+								if(log.isDebugEnabled()){
+									log.error(e.getStackTrace().toString());
+								}
 							}
 						}
 						try {
@@ -350,7 +357,9 @@ public class FrontInterfaceGUI extends JFrame {
 					        pdf.flush();
 					        fos.close();
 						} catch (Exception e) {
-							e.printStackTrace();
+							if(log.isDebugEnabled()){
+								log.error(e.getStackTrace().toString());
+							}
 						}
 					}
 				} else {
@@ -397,10 +406,16 @@ public class FrontInterfaceGUI extends JFrame {
 			}
 
 			private void drawText(TextLine text, double y, StringBuilder sb,
-					Page boardPage) throws Exception {
-				text.setPosition(50, y);
-				text.setText(sb.toString());
-				text.drawOn(boardPage);
+					Page boardPage) {
+				try {
+					text.setPosition(50, y);
+					text.setText(sb.toString());
+					text.drawOn(boardPage);
+				} catch (Exception e) {
+					if(log.isDebugEnabled()){
+						log.error(e.getStackTrace().toString());
+					}
+				}
 			}
 		});
 		mnNewMenu.add(mntmSave);
@@ -700,7 +715,9 @@ public class FrontInterfaceGUI extends JFrame {
 									int val = Integer.parseInt(timeTB.getText());
 									value = val;
 								} catch (Exception ex){
-									// TODO log4j
+									if(log.isDebugEnabled()){
+										log.error(ex.getStackTrace().toString());
+									}
 								}
 							}
 						}

@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import org.apache.log4j.Logger;
+
 public class CutPanel extends JPanel{
 
 	/**
@@ -35,6 +37,8 @@ public class CutPanel extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private final static Logger log = Logger.getLogger(CutPanel.class);
+	
 	private FinalElement incadrare;
 	private int pageNumber;
 	private JButton button1 = null;

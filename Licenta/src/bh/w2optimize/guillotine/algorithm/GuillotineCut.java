@@ -3,6 +3,8 @@ package bh.w2optimize.guillotine.algorithm;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import bh.w2optimize.elements.Element;
 import bh.w2optimize.elements.ElementList;
 import bh.w2optimize.elements.FinalElement;
@@ -19,6 +21,8 @@ import bh.w2optimize.guillotine.GuillotineMain;
  */
 public class GuillotineCut {
 
+	private final static Logger log = Logger.getLogger(GuillotineCut.class);
+	
 	private FinalElement cutElement;
 	private Element pal;
 	private boolean horizontal;

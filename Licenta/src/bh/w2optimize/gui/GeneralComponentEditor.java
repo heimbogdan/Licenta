@@ -26,6 +26,9 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import bh.w2optimize.db.dao.GeneralComponentDAO;
 import bh.w2optimize.elements.Element;
 import bh.w2optimize.elements.ElementList;
@@ -39,6 +42,7 @@ public class GeneralComponentEditor extends JDialog {
 	 */
 	private static final long serialVersionUID = 2164482194872097498L;
 	
+	private final static Logger log = Logger.getLogger(GeneralComponentEditor.class);
 	
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
@@ -59,7 +63,9 @@ public class GeneralComponentEditor extends JDialog {
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}
 	}
 

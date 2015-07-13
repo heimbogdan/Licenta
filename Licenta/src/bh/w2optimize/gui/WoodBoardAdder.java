@@ -18,6 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 import bh.w2optimize.db.dao.WoodBoardDAO;
@@ -32,6 +34,7 @@ public class WoodBoardAdder extends JDialog {
 	 */
 	private static final long serialVersionUID = -1573065020432656573L;
 	
+	private final static Logger log = Logger.getLogger(WoodBoardAdder.class);
 	
 	private final JPanel contentPanel = new JPanel();
 	private JTextField materialTB;
@@ -53,7 +56,9 @@ public class WoodBoardAdder extends JDialog {
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}
 	}
 

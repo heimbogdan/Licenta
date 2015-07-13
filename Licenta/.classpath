@@ -9,7 +9,6 @@
 	<classpathentry kind="lib" path="lib/hibernate-annotations.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate-commons-annotations.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate3.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.11.jar"/>
 	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="lib/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib/ehcache-1.2.3.jar"/>
@@ -23,5 +22,6 @@
 	<classpathentry kind="lib" path="lib/mockito-all-1.10.19.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate-validator.jar"/>
 	<classpathentry kind="lib" path="lib/PDFjet.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.17.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

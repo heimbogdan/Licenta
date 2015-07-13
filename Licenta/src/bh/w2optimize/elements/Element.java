@@ -4,6 +4,8 @@ import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 /**
  * Class used to create an element, regardless of final utility
  * 
@@ -17,6 +19,9 @@ public class Element implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 9209757999479173396L;
+	
+	private final static Logger log = Logger.getLogger(Element.class);
+	
 	private int id;
 	private String componentCode;
 	private String name;

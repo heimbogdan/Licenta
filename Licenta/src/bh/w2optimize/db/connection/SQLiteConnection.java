@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
@@ -29,6 +31,8 @@ public final class SQLiteConnection {
 
 	private static SQLiteConnection instance;
 
+	private final static Logger log = Logger.getLogger(SQLiteConnection.class);
+	
 	private SessionFactory factory;
 	
 	private SQLiteConnection() {
@@ -37,7 +41,9 @@ public final class SQLiteConnection {
 			cfg.configure("hibernate.cfg.xml");
 			factory=cfg.buildSessionFactory();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}
 	}
 

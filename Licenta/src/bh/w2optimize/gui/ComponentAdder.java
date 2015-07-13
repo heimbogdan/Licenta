@@ -30,6 +30,9 @@ import javax.swing.JPopupMenu;
 
 import javax.swing.JMenuItem;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import bh.w2optimize.db.dao.ComponentDAO;
 import bh.w2optimize.db.dao.GeneralComponentDAO;
 import bh.w2optimize.elements.Element;
@@ -45,6 +48,7 @@ public class ComponentAdder extends JDialog {
 	 */
 	private static final long serialVersionUID = -2682565383816020073L;
 	
+	private final static Logger log = Logger.getLogger(ComponentAdder.class);
 	
 	private final JPanel contentPanel = new JPanel();
 	private JTextField codeTB;
@@ -66,7 +70,9 @@ public class ComponentAdder extends JDialog {
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}
 	}
 

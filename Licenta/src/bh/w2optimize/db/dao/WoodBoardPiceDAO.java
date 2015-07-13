@@ -3,6 +3,8 @@ package bh.w2optimize.db.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -15,6 +17,8 @@ import bh.w2optimize.entity.WoodBoardPice;
 
 public class WoodBoardPiceDAO {
 	
+	private final static Logger log = Logger.getLogger(WoodBoardPiceDAO.class);
+	
 	private WoodBoardPiceDAO(){
 		
 	}
@@ -25,8 +29,9 @@ public class WoodBoardPiceDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		Transaction transaction = session.getTransaction();
 		transaction.begin();
@@ -35,14 +40,18 @@ public class WoodBoardPiceDAO {
 //			session.persist(boardPice);
 			transaction.commit();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 			transaction.rollback();
 		} finally {
 			try {
 				session.connection().close();
 				session.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				if(log.isDebugEnabled()){
+					log.error(e.getStackTrace().toString());
+				}
 			}
 		}
 	}
@@ -53,8 +62,9 @@ public class WoodBoardPiceDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		Transaction transaction = session.getTransaction();
 		transaction.begin();
@@ -62,14 +72,18 @@ public class WoodBoardPiceDAO {
 			session.update(boardPice);
 			transaction.commit();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 			transaction.rollback();
 		} finally {
 			try {
 				session.connection().close();
 				session.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				if(log.isDebugEnabled()){
+					log.error(e.getStackTrace().toString());
+				}
 			}
 		}
 	}
@@ -80,8 +94,9 @@ public class WoodBoardPiceDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		Transaction transaction = session.getTransaction();
 		transaction.begin();
@@ -89,14 +104,18 @@ public class WoodBoardPiceDAO {
 			session.delete(boardPice);
 			transaction.commit();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 			transaction.rollback();
 		} finally {
 			try {
 				session.connection().close();
 				session.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				if(log.isDebugEnabled()){
+					log.error(e.getStackTrace().toString());
+				}
 			}
 		}
 	}
@@ -110,21 +129,26 @@ public class WoodBoardPiceDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from woodboardpice");
 			q4.addEntity(WoodBoardPice.class);
 			list = q4.list();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		} finally {
 			try {
 				session.connection().close();
 				session.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				if(log.isDebugEnabled()){
+					log.error(e.getStackTrace().toString());
+				}
 			}
 		}
 		return list;
@@ -138,8 +162,9 @@ public class WoodBoardPiceDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from woodboardpice where id=" + id);
@@ -149,13 +174,17 @@ public class WoodBoardPiceDAO {
 				board = list.get(0);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}finally {
 			try {
 				session.connection().close();
 				session.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				if(log.isDebugEnabled()){
+					log.error(e.getStackTrace().toString());
+				}
 			}
 		}
 		return board;
@@ -169,21 +198,26 @@ public class WoodBoardPiceDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from woodboardpice where code='" + code + "'");
 			q4.addEntity(WoodBoardPice.class);
 			list = q4.list();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}finally {
 			try {
 				session.connection().close();
 				session.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				if(log.isDebugEnabled()){
+					log.error(e.getStackTrace().toString());
+				}
 			}
 		}
 		return list;

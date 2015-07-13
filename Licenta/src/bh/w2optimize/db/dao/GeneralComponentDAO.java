@@ -3,6 +3,8 @@ package bh.w2optimize.db.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
@@ -12,6 +14,8 @@ import bh.w2optimize.db.connection.SQLiteConnection;
 import bh.w2optimize.entity.GeneralComponent;
 
 public class GeneralComponentDAO {
+	
+	private final static Logger log = Logger.getLogger(GeneralComponentDAO.class);
 	
 	private GeneralComponentDAO(){
 		
@@ -23,8 +27,9 @@ public class GeneralComponentDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		Transaction transaction = session.beginTransaction();
 		try {
@@ -32,7 +37,9 @@ public class GeneralComponentDAO {
 //			session.persist(generalComponent);
 			transaction.commit();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 			transaction.rollback();
 		} finally {
 			session.close();
@@ -45,15 +52,18 @@ public class GeneralComponentDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.update(generalComponent);
 			transaction.commit();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 			transaction.rollback();
 		} finally {
 			session.close();
@@ -66,15 +76,18 @@ public class GeneralComponentDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.delete(generalComponent);
 			transaction.commit();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 			transaction.rollback();
 		} finally {
 			session.close();
@@ -89,15 +102,18 @@ public class GeneralComponentDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from generalcomponent");
 			q4.addEntity(GeneralComponent.class);
 			list = q4.list();
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}finally {
 			session.close();
 		}
@@ -112,8 +128,9 @@ public class GeneralComponentDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from generalcomponent where id=" + id);
@@ -123,7 +140,9 @@ public class GeneralComponentDAO {
 				board = list.get(0);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}finally {
 			session.close();
 		}
@@ -138,8 +157,9 @@ public class GeneralComponentDAO {
 		try {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e1.getStackTrace().toString());
+			}
 		}
 		try {
 			SQLQuery q4 = session.createSQLQuery("select * from generalcomponent where code='" + code + "'");
@@ -149,7 +169,9 @@ public class GeneralComponentDAO {
 				board = list.get(0);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.error(e.getStackTrace().toString());
+			}
 		}finally {
 			session.close();
 		}
