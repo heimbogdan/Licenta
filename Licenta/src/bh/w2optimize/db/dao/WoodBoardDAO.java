@@ -1,13 +1,10 @@
 package bh.w2optimize.db.dao;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 

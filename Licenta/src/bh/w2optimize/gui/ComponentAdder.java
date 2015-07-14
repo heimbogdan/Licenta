@@ -30,7 +30,6 @@ import javax.swing.JPopupMenu;
 
 import javax.swing.JMenuItem;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import bh.w2optimize.db.dao.ComponentDAO;
@@ -392,6 +391,7 @@ public class ComponentAdder extends JDialog {
 		return (field.getText() != null && !field.getText().trim().isEmpty());
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private boolean validateRow(Vector row, boolean isGenComp){
 		boolean isValid = (String)row.get(0) != null && (Double)row.get(1) != null && (Double)row.get(2) != null;
 		if(isValid){

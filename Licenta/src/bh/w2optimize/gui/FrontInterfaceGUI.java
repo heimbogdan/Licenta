@@ -202,7 +202,7 @@ public class FrontInterfaceGUI extends JFrame {
 							g2.dispose();
 							try {
 								ImageIO.write(bi, "png", new File(
-										"./resultPNG/test" + i + ".png"));
+										"./temp/test" + i + ".png"));
 							} catch (Exception e) {
 								if(log.isDebugEnabled()){
 									log.error(e.getMessage());
@@ -215,7 +215,7 @@ public class FrontInterfaceGUI extends JFrame {
 							PDF pdf = new PDF(fos);
 							for (int i = 0; i < incadrare.getChildrens().size(); i++) {
 								Page page = new Page(pdf, A4.PORTRAIT);
-								String fileName = "./resultPNG/test" + i + ".png";
+								String fileName = "./temp/test" + i + ".png";
 								BufferedInputStream bis1 = new BufferedInputStream(new FileInputStream(fileName));
 								Image image1 = new Image(pdf, bis1, ImageType.PNG);
 								image1.setPosition(0, 0);
@@ -627,9 +627,11 @@ public class FrontInterfaceGUI extends JFrame {
 				"ID", "Component", "Name", "Length (mm)", "Width (mm)", "Rotate", "No."
 			}
 		) {
+			@SuppressWarnings("rawtypes")
 			Class[] columnTypes = new Class[] {
 				Integer.class, Object.class, String.class, Double.class, Double.class, Boolean.class, Integer.class
 			};
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -840,6 +842,7 @@ public class FrontInterfaceGUI extends JFrame {
 		}
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private String elementLine(Vector row){
 		StringBuilder sb = new StringBuilder(padLeft((Integer) row.get(0) + "", 5));
 		sb.append(padLeft((String)row.get(1), 30));

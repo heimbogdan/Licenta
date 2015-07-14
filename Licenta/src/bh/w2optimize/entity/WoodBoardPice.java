@@ -2,8 +2,6 @@ package bh.w2optimize.entity;
 
 import java.util.Comparator;
 
-import bh.w2optimize.elements.Element;
-
 public class WoodBoardPice extends WoodBoard{
 
 	private int number;

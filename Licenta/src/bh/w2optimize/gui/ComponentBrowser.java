@@ -41,7 +41,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JMenuItem;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 public class ComponentBrowser extends JDialog {
@@ -292,7 +291,6 @@ public class ComponentBrowser extends JDialog {
 		
 		JMenuItem mntmEdit = new JMenuItem("Edit");
 		mntmEdit.addMouseListener(new MouseAdapter() {
-			@SuppressWarnings("rawtypes")
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				int index = componentTable.getSelectedRow();

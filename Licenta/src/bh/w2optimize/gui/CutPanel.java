@@ -1,12 +1,9 @@
 package bh.w2optimize.gui;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import bh.w2optimize.db.dao.WoodBoardPiceDAO;
 import bh.w2optimize.elements.FinalElement;
 import bh.w2optimize.entity.WoodBoardPice;
 
@@ -22,11 +19,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.math.BigInteger;
 import java.util.ArrayList;
-
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 

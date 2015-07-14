@@ -3,16 +3,12 @@ package bh.w2optimize.db.dao;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 
 import bh.w2optimize.db.connection.SQLiteConnection;
-import bh.w2optimize.entity.WoodBoard;
 import bh.w2optimize.entity.WoodBoardPice;
 
 public class WoodBoardPiceDAO {

@@ -42,7 +42,6 @@ import bh.w2optimize.entity.WoodBoardPice;
 
 import javax.swing.JComboBox;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import java.awt.event.ItemListener;

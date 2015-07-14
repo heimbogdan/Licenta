@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import bh.w2optimize.entity.WoodBoardPice;
-
 /**
  * Class that extends the class {@link Element}. Final Element object is the
  * final arrangement.
