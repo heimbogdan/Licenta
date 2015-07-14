@@ -208,7 +208,7 @@ public class GuillotineCut {
 							root.setComponentCode(element.getComponentCode());
 							root.setRotate(element.isRotate());
 							root.getParent().setLoss(true);
-							horizontal = !horizontal;
+							//horizontal = !horizontal;
 							break;
 						}
 					}

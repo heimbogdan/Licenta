@@ -25,6 +25,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JFileChooser;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -54,6 +55,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -99,6 +101,7 @@ public class FrontInterfaceGUI extends JFrame {
 	private WoodBoard usedBoard;
 	private FrontInterfaceGUI _self;
 	private JTextField timeTB;
+	private JTextField sawTB;
 
 	public void setUsedBoard(WoodBoard board) {
 		this.usedBoard = board;
@@ -327,8 +330,10 @@ public class FrontInterfaceGUI extends JFrame {
 							for (Element el : newEl){
 								Double price = (sBoard.getPrice() / (sBoard.getLength()*sBoard.getWidth())) * (el.getLength() * el.getWidth()) * 100;
 								price = (double) (price.intValue() /100);
-//								newBoards.add(new WoodBoardPice(sBoard.getCode(), sBoard.getName(), sBoard.getMaterial(), el.getLength(), el.getWidth(), price, 1));
-								WoodBoardPice wbp = new WoodBoardPice(sBoard.getCode(), sBoard.getName(), sBoard.getMaterial(), el.getLength(), el.getWidth(), price, 1);
+								double saw = sawTB.getText() != null && !sawTB.getText().isEmpty() ? Double.valueOf(sawTB.getText()) / 2 : 0;
+								double length = el.getLength() - saw;
+								double width = el.getWidth() - saw;
+								WoodBoardPice wbp = new WoodBoardPice(sBoard.getCode(), sBoard.getName(), sBoard.getMaterial(), length, width, price, 1);
 								if (y + 20 > lines) {
 									boardPage = new Page(pdf, A4.PORTRAIT);
 									y = 50;
@@ -341,21 +346,9 @@ public class FrontInterfaceGUI extends JFrame {
 									WoodBoardPiceDAO.insert(wbp);
 								}
 							}
-//							for(WoodBoardPice newBoard : newBoards){
-//								if (y + 20 > lines) {
-//									boardPage = new Page(pdf, A4.PORTRAIT);
-//									y = 50;
-//								}
-//								sb = new StringBuilder();
-//								appendNeedUseBoardsLine(sb, newBoard, 1);
-//								y+=20;
-//								drawText(text, y, sb, boardPage);
-//								if(doUpdate == JOptionPane.OK_OPTION){
-//									WoodBoardPiceDAO.insert(newBoard);
-//								}
-//							}
 					        pdf.flush();
 					        fos.close();
+					        JOptionPane.showMessageDialog(_self,"Result saved!", "Info",JOptionPane.INFORMATION_MESSAGE);
 						} catch (Exception e) {
 							if(log.isDebugEnabled()){
 								log.error(e.getStackTrace().toString());
@@ -465,6 +458,12 @@ public class FrontInterfaceGUI extends JFrame {
 		menuBar.add(mnHelp);
 
 		JMenuItem mntmAbout = new JMenuItem("About");
+		mntmAbout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				JOptionPane.showMessageDialog(_self,"Software pentru optimizarea utilizarii \nmaterialelor in tamplarie \nAutor: Bogdan Heim \nLicenta 2015", "INFO",JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
 		mnHelp.add(mntmAbout);
 
 		JMenuItem mntmUserManual = new JMenuItem("User Manual");
@@ -571,13 +570,17 @@ public class FrontInterfaceGUI extends JFrame {
 		chckbxTimeRestriction.setBounds(6, 7, 116, 23);
 		constraints.add(chckbxTimeRestriction);
 		
-		this.timeTB = new JTextField();
+		this.timeTB = new JFormattedTextField(NumberFormat.getNumberInstance());
 		this.timeTB.setEditable(false);
 		this.timeTB.setToolTipText("number of seconds");
 		this.timeTB.setEnabled(false);
 		this.timeTB.setBounds(128, 8, 101, 20);
 		constraints.add(this.timeTB);
 		this.timeTB.setColumns(10);
+		
+		JLabel lblSeconds = new JLabel("seconds");
+		lblSeconds.setBounds(239, 11, 75, 14);
+		constraints.add(lblSeconds);
 		
 				
 
@@ -604,6 +607,15 @@ public class FrontInterfaceGUI extends JFrame {
 		});
 		btnWoodBoardBrowse.setBounds(181, 35, 89, 23);
 		layeredPane.add(btnWoodBoardBrowse);
+		
+		JLabel lblSawWidth = new JLabel("Saw thickness");
+		lblSawWidth.setBounds(332, 39, 89, 14);
+		layeredPane.add(lblSawWidth);
+		
+		this.sawTB = new JFormattedTextField(NumberFormat.getNumberInstance());
+		this.sawTB.setBounds(431, 36, 86, 20);
+		layeredPane.add(this.sawTB);
+		this.sawTB.setColumns(10);
 
 		table = new JTable();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -612,7 +624,7 @@ public class FrontInterfaceGUI extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"ID", "Component", "Name", "Length", "Width", "Rotate", "No."
+				"ID", "Component", "Name", "Length (mm)", "Width (mm)", "Rotate", "No."
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -620,12 +632,6 @@ public class FrontInterfaceGUI extends JFrame {
 			};
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, true, true, true, true, true, true
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
 			}
 		});
 		table.getColumnModel().getColumn(0).setResizable(false);
@@ -635,9 +641,9 @@ public class FrontInterfaceGUI extends JFrame {
 		table.getColumnModel().getColumn(2).setResizable(false);
 		table.getColumnModel().getColumn(2).setPreferredWidth(90);
 		table.getColumnModel().getColumn(3).setResizable(false);
-		table.getColumnModel().getColumn(3).setPreferredWidth(60);
+		table.getColumnModel().getColumn(3).setPreferredWidth(65);
 		table.getColumnModel().getColumn(4).setResizable(false);
-		table.getColumnModel().getColumn(4).setPreferredWidth(60);
+		table.getColumnModel().getColumn(4).setPreferredWidth(65);
 		table.getColumnModel().getColumn(5).setResizable(false);
 		table.getColumnModel().getColumn(5).setPreferredWidth(60);
 		table.getColumnModel().getColumn(6).setResizable(false);
@@ -698,7 +704,10 @@ public class FrontInterfaceGUI extends JFrame {
 							Vector row = (Vector) element;
 							int number = (Integer) row.get(6);
 							for(int i = 0; i < number; i++){
-								Element el = new Element((Double) row.get(3), (Double) row.get(4), (Boolean) row.get(5) == null ? false	: (Boolean) row.get(5));
+								double saw = sawTB.getText() != null && !sawTB.getText().isEmpty() ? Double.valueOf(sawTB.getText()) / 2 : 0;
+								double length = (Double) row.get(3) + saw;
+								double width = (Double) row.get(4) + saw;
+								Element el = new Element(length, width, (Boolean) row.get(5) == null ? false	: (Boolean) row.get(5));
 								el.setComponentCode((String)row.get(1));
 								el.setName((String)row.get(2));
 								el.setId((Integer) row.get(0));
@@ -721,7 +730,6 @@ public class FrontInterfaceGUI extends JFrame {
 								}
 							}
 						}
-						//TODO de trimis catre main codul placii
 						List<WoodBoardPice> list = WoodBoardPiceDAO.getByCode(usedBoard.getCode());
 						guillotineMain.start(elms, list, value);
 					}

@@ -134,8 +134,8 @@ public class Draw extends JPanel {
 	private void createContents() {
 		this.pageNumber = 0;
 		this.resultNumber = 0;
-		labPlaca = new JLabel(new StringBuilder().append("Placa ")
-				.append(pageNumber + 1).append("/ incadrare ")
+		labPlaca = new JLabel(new StringBuilder().append("Board ")
+				.append(pageNumber + 1).append("/ Result ")
 				.append(resultNumber).toString());
 		this.labPlaca.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.labPlaca.setHorizontalAlignment(SwingConstants.CENTER);
