@@ -28,7 +28,7 @@ public class GeneralComponentDAO {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
 			if(log.isDebugEnabled()){
-				log.error(e1.getStackTrace().toString());
+				log.error(e1.getMessage());
 			}
 		}
 		Transaction transaction = session.beginTransaction();
@@ -38,7 +38,7 @@ public class GeneralComponentDAO {
 			transaction.commit();
 		} catch (Exception e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 			transaction.rollback();
 		} finally {
@@ -53,7 +53,7 @@ public class GeneralComponentDAO {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
 			if(log.isDebugEnabled()){
-				log.error(e1.getStackTrace().toString());
+				log.error(e1.getMessage());
 			}
 		}
 		Transaction transaction = session.beginTransaction();
@@ -62,7 +62,7 @@ public class GeneralComponentDAO {
 			transaction.commit();
 		} catch (Exception e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 			transaction.rollback();
 		} finally {
@@ -77,7 +77,7 @@ public class GeneralComponentDAO {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
 			if(log.isDebugEnabled()){
-				log.error(e1.getStackTrace().toString());
+				log.error(e1.getMessage());
 			}
 		}
 		Transaction transaction = session.beginTransaction();
@@ -86,7 +86,7 @@ public class GeneralComponentDAO {
 			transaction.commit();
 		} catch (Exception e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 			transaction.rollback();
 		} finally {
@@ -103,7 +103,7 @@ public class GeneralComponentDAO {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
 			if(log.isDebugEnabled()){
-				log.error(e1.getStackTrace().toString());
+				log.error(e1.getMessage());
 			}
 		}
 		try {
@@ -112,7 +112,7 @@ public class GeneralComponentDAO {
 			list = q4.list();
 		} catch (Exception e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 		}finally {
 			session.close();
@@ -129,7 +129,7 @@ public class GeneralComponentDAO {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
 			if(log.isDebugEnabled()){
-				log.error(e1.getStackTrace().toString());
+				log.error(e1.getMessage());
 			}
 		}
 		try {
@@ -141,7 +141,7 @@ public class GeneralComponentDAO {
 			}
 		} catch (Exception e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 		}finally {
 			session.close();
@@ -158,7 +158,7 @@ public class GeneralComponentDAO {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
 			if(log.isDebugEnabled()){
-				log.error(e1.getStackTrace().toString());
+				log.error(e1.getMessage());
 			}
 		}
 		try {
@@ -170,7 +170,7 @@ public class GeneralComponentDAO {
 			}
 		} catch (Exception e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 		}finally {
 			session.close();

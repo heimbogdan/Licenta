@@ -42,7 +42,7 @@ public final class SQLiteConnection {
 			factory=cfg.buildSessionFactory();
 		} catch (Exception e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 		}
 	}

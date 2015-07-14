@@ -44,7 +44,7 @@ public class GuillotineMain {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 		}
 		synchronized(this){
@@ -72,7 +72,7 @@ public class GuillotineMain {
 						}
 					} catch (InterruptedException e) {
 						if(log.isDebugEnabled()){
-							log.error(e.getStackTrace().toString());
+							log.error(e.getMessage());
 						}
 					}
 				}
@@ -94,7 +94,7 @@ public class GuillotineMain {
 			Thread.sleep(10);
 		} catch (InterruptedException e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 		}
 		thread1.stop();

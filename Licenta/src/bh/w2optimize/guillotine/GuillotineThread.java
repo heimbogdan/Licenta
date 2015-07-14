@@ -23,7 +23,6 @@ public class GuillotineThread extends Thread {
 		this.elements = (ElementList) elements.clone();
 	}
 
-//TODO de modificat din element in string / se va prelua codul placii
 	public void setRoots(List<WoodBoardPice> roots) {
 		this.roots = roots;
 	}
@@ -34,7 +33,6 @@ public class GuillotineThread extends Thread {
 	@Override
 	public void run() {
 		final GuillotineCut gCut = new GuillotineCut(this.horizontal);
-		//TODO nu se va mai trimite un element (root) ci lista cu placiile existente in stoc probabil si codul
 		gCut.beginCutting(this.elements, roots);
 		fin = gCut.getCutElement();
 	}

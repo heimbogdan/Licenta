@@ -123,7 +123,7 @@ public class FrontInterfaceGUI extends JFrame {
 					}
 				} catch (Exception e) {
 					if(log.isDebugEnabled()){
-						log.error(e.getStackTrace().toString());
+						log.error(e.getMessage());
 					}
 				}
 			}
@@ -205,7 +205,7 @@ public class FrontInterfaceGUI extends JFrame {
 										"./resultPNG/test" + i + ".png"));
 							} catch (Exception e) {
 								if(log.isDebugEnabled()){
-									log.error(e.getStackTrace().toString());
+									log.error(e.getMessage());
 								}
 							}
 						}
@@ -351,7 +351,7 @@ public class FrontInterfaceGUI extends JFrame {
 					        JOptionPane.showMessageDialog(_self,"Result saved!", "Info",JOptionPane.INFORMATION_MESSAGE);
 						} catch (Exception e) {
 							if(log.isDebugEnabled()){
-								log.error(e.getStackTrace().toString());
+								log.error(e.getMessage());
 							}
 						}
 					}
@@ -406,7 +406,7 @@ public class FrontInterfaceGUI extends JFrame {
 					text.drawOn(boardPage);
 				} catch (Exception e) {
 					if(log.isDebugEnabled()){
-						log.error(e.getStackTrace().toString());
+						log.error(e.getMessage());
 					}
 				}
 			}
@@ -608,8 +608,8 @@ public class FrontInterfaceGUI extends JFrame {
 		btnWoodBoardBrowse.setBounds(181, 35, 89, 23);
 		layeredPane.add(btnWoodBoardBrowse);
 		
-		JLabel lblSawWidth = new JLabel("Saw thickness");
-		lblSawWidth.setBounds(332, 39, 89, 14);
+		JLabel lblSawWidth = new JLabel("Saw thickness (mm)");
+		lblSawWidth.setBounds(304, 39, 117, 14);
 		layeredPane.add(lblSawWidth);
 		
 		this.sawTB = new JFormattedTextField(NumberFormat.getNumberInstance());
@@ -725,7 +725,7 @@ public class FrontInterfaceGUI extends JFrame {
 									value = val;
 								} catch (Exception ex){
 									if(log.isDebugEnabled()){
-										log.error(ex.getStackTrace().toString());
+										log.error(ex.getMessage());
 									}
 								}
 							}

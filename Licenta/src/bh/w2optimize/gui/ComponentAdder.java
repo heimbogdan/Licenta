@@ -71,7 +71,7 @@ public class ComponentAdder extends JDialog {
 			dialog.setVisible(true);
 		} catch (Exception e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 		}
 	}

@@ -30,7 +30,7 @@ public class WoodBoardPiceDAO {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
 			if(log.isDebugEnabled()){
-				log.error(e1.getStackTrace().toString());
+				log.error(e1.getMessage());
 			}
 		}
 		Transaction transaction = session.getTransaction();
@@ -41,7 +41,7 @@ public class WoodBoardPiceDAO {
 			transaction.commit();
 		} catch (Exception e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 			transaction.rollback();
 		} finally {
@@ -50,7 +50,7 @@ public class WoodBoardPiceDAO {
 				session.close();
 			} catch (Exception e) {
 				if(log.isDebugEnabled()){
-					log.error(e.getStackTrace().toString());
+					log.error(e.getMessage());
 				}
 			}
 		}
@@ -63,7 +63,7 @@ public class WoodBoardPiceDAO {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
 			if(log.isDebugEnabled()){
-				log.error(e1.getStackTrace().toString());
+				log.error(e1.getMessage());
 			}
 		}
 		Transaction transaction = session.getTransaction();
@@ -73,7 +73,7 @@ public class WoodBoardPiceDAO {
 			transaction.commit();
 		} catch (Exception e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 			transaction.rollback();
 		} finally {
@@ -82,7 +82,7 @@ public class WoodBoardPiceDAO {
 				session.close();
 			} catch (Exception e) {
 				if(log.isDebugEnabled()){
-					log.error(e.getStackTrace().toString());
+					log.error(e.getMessage());
 				}
 			}
 		}
@@ -95,7 +95,7 @@ public class WoodBoardPiceDAO {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
 			if(log.isDebugEnabled()){
-				log.error(e1.getStackTrace().toString());
+				log.error(e1.getMessage());
 			}
 		}
 		Transaction transaction = session.getTransaction();
@@ -105,7 +105,7 @@ public class WoodBoardPiceDAO {
 			transaction.commit();
 		} catch (Exception e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 			transaction.rollback();
 		} finally {
@@ -114,7 +114,7 @@ public class WoodBoardPiceDAO {
 				session.close();
 			} catch (Exception e) {
 				if(log.isDebugEnabled()){
-					log.error(e.getStackTrace().toString());
+					log.error(e.getMessage());
 				}
 			}
 		}
@@ -130,7 +130,7 @@ public class WoodBoardPiceDAO {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
 			if(log.isDebugEnabled()){
-				log.error(e1.getStackTrace().toString());
+				log.error(e1.getMessage());
 			}
 		}
 		try {
@@ -139,7 +139,7 @@ public class WoodBoardPiceDAO {
 			list = q4.list();
 		} catch (Exception e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 		} finally {
 			try {
@@ -147,7 +147,7 @@ public class WoodBoardPiceDAO {
 				session.close();
 			} catch (Exception e) {
 				if(log.isDebugEnabled()){
-					log.error(e.getStackTrace().toString());
+					log.error(e.getMessage());
 				}
 			}
 		}
@@ -163,7 +163,7 @@ public class WoodBoardPiceDAO {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
 			if(log.isDebugEnabled()){
-				log.error(e1.getStackTrace().toString());
+				log.error(e1.getMessage());
 			}
 		}
 		try {
@@ -175,7 +175,7 @@ public class WoodBoardPiceDAO {
 			}
 		} catch (Exception e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 		}finally {
 			try {
@@ -183,7 +183,7 @@ public class WoodBoardPiceDAO {
 				session.close();
 			} catch (Exception e) {
 				if(log.isDebugEnabled()){
-					log.error(e.getStackTrace().toString());
+					log.error(e.getMessage());
 				}
 			}
 		}
@@ -199,7 +199,7 @@ public class WoodBoardPiceDAO {
 			session.connection().setAutoCommit(true);
 		} catch (SQLException e1) {
 			if(log.isDebugEnabled()){
-				log.error(e1.getStackTrace().toString());
+				log.error(e1.getMessage());
 			}
 		}
 		try {
@@ -208,7 +208,7 @@ public class WoodBoardPiceDAO {
 			list = q4.list();
 		} catch (Exception e) {
 			if(log.isDebugEnabled()){
-				log.error(e.getStackTrace().toString());
+				log.error(e.getMessage());
 			}
 		}finally {
 			try {
@@ -216,7 +216,7 @@ public class WoodBoardPiceDAO {
 				session.close();
 			} catch (Exception e) {
 				if(log.isDebugEnabled()){
-					log.error(e.getStackTrace().toString());
+					log.error(e.getMessage());
 				}
 			}
 		}
